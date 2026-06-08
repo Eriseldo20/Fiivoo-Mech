@@ -160,6 +160,89 @@ function Pill({
   )
 }
 
+type InlineConversionCheckProps = {
+  /** Flip to true after your convertToJobCard mutation resolves. */
+  converted: boolean
+  /** Label shown next to the check once converted. Default "Converted". */
+  label?: string
+  /** Visual size of the checkmark in px. Default 20. */
+  size?: number
+  /** Optional extra classes for the wrapper. */
+  className?: string
+}
+
+/**
+ * A compact, inline "converted" indicator for use directly on an estimate
+ * row or next to a button — no overlay. Shows an animated green circle with a
+ * drawing check mark, then reveals a short label.
+ *
+ * Usage:
+ *   <button onClick={handleConvert} disabled={converted}>
+ *     {converted ? <InlineConversionCheck converted /> : "Convert to job card"}
+ *   </button>
+ *
+ * Or as a standalone status on a list row:
+ *   <InlineConversionCheck converted={estimate.status === "accepted"} label="Job card" />
+ */
+export function InlineConversionCheck({
+  converted,
+  label = "Converted",
+  size = 20,
+  className,
+}: InlineConversionCheckProps) {
+  const reduceMotion = useReducedMotion()
+
+  return (
+    <span
+      className={["inline-flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400", className]
+        .filter(Boolean)
+        .join(" ")}
+    >
+      <AnimatePresence initial={false}>
+        {converted ? (
+          <motion.span
+            key="check"
+            className="relative inline-flex items-center justify-center rounded-full bg-emerald-500"
+            style={{ width: size, height: size }}
+            initial={reduceMotion ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 460, damping: 20 }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" style={{ width: size * 0.62, height: size * 0.62 }} aria-hidden="true">
+              <motion.path
+                d="M5 13l4 4L19 7"
+                stroke="white"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.3, delay: reduceMotion ? 0 : 0.12, ease: "easeInOut" }}
+              />
+            </svg>
+          </motion.span>
+        ) : null}
+      </AnimatePresence>
+
+      <AnimatePresence initial={false}>
+        {converted && label ? (
+          <motion.span
+            key="label"
+            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -4, width: 0 }}
+            animate={{ opacity: 1, x: 0, width: "auto" }}
+            exit={{ opacity: 0, x: -4, width: 0 }}
+            transition={{ delay: reduceMotion ? 0 : 0.22, duration: 0.25 }}
+            className="overflow-hidden whitespace-nowrap text-sm"
+          >
+            {label}
+          </motion.span>
+        ) : null}
+      </AnimatePresence>
+    </span>
+  )
+}
+
 function SuccessCheck({ reduceMotion }: { reduceMotion: boolean }) {
   return (
     <div className="relative mx-auto flex size-24 items-center justify-center">
