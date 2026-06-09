@@ -63,7 +63,7 @@ export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps
         setTimeout(() => {
           setShowSuccess(false)
           router.refresh()
-        }, 1400)
+        }, 2500)
       } else {
         router.refresh()
       }
