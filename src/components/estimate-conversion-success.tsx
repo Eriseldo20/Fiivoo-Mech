@@ -1,37 +1,42 @@
-"use client"
+/**
+ * estimate-conversion-success.tsx
+ *
+ * Two drop-in components for the estimate → job card conversion flow:
+ *
+ *  1. EstimateConversionSuccess  – full-screen overlay celebration
+ *  2. InlineConversionCheck      – compact inline row/button indicator
+ *
+ * Both use `motion` (Framer Motion v12) and respect prefers-reduced-motion.
+ */
 
 import { useEffect } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
-import { ArrowRight, FileText, Wrench } from "lucide-react"
+import { ArrowRight, FileText, Wrench, X } from "lucide-react"
+
+// ---------------------------------------------------------------------------
+// 1. Full overlay
+// ---------------------------------------------------------------------------
 
 type EstimateConversionSuccessProps = {
-  /** Controls visibility of the success overlay. */
   open: boolean
-  /** Called when the overlay finishes / is dismissed. */
-  onClose?: () => void
-  /** e.g. "EST-1042" — shown on the left card. */
+  onClose: () => void
   estimateNumber?: string
-  /** e.g. "JOB-0098" — shown on the right card. */
   jobCardNumber?: string
-  /** Optional context line, e.g. the customer or vehicle. */
   subtitle?: string
-  /** Auto-dismiss after this many ms. Set to 0 to disable. Default 2600. */
-  autoCloseMs?: number
+  /** Auto-dismiss after this many ms. Set to 0 to disable. Default 4000. */
+  autoDismissMs?: number
 }
 
 /**
- * A polished, professional "estimate → job card" conversion confirmation.
+ * Full-screen overlay shown once after convertToJobCard resolves.
  *
- * Renders a centered overlay with an animated green circle + drawing check mark,
- * a soft pulsing ring, and a card-to-card transition. Built on `motion`
- * (Framer Motion v12) and `lucide-react`, both already in this project.
+ *   const [success, setSuccess] = useState(false)
+ *   await convertToJobCard({ estimateId })
+ *   setSuccess(true)
  *
- * Usage:
- *   const [done, setDone] = useState(false)
- *   // after your convertToJobCard mutation resolves: setDone(true)
  *   <EstimateConversionSuccess
- *     open={done}
- *     onClose={() => setDone(false)}
+ *     open={success}
+ *     onClose={() => setSuccess(false)}
  *     estimateNumber="EST-1042"
  *     jobCardNumber="JOB-0098"
  *     subtitle="Toyota Hilux · Jane Cooper"
@@ -40,176 +45,220 @@ type EstimateConversionSuccessProps = {
 export function EstimateConversionSuccess({
   open,
   onClose,
-  estimateNumber,
-  jobCardNumber,
+  estimateNumber = "EST-0000",
+  jobCardNumber  = "JOB-0000",
   subtitle,
-  autoCloseMs = 2600,
+  autoDismissMs  = 4000,
 }: EstimateConversionSuccessProps) {
   const reduceMotion = useReducedMotion()
 
   useEffect(() => {
-    if (!open || !autoCloseMs) return
-    const id = window.setTimeout(() => onClose?.(), autoCloseMs)
-    return () => window.clearTimeout(id)
-  }, [open, autoCloseMs, onClose])
+    if (!open || autoDismissMs === 0) return
+    const id = setTimeout(onClose, autoDismissMs)
+    return () => clearTimeout(id)
+  }, [open, autoDismissMs, onClose])
 
   useEffect(() => {
     if (!open) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose?.()
-    }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
+    const handler = (e: KeyboardEvent) => { if (e.key === "Escape") onClose() }
+    window.addEventListener("keydown", handler)
+    return () => window.removeEventListener("keydown", handler)
   }, [open, onClose])
 
   return (
     <AnimatePresence>
-      {open ? (
-        <motion.div
-          role="alertdialog"
-          aria-modal="true"
-          aria-label="Estimate converted to job card"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
-        >
+      {open && (
+        <>
           {/* Backdrop */}
-          <button
-            type="button"
-            aria-label="Dismiss"
+          <motion.div
+            key="backdrop"
+            className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             onClick={onClose}
-            className="absolute inset-0 cursor-default bg-black/45 backdrop-blur-sm"
+            aria-hidden="true"
           />
 
-          {/* Card */}
-          <motion.div
-            className="relative w-full max-w-sm overflow-hidden rounded-2xl border border-border bg-card p-8 text-center shadow-2xl"
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.9, y: 12 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.95, y: 8 }}
-            transition={{ type: "spring", stiffness: 360, damping: 26 }}
-          >
-            <SuccessCheck reduceMotion={!!reduceMotion} />
-
-            <motion.h2
-              className="mt-6 text-balance text-xl font-semibold text-card-foreground"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: reduceMotion ? 0 : 0.5 }}
-            >
-              Job card created
-            </motion.h2>
-
-            <motion.p
-              className="mt-1 text-pretty text-sm text-muted-foreground"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: reduceMotion ? 0 : 0.58 }}
-            >
-              {subtitle ?? "The estimate was accepted and converted successfully."}
-            </motion.p>
-
-            {/* Estimate → Job card transition */}
+          {/* Centering shell */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
             <motion.div
-              className="mt-6 flex items-center justify-center gap-3"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: reduceMotion ? 0 : 0.66 }}
+              role="alertdialog"
+              aria-modal="true"
+              aria-label="Estimate converted to job card"
+              className="pointer-events-auto relative w-full max-w-sm rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-2xl overflow-hidden"
+              initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.88, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.94, y: 10 }}
+              transition={{ type: "spring", stiffness: 380, damping: 26 }}
             >
-              <Pill icon={<FileText className="size-4" />} label={estimateNumber ?? "Estimate"} muted />
-              <motion.span
-                initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -6 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: reduceMotion ? 0 : 0.78 }}
-                className="text-muted-foreground"
+              {/* Top accent bar */}
+              <div className="h-1 w-full bg-[var(--color-brand)]" />
+
+              {/* Dismiss button */}
+              <button
+                onClick={onClose}
+                aria-label="Dismiss"
+                className="absolute top-3 right-3 rounded-md p-1.5 text-[var(--color-subtle)] hover:text-[var(--color-foreground)] hover:bg-[var(--color-surface-raised)] transition-colors"
               >
-                <ArrowRight className="size-4" />
-              </motion.span>
-              <Pill icon={<Wrench className="size-4" />} label={jobCardNumber ?? "Job card"} />
+                <X className="h-4 w-4" />
+              </button>
+
+              <div className="px-8 py-8 flex flex-col items-center gap-5 text-center">
+                <SuccessCheck reduceMotion={!!reduceMotion} />
+
+                <div>
+                  <h2 className="text-lg font-semibold text-[var(--color-foreground)] text-balance">
+                    Job card created
+                  </h2>
+                  <p className="mt-1 text-sm text-[var(--color-muted)] text-pretty">
+                    {subtitle ?? "The estimate was accepted and converted successfully."}
+                  </p>
+                </div>
+
+                {/* Estimate → Job card pill */}
+                <motion.div
+                  className="flex items-center gap-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface-raised)] px-4 py-2"
+                  initial={reduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: reduceMotion ? 0 : 0.5, duration: 0.3 }}
+                >
+                  <FileText className="h-3.5 w-3.5 text-[var(--color-subtle)] shrink-0" />
+                  <span className="text-sm font-mono text-[var(--color-muted)]">{estimateNumber}</span>
+                  <ArrowRight className="h-3.5 w-3.5 text-[var(--color-subtle)] shrink-0" />
+                  <Wrench className="h-3.5 w-3.5 text-[var(--color-brand-light)] shrink-0" />
+                  <span className="text-sm font-mono font-medium text-[var(--color-brand-light)]">{jobCardNumber}</span>
+                </motion.div>
+
+                {/* Auto-dismiss progress bar */}
+                {autoDismissMs > 0 && (
+                  <motion.div
+                    className="w-full h-0.5 rounded-full bg-[var(--color-brand)]"
+                    initial={{ scaleX: 1, originX: 0 }}
+                    animate={{ scaleX: 0 }}
+                    transition={{ duration: autoDismissMs / 1000, ease: "linear" }}
+                  />
+                )}
+              </div>
             </motion.div>
-          </motion.div>
-        </motion.div>
-      ) : null}
+          </div>
+        </>
+      )}
     </AnimatePresence>
   )
 }
 
-function Pill({
-  icon,
-  label,
-  muted = false,
-}: {
-  icon: React.ReactNode
-  label: string
-  muted?: boolean
-}) {
+// ---------------------------------------------------------------------------
+// Internal: animated check mark
+// ---------------------------------------------------------------------------
+
+function SuccessCheck({ reduceMotion }: { reduceMotion: boolean }) {
+  const SIZE = 72
+
   return (
-    <span
-      className={[
-        "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium",
-        muted
-          ? "border-border bg-muted text-muted-foreground"
-          : "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
-      ].join(" ")}
-    >
-      {icon}
-      {label}
-    </span>
+    <div className="relative flex items-center justify-center" style={{ width: SIZE, height: SIZE }}>
+      {/* Outer pulse ring */}
+      {!reduceMotion && (
+        <motion.span
+          className="absolute inset-0 rounded-full border-2 border-[var(--color-brand)]"
+          initial={{ scale: 1, opacity: 0.7 }}
+          animate={{ scale: 1.6, opacity: 0 }}
+          transition={{ delay: 0.25, duration: 0.6, ease: "easeOut" }}
+        />
+      )}
+
+      {/* Green circle */}
+      <motion.span
+        className="flex items-center justify-center rounded-full bg-[var(--color-brand)] shadow-lg"
+        style={{
+          width: SIZE,
+          height: SIZE,
+          boxShadow: "0 0 0 0 var(--color-brand)",
+        }}
+        initial={reduceMotion ? { scale: 1 } : { scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ type: "spring", stiffness: 460, damping: 22, delay: 0.05 }}
+      >
+        {/* Drawing check */}
+        <svg width={SIZE * 0.5} height={SIZE * 0.5} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <motion.path
+            d="M5 13l4 4L19 7"
+            stroke="white"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.35, delay: reduceMotion ? 0 : 0.22, ease: "easeInOut" }}
+          />
+        </svg>
+      </motion.span>
+    </div>
   )
 }
 
+// ---------------------------------------------------------------------------
+// 2. Inline row / button indicator
+// ---------------------------------------------------------------------------
+
 type InlineConversionCheckProps = {
-  /** Flip to true after your convertToJobCard mutation resolves. */
   converted: boolean
-  /** Label shown next to the check once converted. Default "Converted". */
   label?: string
-  /** Visual size of the checkmark in px. Default 20. */
   size?: number
-  /** Optional extra classes for the wrapper. */
   className?: string
 }
 
 /**
- * A compact, inline "converted" indicator for use directly on an estimate
- * row or next to a button — no overlay. Shows an animated green circle with a
- * drawing check mark, then reveals a short label.
+ * Compact inline status for an estimate row or inside a button.
  *
- * Usage:
- *   <button onClick={handleConvert} disabled={converted}>
- *     {converted ? <InlineConversionCheck converted /> : "Convert to job card"}
+ *   // On a table row:
+ *   <InlineConversionCheck
+ *     converted={estimate.status === "accepted"}
+ *     label={`JOB-${estimate.jobCardNumber}`}
+ *   />
+ *
+ *   // Inside a button:
+ *   <button disabled={converted}>
+ *     {converted
+ *       ? <InlineConversionCheck converted size={16} label="Done" />
+ *       : "Convert to job card"}
  *   </button>
- *
- * Or as a standalone status on a list row:
- *   <InlineConversionCheck converted={estimate.status === "accepted"} label="Job card" />
  */
 export function InlineConversionCheck({
   converted,
-  label = "Converted",
-  size = 20,
+  label   = "Converted",
+  size    = 20,
   className,
 }: InlineConversionCheckProps) {
   const reduceMotion = useReducedMotion()
 
   return (
     <span
-      className={["inline-flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400", className]
+      className={[
+        "inline-flex items-center gap-1.5 font-medium text-[var(--color-brand-light)]",
+        className,
+      ]
         .filter(Boolean)
         .join(" ")}
     >
       <AnimatePresence initial={false}>
-        {converted ? (
+        {converted && (
           <motion.span
-            key="check"
-            className="relative inline-flex items-center justify-center rounded-full bg-emerald-500"
+            key="circle"
+            className="relative inline-flex items-center justify-center rounded-full bg-[var(--color-brand)] shrink-0"
             style={{ width: size, height: size }}
             initial={reduceMotion ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 460, damping: 20 }}
           >
-            <svg viewBox="0 0 24 24" fill="none" style={{ width: size * 0.62, height: size * 0.62 }} aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              style={{ width: size * 0.62, height: size * 0.62 }}
+              aria-hidden="true"
+            >
               <motion.path
                 d="M5 13l4 4L19 7"
                 stroke="white"
@@ -222,61 +271,23 @@ export function InlineConversionCheck({
               />
             </svg>
           </motion.span>
-        ) : null}
+        )}
       </AnimatePresence>
 
       <AnimatePresence initial={false}>
-        {converted && label ? (
+        {converted && label && (
           <motion.span
             key="label"
+            className="overflow-hidden whitespace-nowrap text-sm"
             initial={reduceMotion ? { opacity: 1 } : { opacity: 0, x: -4, width: 0 }}
             animate={{ opacity: 1, x: 0, width: "auto" }}
             exit={{ opacity: 0, x: -4, width: 0 }}
             transition={{ delay: reduceMotion ? 0 : 0.22, duration: 0.25 }}
-            className="overflow-hidden whitespace-nowrap text-sm"
           >
             {label}
           </motion.span>
-        ) : null}
+        )}
       </AnimatePresence>
     </span>
-  )
-}
-
-function SuccessCheck({ reduceMotion }: { reduceMotion: boolean }) {
-  return (
-    <div className="relative mx-auto flex size-24 items-center justify-center">
-      {/* Pulsing ring */}
-      {!reduceMotion ? (
-        <motion.span
-          className="absolute inset-0 rounded-full bg-emerald-500/20"
-          initial={{ scale: 0.6, opacity: 0.8 }}
-          animate={{ scale: 1.6, opacity: 0 }}
-          transition={{ duration: 1.1, delay: 0.35, ease: "easeOut" }}
-        />
-      ) : null}
-
-      {/* Green circle */}
-      <motion.div
-        className="relative flex size-20 items-center justify-center rounded-full bg-emerald-500 shadow-lg shadow-emerald-500/30"
-        initial={reduceMotion ? { scale: 1 } : { scale: 0 }}
-        animate={{ scale: 1 }}
-        transition={{ type: "spring", stiffness: 420, damping: 18, delay: reduceMotion ? 0 : 0.1 }}
-      >
-        {/* Drawing check mark */}
-        <svg viewBox="0 0 24 24" fill="none" className="size-11" aria-hidden="true">
-          <motion.path
-            d="M5 13l4 4L19 7"
-            stroke="white"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={reduceMotion ? { pathLength: 1 } : { pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.4, delay: reduceMotion ? 0 : 0.34, ease: "easeInOut" }}
-          />
-        </svg>
-      </motion.div>
-    </div>
   )
 }
