@@ -22,9 +22,9 @@ export function QuickActions() {
       descriptionKey: 'newEstimateDesc',
       href: '/dashboard/estimates/new',
       icon: FileText,
-      color: 'text-accent',
-      bgColor: 'bg-accent/10',
-      borderColor: 'border-accent/20',
+      color: 'text-foreground',
+      bgColor: 'bg-foreground/10',
+      borderColor: 'border-foreground/20',
     },
     {
       titleKey: 'addCustomer',

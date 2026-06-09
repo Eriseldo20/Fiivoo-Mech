@@ -23,8 +23,13 @@ export const REVALIDATE_TIMES = {
 // Dashboard stats - optimized with single query aggregation
 export async function getDashboardStats(shopId: string) {
   const supabase = await createClient()
-  
-  const [jobsResult, estimatesResult, customersResult] = await Promise.all([
+
+  const now = new Date()
+  const startOfThisMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString()
+  const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString()
+  const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59).toISOString()
+
+  const [jobsResult, estimatesResult, customersResult, lastMonthJobsResult, lastMonthCustomersResult] = await Promise.all([
     supabase
       .from('job_cards')
       .select('id, status', { count: 'exact' })
@@ -37,18 +42,50 @@ export async function getDashboardStats(shopId: string) {
       .from('customers')
       .select('id', { count: 'exact' })
       .eq('shop_id', shopId),
+    // Last month's active jobs (for % comparison)
+    supabase
+      .from('job_cards')
+      .select('id, status')
+      .eq('shop_id', shopId)
+      .gte('created_at', startOfLastMonth)
+      .lte('created_at', endOfLastMonth),
+    // Last month's customers (for % comparison)
+    supabase
+      .from('customers')
+      .select('id', { count: 'exact' })
+      .eq('shop_id', shopId)
+      .lte('created_at', endOfLastMonth),
   ])
 
   const jobs = jobsResult.data || []
   const estimates = estimatesResult.data || []
-  
+  const lastMonthJobs = lastMonthJobsResult.data || []
+
+  const activeJobs = jobs.filter(j => j.status === 'in_progress' || j.status === 'pending').length
+  const pendingEstimates = estimates.filter(e => e.status === 'draft' || e.status === 'sent' || e.status === 'pending').length
+  const totalCustomers = customersResult.count || 0
+  const approvedRevenue = estimates
+    .filter(e => e.status === 'approved')
+    .reduce((sum, e) => sum + (e.total || 0), 0)
+
+  // Previous period comparisons
+  const lastMonthActiveJobs = lastMonthJobs.filter(j => j.status === 'in_progress' || j.status === 'pending').length
+  const lastMonthCustomers = lastMonthCustomersResult.count || 0
+
+  const calcChange = (current: number, previous: number) => {
+    if (previous === 0) return current > 0 ? 100 : 0
+    return Math.round(((current - previous) / previous) * 100)
+  }
+
   return {
-    activeJobs: jobs.filter(j => j.status === 'in_progress' || j.status === 'pending').length,
-    pendingEstimates: estimates.filter(e => e.status === 'draft' || e.status === 'sent').length,
-    totalCustomers: customersResult.count || 0,
-    approvedRevenue: estimates
-      .filter(e => e.status === 'approved')
-      .reduce((sum, e) => sum + (e.total || 0), 0),
+    activeJobs,
+    pendingEstimates,
+    totalCustomers,
+    approvedRevenue,
+    changes: {
+      activeJobs: calcChange(activeJobs, lastMonthActiveJobs),
+      totalCustomers: calcChange(totalCustomers, lastMonthCustomers),
+    },
   }
 }
 
