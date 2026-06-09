@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import type { Id } from "../../convex/_generated/dataModel";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore – generated at runtime by `convex dev`
+import { api } from "@/convex/_generated/api";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore – generated at runtime by `convex dev`
+import type { Id } from "@/convex/_generated/dataModel";
 
 type Phase = "idle" | "loading" | "success" | "error";
 
