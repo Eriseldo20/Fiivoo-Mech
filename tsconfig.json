@@ -22,6 +22,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["./**/*"],
-  "exclude": ["./_generated"]
+  "include": ["./convex/**/*"],
+  "exclude": ["./convex/_generated"]
 }

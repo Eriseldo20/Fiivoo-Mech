@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ConvexProvider, ConvexReactClient } from "convex/react";
-import { AuthProvider } from "@usehercules/auth";
+import { HerculesAuthProvider } from "@usehercules/auth/react";
 import { ThemeProvider } from "next-themes";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
@@ -15,14 +15,17 @@ const root = document.getElementById("root")!;
 createRoot(root).render(
   <StrictMode>
     <ThemeProvider attribute="class" defaultTheme="dark" disableTransitionOnChange>
-      <AuthProvider>
+      <HerculesAuthProvider
+        authority={import.meta.env.VITE_HERCULES_OIDC_AUTHORITY as string}
+        client_id={import.meta.env.VITE_HERCULES_OIDC_CLIENT_ID as string}
+      >
         <ConvexProvider client={convex}>
           <BrowserRouter>
             <App />
             <Toaster position="bottom-right" />
           </BrowserRouter>
         </ConvexProvider>
-      </AuthProvider>
+      </HerculesAuthProvider>
     </ThemeProvider>
   </StrictMode>
 );

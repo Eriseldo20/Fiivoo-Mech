@@ -1,9 +1,9 @@
-import { useAuth } from "@usehercules/auth";
+import { useAuth } from "@usehercules/auth/react";
 import { Zap, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function LoginPage() {
-  const { login } = useAuth();
+  const { signin } = useAuth();
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4">
@@ -40,7 +40,7 @@ export function LoginPage() {
         <Button
           className="w-full"
           size="lg"
-          onClick={() => login()}
+          onClick={() => signin()}
         >
           Sign in to your shop
         </Button>

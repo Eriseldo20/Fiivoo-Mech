@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { useAuth } from "@usehercules/auth";
+import { useAuth } from "@usehercules/auth/react";
 import {
   LayoutDashboard,
   ClipboardList,
@@ -38,7 +38,7 @@ const NAV_ITEMS = [
 ] as const;
 
 function SidebarContent({ onClose }: { onClose?: () => void }) {
-  const { user, logout } = useAuth();
+  const { user, signout } = useAuth();
   const location = useLocation();
 
   return (
@@ -66,7 +66,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
           Menu
         </p>
         {NAV_ITEMS.map(({ label, path, icon: Icon }) => {
-          const isActive = location.pathname === path || (path !== "/" && location.pathname.startsWith(path));
+          const isActive = location.pathname === path || location.pathname.startsWith(path);
           return (
             <NavLink
               key={path}
@@ -109,7 +109,7 @@ function SidebarContent({ onClose }: { onClose?: () => void }) {
               <p className="text-xs text-muted-foreground truncate">{user?.profile?.email}</p>
             </div>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logout()} className="text-destructive focus:text-destructive">
+            <DropdownMenuItem onClick={() => signout()} className="text-destructive focus:text-destructive">
               <LogOut className="h-4 w-4" />
               Sign out
             </DropdownMenuItem>

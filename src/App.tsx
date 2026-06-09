@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { useAuth } from "@usehercules/auth";
+import { useAuth } from "@usehercules/auth/react";
 import { useMutation } from "convex/react";
 import { useEffect } from "react";
 import { api } from "@/convex/_generated/api";

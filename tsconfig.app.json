@@ -18,11 +18,14 @@
 
     /* Linting */
     "strict": true,
+    "noImplicitAny": false,
+    "types": ["vite/client"],
 
     "paths": {
       "@/convex/*": ["./convex/*"],
       "@/*": ["./src/*"]
     }
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "exclude": ["./convex"]
 }
