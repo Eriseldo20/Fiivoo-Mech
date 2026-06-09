@@ -30,6 +30,7 @@ const statusFlow = {
 export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<string | null>(null)
+  const [showSuccess, setShowSuccess] = useState(false)
 
   const handleStatusChange = async (newStatus: string) => {
     setIsLoading(newStatus)
@@ -55,8 +56,17 @@ export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps
         .eq('id', jobId)
 
       if (error) throw error
-      
-      router.refresh()
+
+      // Celebrate job completion with a brief checkmark pop, then refresh
+      if (newStatus === 'completed') {
+        setShowSuccess(true)
+        setTimeout(() => {
+          setShowSuccess(false)
+          router.refresh()
+        }, 1400)
+      } else {
+        router.refresh()
+      }
     } catch (err) {
       console.error('Failed to update status:', err)
     } finally {
@@ -69,7 +79,21 @@ export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps
   if (!flow) return null
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+    <div className="relative bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+      {/* Job completed celebration popup */}
+      {showSuccess && (
+        <div
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 rounded-xl bg-card/80 backdrop-blur-sm"
+          role="status"
+          aria-live="polite"
+        >
+          <span className="job-complete-pop flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 ring-4 ring-emerald-500/25">
+            <CheckCircle className="h-9 w-9 text-emerald-500 job-complete-check" strokeWidth={2.5} />
+          </span>
+          <span className="text-sm font-semibold text-emerald-500">Job Completed</span>
+        </div>
+      )}
+
       <h2 className="text-lg font-semibold mb-4">Update Status</h2>
       
       <div className="flex items-center gap-3">

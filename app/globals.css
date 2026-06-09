@@ -206,3 +206,51 @@
 .dark .glow-accent {
   box-shadow: 0 0 20px oklch(0.78 0.12 85 / 0.15);
 }
+
+/* Job completion celebration */
+@keyframes job-complete-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes job-complete-check {
+  0% {
+    transform: scale(0.5) rotate(-12deg);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.job-complete-pop {
+  animation: job-complete-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.job-complete-check {
+  animation: job-complete-check 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-complete-pop,
+  .job-complete-check {
+    animation: none;
+  }
+}

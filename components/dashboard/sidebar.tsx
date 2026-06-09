@@ -60,7 +60,7 @@ function NavItem({
       prefetch={true}
       title={collapsed ? label : undefined}
       className={cn(
-        'group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
+        'group relative flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm font-medium transition-all duration-150',
         isActive
           ? 'text-white shadow-md'
           : 'text-sidebar-muted hover:text-white/90 hover:bg-white/[0.06]'
@@ -73,7 +73,7 @@ function NavItem({
       {/* Active indicator bar */}
       {isActive && (
         <span
-          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-none"
           style={{ background: 'linear-gradient(180deg, oklch(0.80 0.12 195) 0%, oklch(0.60 0.18 195) 100%)' }}
         />
       )}
@@ -212,7 +212,7 @@ export function Sidebar({ shopName }: SidebarProps) {
           onClick={handleSignOut}
           title={collapsed ? t('signOut') : undefined}
           className={cn(
-            'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
+            'w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm font-medium transition-all duration-150',
             'text-sidebar-muted hover:text-red-400 hover:bg-red-500/10',
             collapsed && 'justify-center'
           )}
