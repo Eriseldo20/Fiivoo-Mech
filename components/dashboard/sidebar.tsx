@@ -62,15 +62,22 @@ function NavItem({
       className={cn(
         'group relative flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-150',
         isActive
-          ? 'bg-sidebar-primary text-sidebar-primary-foreground shadow-sm'
-          : 'text-sidebar-muted hover:text-sidebar-foreground hover:bg-sidebar-accent'
+          ? 'text-white shadow-md'
+          : 'text-sidebar-muted hover:text-white/90 hover:bg-white/[0.06]'
       )}
+      style={isActive ? {
+        background: 'linear-gradient(90deg, oklch(0.65 0.15 195 / 0.30) 0%, oklch(0.65 0.15 195 / 0.12) 100%)',
+        boxShadow: '0 0 16px oklch(0.65 0.15 195 / 0.20), inset 0 1px 0 oklch(1 0 0 / 0.08)',
+      } : undefined}
     >
       {/* Active indicator bar */}
       {isActive && (
-        <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-5 rounded-r-full bg-white/60" />
+        <span
+          className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
+          style={{ background: 'linear-gradient(180deg, oklch(0.80 0.12 195) 0%, oklch(0.60 0.18 195) 100%)' }}
+        />
       )}
-      <item.icon className="h-4 w-4 flex-shrink-0" />
+      <item.icon className={cn('h-4 w-4 flex-shrink-0', isActive && 'drop-shadow-[0_0_6px_oklch(0.75_0.15_195/0.8)]')} />
       {!collapsed && <span className="truncate">{label}</span>}
     </Link>
   )
@@ -78,10 +85,10 @@ function NavItem({
 
 function SectionLabel({ label, collapsed }: { label: string; collapsed: boolean }) {
   if (collapsed) {
-    return <div className="my-1 border-t border-sidebar-border/60" />
+    return <div className="my-1 border-t border-white/[0.07]" />
   }
   return (
-    <p className="px-3 pt-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-sidebar-muted/70 select-none">
+    <p className="px-3 pt-4 pb-1 text-[10px] font-semibold uppercase tracking-widest text-white/25 select-none">
       {label}
     </p>
   )
@@ -108,15 +115,21 @@ export function Sidebar({ shopName }: SidebarProps) {
     <aside
       className={cn(
         'fixed left-0 top-0 z-40 h-screen flex flex-col hidden md:flex',
-        'bg-sidebar border-r border-sidebar-border transition-all duration-300',
+        'border-r border-sidebar-border/50 transition-all duration-300',
         collapsed ? 'w-[68px]' : 'w-64'
       )}
+      style={{
+        background: 'linear-gradient(160deg, oklch(0.17 0.02 255) 0%, oklch(0.12 0.015 250) 50%, oklch(0.10 0.01 245) 100%)',
+        boxShadow: '4px 0 32px oklch(0 0 0 / 0.45), 2px 0 8px oklch(0 0 0 / 0.25), inset -1px 0 0 oklch(0.30 0.02 250 / 0.25)',
+      }}
     >
       {/* ── Logo / Brand ── */}
       <div className={cn(
-        'h-16 flex items-center border-b border-sidebar-border flex-shrink-0',
+        'h-16 flex items-center border-b border-white/[0.07] flex-shrink-0',
         collapsed ? 'justify-center px-0' : 'justify-between px-4'
-      )}>
+      )}
+        style={{ background: 'linear-gradient(180deg, oklch(0.19 0.02 255 / 0.6) 0%, transparent 100%)' }}
+      >
         <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
           <div className="flex-shrink-0 h-9 w-9 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-sm">
             <Wrench className="h-4 w-4 text-sidebar-primary-foreground" />
@@ -181,7 +194,10 @@ export function Sidebar({ shopName }: SidebarProps) {
       </nav>
 
       {/* ── Bottom ── */}
-      <div className="flex-shrink-0 border-t border-sidebar-border px-3 py-3 space-y-0.5">
+      <div
+        className="flex-shrink-0 border-t border-white/[0.07] px-3 py-3 space-y-0.5"
+        style={{ background: 'linear-gradient(0deg, oklch(0.10 0.01 245 / 0.8) 0%, transparent 100%)' }}
+      >
         {bottomNavItems.map((item) => (
           <NavItem
             key={item.href}
