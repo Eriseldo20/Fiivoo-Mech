@@ -158,7 +158,7 @@ export function Calendar({
               key={cell.iso}
               className={cn(
                 "relative flex aspect-square flex-col bg-background p-1.5 sm:p-2",
-                !cell.inMonth && "bg-muted/40 text-muted-foreground",
+                !cell.inMonth && "bg-muted text-muted-foreground",
               )}
             >
               <div className="flex items-center justify-between">
