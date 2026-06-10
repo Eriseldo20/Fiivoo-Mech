@@ -364,21 +364,47 @@ export default function CalendarPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
           {/* Calendar */}
           <div className="lg:col-span-3">
-            <Card className="glass-card">
-              <CardHeader className="pb-2">
+            <Card
+              className="rounded-none border border-white/10 overflow-hidden text-white shadow-2xl"
+              style={{
+                background:
+                  'linear-gradient(160deg, oklch(0.17 0.04 255) 0%, oklch(0.11 0.02 250) 55%, oklch(0.08 0.01 245) 100%)',
+              }}
+            >
+              <CardHeader
+                className="pb-3 border-b border-white/10"
+                style={{ background: 'linear-gradient(180deg, oklch(0.21 0.05 258 / 0.7) 0%, transparent 100%)' }}
+              >
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2">
-                    <CalendarIcon className="h-5 w-5 text-primary" />
+                  <CardTitle className="text-lg font-semibold flex items-center gap-2.5 text-white">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-none bg-blue-500/15 border border-blue-400/30">
+                      <CalendarIcon className="h-4 w-4 text-blue-300" />
+                    </span>
                     {format(currentDate, 'MMMM yyyy')}
                   </CardTitle>
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" onClick={handleToday}>
+                  <div className="flex items-center gap-1.5">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleToday}
+                      className="rounded-none bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
+                    >
                       Today
                     </Button>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={handlePrevMonth}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 rounded-none bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
+                      onClick={handlePrevMonth}
+                    >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <Button variant="outline" size="icon" className="h-8 w-8" onClick={handleNextMonth}>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      className="h-8 w-8 rounded-none bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
+                      onClick={handleNextMonth}
+                    >
                       <ChevronRight className="h-4 w-4" />
                     </Button>
                   </div>
@@ -386,16 +412,16 @@ export default function CalendarPage() {
               </CardHeader>
               <CardContent className="p-2 md:p-4">
                 {/* Day headers */}
-                <div className="grid grid-cols-7 mb-2">
+                <div className="grid grid-cols-7 mb-2 border-b border-white/10">
                   {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                    <div key={day} className="text-center text-xs font-medium text-muted-foreground py-2">
+                    <div key={day} className="text-center text-[11px] font-semibold uppercase tracking-wider text-blue-200/50 py-2.5">
                       {day}
                     </div>
                   ))}
                 </div>
                 
                 {/* Calendar grid */}
-                <div className="grid grid-cols-7 gap-1">
+                <div className="grid grid-cols-7 gap-px bg-white/5 border border-white/10">
                   {calendarDays.map(day => {
                     const { reminders: dayReminders, jobs: dayJobs } = getEventsForDay(day)
                     const hasEvents = dayReminders.length > 0 || dayJobs.length > 0
@@ -407,16 +433,18 @@ export default function CalendarPage() {
                         key={day.toISOString()}
                         onClick={() => handleDayClick(day)}
                         className={cn(
-                          'relative min-h-[80px] md:min-h-[100px] p-1 md:p-2 rounded-lg border border-transparent transition-all text-left',
-                          'hover:border-primary/30 hover:bg-primary/5',
-                          !isCurrentMonth && 'opacity-40',
-                          isToday(day) && 'bg-primary/10 border-primary/30',
-                          isSelected && 'border-primary bg-primary/10 ring-2 ring-primary/20'
+                          'relative min-h-[80px] md:min-h-[110px] p-1.5 md:p-2 rounded-none transition-all text-left',
+                          'bg-[oklch(0.13_0.02_250)] hover:bg-[oklch(0.18_0.04_255)]',
+                          !isCurrentMonth && 'opacity-35',
+                          isToday(day) && 'bg-blue-500/10 ring-1 ring-inset ring-blue-400/40',
+                          isSelected && 'bg-blue-500/20 ring-2 ring-inset ring-blue-400'
                         )}
                       >
                         <span className={cn(
-                          'text-sm font-medium',
-                          isToday(day) && 'text-primary'
+                          'inline-flex items-center justify-center text-sm font-semibold h-6 min-w-6 px-1',
+                          isToday(day)
+                            ? 'rounded-none bg-blue-500 text-white'
+                            : 'text-white/80'
                         )}>
                           {format(day, 'd')}
                         </span>
@@ -431,7 +459,7 @@ export default function CalendarPage() {
                                   openReminderDetail(reminder)
                                 }}
                                 className={cn(
-                                  'text-[10px] md:text-xs px-1 py-0.5 rounded truncate cursor-pointer',
+                                  'text-[10px] md:text-xs px-1.5 py-0.5 rounded-none truncate cursor-pointer border-l-2',
                                   priorityColors[reminder.priority]
                                 )}
                               >
@@ -442,14 +470,14 @@ export default function CalendarPage() {
                             {dayJobs.slice(0, 1).map(job => (
                               <div
                                 key={job.id}
-                                className="text-[10px] md:text-xs px-1 py-0.5 rounded truncate bg-emerald-500/10 text-emerald-600 border border-emerald-500/20"
+                                className="text-[10px] md:text-xs px-1.5 py-0.5 rounded-none truncate bg-emerald-500/15 text-emerald-300 border-l-2 border-emerald-400"
                               >
                                 <span className="hidden md:inline">{job.title}</span>
                                 <span className="md:hidden"><Wrench className="h-2.5 w-2.5 inline" /></span>
                               </div>
                             ))}
                             {(dayReminders.length + dayJobs.length) > 3 && (
-                              <div className="text-[10px] text-muted-foreground">
+                              <div className="text-[10px] text-blue-200/50">
                                 +{dayReminders.length + dayJobs.length - 3} more
                               </div>
                             )}
@@ -467,18 +495,21 @@ export default function CalendarPage() {
           <div className="space-y-4">
             {/* Selected date info */}
             {selectedDate && (
-              <Card className="glass-card">
-                <CardHeader className="pb-2">
-                  <CardTitle className="text-sm font-medium">
+              <Card
+                className="rounded-none border border-white/10 text-white"
+                style={{ background: 'linear-gradient(160deg, oklch(0.16 0.03 255) 0%, oklch(0.10 0.015 248) 100%)' }}
+              >
+                <CardHeader className="pb-2 border-b border-white/10">
+                  <CardTitle className="text-sm font-semibold text-white">
                     {format(selectedDate, 'EEEE, MMMM d')}
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-2">
+                <CardContent className="space-y-2 pt-3">
                   {(() => {
                     const { reminders: dayReminders, jobs: dayJobs } = getEventsForDay(selectedDate)
                     if (dayReminders.length === 0 && dayJobs.length === 0) {
                       return (
-                        <p className="text-sm text-muted-foreground">No events scheduled</p>
+                        <p className="text-sm text-blue-200/50">No events scheduled</p>
                       )
                     }
                     return (
@@ -487,13 +518,13 @@ export default function CalendarPage() {
                           <button
                             key={reminder.id}
                             onClick={() => openReminderDetail(reminder)}
-                            className="w-full text-left p-2 rounded-lg bg-card/50 border border-border/50 hover:border-primary/30 transition-all"
+                            className="w-full text-left p-2 rounded-none bg-white/5 border-l-2 border-blue-400 hover:bg-white/10 transition-all"
                           >
                             <div className="flex items-start gap-2">
-                              <Bell className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                              <Bell className="h-4 w-4 text-blue-300 mt-0.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{reminder.title}</p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-sm font-medium truncate text-white">{reminder.title}</p>
+                                <p className="text-xs text-blue-200/50">
                                   {reminder.vehicle?.make} {reminder.vehicle?.model} - {reminder.vehicle?.license_plate}
                                 </p>
                               </div>
@@ -503,13 +534,13 @@ export default function CalendarPage() {
                         {dayJobs.map(job => (
                           <div
                             key={job.id}
-                            className="p-2 rounded-lg bg-card/50 border border-border/50"
+                            className="p-2 rounded-none bg-white/5 border-l-2 border-emerald-400"
                           >
                             <div className="flex items-start gap-2">
-                              <Wrench className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                              <Wrench className="h-4 w-4 text-emerald-300 mt-0.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{job.title}</p>
-                                <p className="text-xs text-muted-foreground">
+                                <p className="text-sm font-medium truncate text-white">{job.title}</p>
+                                <p className="text-xs text-blue-200/50">
                                   Job #{job.job_number}
                                 </p>
                               </div>
@@ -522,7 +553,7 @@ export default function CalendarPage() {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full mt-2"
+                    className="w-full mt-2 rounded-none bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
                     onClick={handleAddReminder}
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -533,30 +564,33 @@ export default function CalendarPage() {
             )}
 
             {/* Upcoming reminders */}
-            <Card className="glass-card">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium flex items-center gap-2">
-                  <Bell className="h-4 w-4 text-primary" />
+            <Card
+              className="rounded-none border border-white/10 text-white"
+              style={{ background: 'linear-gradient(160deg, oklch(0.16 0.03 255) 0%, oklch(0.10 0.015 248) 100%)' }}
+            >
+              <CardHeader className="pb-2 border-b border-white/10">
+                <CardTitle className="text-sm font-semibold flex items-center gap-2 text-white">
+                  <Bell className="h-4 w-4 text-blue-300" />
                   Upcoming Reminders
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="space-y-2 pt-3">
                 {upcomingReminders.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">No upcoming reminders</p>
+                  <p className="text-sm text-blue-200/50">No upcoming reminders</p>
                 ) : (
                   upcomingReminders.map(reminder => (
                     <button
                       key={reminder.id}
                       onClick={() => openReminderDetail(reminder)}
-                      className="w-full text-left p-2 rounded-lg bg-card/50 border border-border/50 hover:border-primary/30 transition-all"
+                      className="w-full text-left p-2 rounded-none bg-white/5 border-l-2 border-blue-400/60 hover:bg-white/10 transition-all"
                     >
                       <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-medium truncate">{reminder.title}</p>
-                        <Badge variant="outline" className={cn('text-[10px]', priorityColors[reminder.priority])}>
+                        <p className="text-sm font-medium truncate text-white">{reminder.title}</p>
+                        <Badge variant="outline" className={cn('text-[10px] rounded-none', priorityColors[reminder.priority])}>
                           {reminder.priority}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-2 text-xs text-blue-200/50">
                         <Car className="h-3 w-3" />
                         <span className="truncate">
                           {reminder.vehicle?.license_plate}
@@ -571,25 +605,28 @@ export default function CalendarPage() {
             </Card>
 
             {/* Legend */}
-            <Card className="glass-card">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-sm font-medium">Legend</CardTitle>
+            <Card
+              className="rounded-none border border-white/10 text-white"
+              style={{ background: 'linear-gradient(160deg, oklch(0.16 0.03 255) 0%, oklch(0.10 0.015 248) 100%)' }}
+            >
+              <CardHeader className="pb-2 border-b border-white/10">
+                <CardTitle className="text-sm font-semibold text-white">Legend</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2">
-                <div className="flex items-center gap-2 text-xs">
-                  <div className="w-3 h-3 rounded bg-blue-500/20 border border-blue-500/30" />
+              <CardContent className="space-y-2 pt-3">
+                <div className="flex items-center gap-2 text-xs text-white/80">
+                  <div className="w-3 h-3 rounded-none bg-blue-500/20 border border-blue-400/40" />
                   <span>Service Reminder</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs">
-                  <div className="w-3 h-3 rounded bg-emerald-500/20 border border-emerald-500/30" />
+                <div className="flex items-center gap-2 text-xs text-white/80">
+                  <div className="w-3 h-3 rounded-none bg-emerald-500/20 border border-emerald-400/40" />
                   <span>Job Due Date</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs">
-                  <div className="w-3 h-3 rounded bg-amber-500/20 border border-amber-500/30" />
+                <div className="flex items-center gap-2 text-xs text-white/80">
+                  <div className="w-3 h-3 rounded-none bg-amber-500/20 border border-amber-400/40" />
                   <span>High Priority</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs">
-                  <div className="w-3 h-3 rounded bg-red-500/20 border border-red-500/30" />
+                <div className="flex items-center gap-2 text-xs text-white/80">
+                  <div className="w-3 h-3 rounded-none bg-red-500/20 border border-red-400/40" />
                   <span>Urgent</span>
                 </div>
               </CardContent>
