@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+  --font-serif: "Noto Serif", ui-serif, serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --radius: 0px;
+}
+
+:root {
+  --background: oklch(1 0 0); /* white */
+  --foreground: oklch(0.145 0 0); /* near black */
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --muted: oklch(0.97 0 0); /* light gray */
+  --muted-foreground: oklch(0.556 0 0); /* mid gray */
+  --border: oklch(0.145 0 0); /* black borders */
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.145 0 0); /* black */
+  --primary-foreground: oklch(1 0 0); /* white */
+}
+
+.dark {
+  --background: oklch(0.145 0 0); /* near black */
+  --foreground: oklch(0.985 0 0); /* near white */
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --border: oklch(0.985 0 0); /* white borders */
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.985 0 0); /* white */
+  --primary-foreground: oklch(0.145 0 0); /* black */
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background-color: var(--background);
+}
+
+body {
+  margin: 0;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
