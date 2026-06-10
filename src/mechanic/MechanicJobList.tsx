@@ -1,6 +1,3 @@
-import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
 import {
   Wrench,
   LogOut,
@@ -11,11 +8,12 @@ import {
   LoaderCircle,
   ClipboardList,
 } from "lucide-react";
+import { useJobs, useMe, type JobId, type JobSummary } from "./data";
 
 type JobListProps = {
   accessCode: string;
   onSignOut: () => void;
-  onOpenJob: (id: Id<"jobCards">) => void;
+  onOpenJob: (id: JobId) => void;
 };
 
 const STATUS_STYLES: Record<string, string> = {
@@ -27,8 +25,8 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 export function MechanicJobList({ accessCode, onSignOut, onOpenJob }: JobListProps) {
-  const me = useQuery(api.mechanic.me, { accessCode });
-  const jobs = useQuery(api.mechanic.listJobs, { accessCode });
+  const me = useMe(accessCode);
+  const jobs = useJobs(accessCode);
 
   const loading = jobs === undefined;
   const activeJobs = jobs?.filter((j) => j.status !== "complete" && j.status !== "invoiced") ?? [];
@@ -97,9 +95,7 @@ export function MechanicJobList({ accessCode, onSignOut, onOpenJob }: JobListPro
   );
 }
 
-type JobRowItem = NonNullable<ReturnType<typeof useQuery<typeof api.mechanic.listJobs>>>[number];
-
-function JobRow({ job, onOpen }: { job: JobRowItem; onOpen: () => void }) {
+function JobRow({ job, onOpen }: { job: JobSummary; onOpen: () => void }) {
   return (
     <li>
       <button

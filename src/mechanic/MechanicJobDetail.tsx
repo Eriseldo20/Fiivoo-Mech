@@ -1,7 +1,4 @@
 import { useRef, useState } from "react";
-import { useMutation, useQuery, useConvex } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import type { Id } from "@/convex/_generated/dataModel";
 import {
   ArrowLeft,
   Car,
@@ -19,19 +16,27 @@ import {
   X,
 } from "lucide-react";
 import { SignaturePad, type SignaturePadHandle } from "./SignaturePad";
+import {
+  useJob,
+  useMechanicActions,
+  type JobDetail,
+  type JobId,
+  type MechanicActions,
+  type StatusValue,
+} from "./data";
 
 type JobDetailProps = {
   accessCode: string;
-  jobCardId: Id<"jobCards">;
+  jobCardId: JobId;
   onBack: () => void;
 };
 
-const STATUS_OPTIONS = [
+const STATUS_OPTIONS: { value: StatusValue; label: string }[] = [
   { value: "pending", label: "Pending" },
   { value: "in_progress", label: "In Progress" },
   { value: "awaiting_parts", label: "Awaiting Parts" },
   { value: "complete", label: "Complete" },
-] as const;
+];
 
 const HISTORY_TYPES = [
   { value: "general", label: "General" },
@@ -44,7 +49,7 @@ const HISTORY_TYPES = [
 ] as const;
 
 export function MechanicJobDetail({ accessCode, jobCardId, onBack }: JobDetailProps) {
-  const job = useQuery(api.mechanic.getJob, { accessCode, jobCardId });
+  const job = useJob(accessCode, jobCardId);
 
   if (job === undefined) {
     return (
@@ -72,48 +77,30 @@ export function MechanicJobDetail({ accessCode, jobCardId, onBack }: JobDetailPr
   return <JobDetailLoaded accessCode={accessCode} job={job} onBack={onBack} />;
 }
 
-type LoadedJob = NonNullable<ReturnType<typeof useQuery<typeof api.mechanic.getJob>>>;
-
 function JobDetailLoaded({
   accessCode,
   job,
   onBack,
 }: {
   accessCode: string;
-  job: LoadedJob;
+  job: JobDetail;
   onBack: () => void;
 }) {
-  const convex = useConvex();
-  const updateStatus = useMutation(api.mechanic.updateStatus);
-  const toggleTask = useMutation(api.mechanic.toggleTask);
-  const addHistory = useMutation(api.mechanic.addHistoryEntry);
-  const addPhoto = useMutation(api.mechanic.addPhoto);
-  const removePhoto = useMutation(api.mechanic.removePhoto);
-  const saveSignature = useMutation(api.mechanic.saveSignature);
-
+  const actions = useMechanicActions();
   const [uploading, setUploading] = useState(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const jobCardId = job._id;
 
-  const onStatusChange = async (status: (typeof STATUS_OPTIONS)[number]["value"]) => {
-    await updateStatus({ accessCode, jobCardId, status });
+  const onStatusChange = async (status: StatusValue) => {
+    await actions.updateStatus(accessCode, jobCardId, status);
   };
 
   const onUploadPhotos = async (files: FileList | null) => {
     if (!files || files.length === 0) return;
     setUploading(true);
     try {
-      for (const file of Array.from(files)) {
-        const url = await convex.mutation(api.mechanic.generateUploadUrl, { accessCode });
-        const res = await fetch(url, {
-          method: "POST",
-          headers: { "Content-Type": file.type },
-          body: file,
-        });
-        const { storageId } = await res.json();
-        await addPhoto({ accessCode, jobCardId, storageId });
-      }
+      await actions.uploadPhotos(accessCode, jobCardId, Array.from(files));
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
@@ -215,7 +202,7 @@ function JobDetailLoaded({
                       type="checkbox"
                       checked={task.completed}
                       onChange={(e) =>
-                        toggleTask({ accessCode, jobCardId, taskId: task._id, completed: e.target.checked })
+                        actions.toggleTask(accessCode, jobCardId, task._id, e.target.checked)
                       }
                       className="size-5 shrink-0 accent-primary"
                     />
@@ -246,7 +233,7 @@ function JobDetailLoaded({
                 )}
                 <button
                   type="button"
-                  onClick={() => removePhoto({ accessCode, jobCardId, storageId: photo.storageId })}
+                  onClick={() => actions.removePhoto(accessCode, jobCardId, photo.storageId)}
                   className="absolute right-1 top-1 inline-flex size-7 items-center justify-center rounded-md bg-background/80 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
                   aria-label="Remove photo"
                 >
@@ -282,7 +269,7 @@ function JobDetailLoaded({
         </section>
 
         {/* Service history */}
-        <ServiceHistory accessCode={accessCode} jobCardId={jobCardId} history={job.history} addHistory={addHistory} />
+        <ServiceHistory accessCode={accessCode} jobCardId={jobCardId} history={job.history} actions={actions} />
 
         {/* Signature */}
         <SignatureSection
@@ -291,8 +278,7 @@ function JobDetailLoaded({
           existingUrl={job.signatureUrl}
           signedByName={job.signedByName}
           signedAt={job.signedAt}
-          convex={convex}
-          saveSignature={saveSignature}
+          actions={actions}
         />
       </div>
     </main>
@@ -305,12 +291,12 @@ function ServiceHistory({
   accessCode,
   jobCardId,
   history,
-  addHistory,
+  actions,
 }: {
   accessCode: string;
-  jobCardId: Id<"jobCards">;
-  history: LoadedJob["history"];
-  addHistory: ReturnType<typeof useMutation<typeof api.mechanic.addHistoryEntry>>;
+  jobCardId: JobId;
+  history: JobDetail["history"];
+  actions: MechanicActions;
 }) {
   const [open, setOpen] = useState(false);
   const [odo, setOdo] = useState("");
@@ -323,9 +309,7 @@ function ServiceHistory({
     if (!desc.trim()) return;
     setSaving(true);
     try {
-      await addHistory({
-        accessCode,
-        jobCardId,
+      await actions.addHistoryEntry(accessCode, jobCardId, {
         odometerKm: Number(odo.replace(/[^0-9]/g, "")) || 0,
         description: desc.trim(),
         type,
@@ -422,16 +406,14 @@ function SignatureSection({
   existingUrl,
   signedByName,
   signedAt,
-  convex,
-  saveSignature,
+  actions,
 }: {
   accessCode: string;
-  jobCardId: Id<"jobCards">;
+  jobCardId: JobId;
   existingUrl: string | null;
   signedByName: string | null;
   signedAt: number | null;
-  convex: ReturnType<typeof useConvex>;
-  saveSignature: ReturnType<typeof useMutation<typeof api.mechanic.saveSignature>>;
+  actions: MechanicActions;
 }) {
   const padRef = useRef<SignaturePadHandle | null>(null);
   const [name, setName] = useState("");
@@ -447,14 +429,7 @@ function SignatureSection({
     try {
       const blob = await padRef.current.toBlob();
       if (!blob) return;
-      const url = await convex.mutation(api.mechanic.generateUploadUrl, { accessCode });
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "image/png" },
-        body: blob,
-      });
-      const { storageId } = await res.json();
-      await saveSignature({ accessCode, jobCardId, storageId, signedByName: name.trim() });
+      await actions.saveSignatureImage(accessCode, jobCardId, blob, name.trim());
       setRedo(false);
       setName("");
       setHasInk(false);

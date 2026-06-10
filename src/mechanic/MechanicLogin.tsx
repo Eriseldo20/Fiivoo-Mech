@@ -1,18 +1,17 @@
 import { useState } from "react";
-import { useConvex } from "convex/react";
-import { api } from "@/convex/_generated/api";
 import { Wrench, LoaderCircle, KeyRound } from "lucide-react";
+import { useMechanicActions, PREVIEW_MODE, DEMO_ACCESS_CODE } from "./data";
 
 type LoginProps = {
   onSignedIn: (code: string) => void;
 };
 
 /**
- * Access-code login for mechanics. Validates the code against Convex before
+ * Access-code login for mechanics. Validates the code against the backend before
  * storing it, so an invalid code never enters the "signed in" state.
  */
 export function MechanicLogin({ onSignedIn }: LoginProps) {
-  const convex = useConvex();
+  const { validateCode } = useMechanicActions();
   const [code, setCode] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -24,7 +23,7 @@ export function MechanicLogin({ onSignedIn }: LoginProps) {
     setLoading(true);
     setError(null);
     try {
-      const me = await convex.query(api.mechanic.me, { accessCode: trimmed });
+      const me = await validateCode(trimmed);
       if (!me) {
         setError("That code isn't valid. Check with your shop owner.");
         return;
@@ -87,9 +86,19 @@ export function MechanicLogin({ onSignedIn }: LoginProps) {
           </button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-muted-foreground">
-          Ask your shop owner for your personal access code.
-        </p>
+        {PREVIEW_MODE ? (
+          <button
+            type="button"
+            onClick={() => setCode(DEMO_ACCESS_CODE)}
+            className="mt-6 w-full rounded-md border border-dashed border-border px-3 py-2.5 text-center text-xs text-muted-foreground hover:text-foreground"
+          >
+            Preview mode — tap to fill demo code <span className="font-mono text-foreground">{DEMO_ACCESS_CODE}</span>
+          </button>
+        ) : (
+          <p className="mt-6 text-center text-xs text-muted-foreground">
+            Ask your shop owner for your personal access code.
+          </p>
+        )}
       </div>
     </main>
   );

@@ -1,9 +1,9 @@
 import { useState } from "react";
-import type { Id } from "@/convex/_generated/dataModel";
 import { useMechanicAuth } from "./useMechanicAuth";
 import { MechanicLogin } from "./MechanicLogin";
 import { MechanicJobList } from "./MechanicJobList";
 import { MechanicJobDetail } from "./MechanicJobDetail";
+import { MechanicDataProvider, type JobId } from "./data";
 
 /**
  * Self-contained mechanic portal. Mount this at a route (e.g. /mechanic) in the
@@ -12,10 +12,14 @@ import { MechanicJobDetail } from "./MechanicJobDetail";
  *
  *   import { MechanicPortal } from "@/mechanic/MechanicPortal";
  *   <Route path="/mechanic" element={<MechanicPortal />} />
+ *
+ * Data layer: when VITE_CONVEX_URL is set (e.g. in Hercules) it talks to the
+ * real Convex `mechanic.*` backend; otherwise it runs against an in-memory mock
+ * store so the portal is fully interactive in preview environments.
  */
-export function MechanicPortal() {
+function MechanicPortalInner() {
   const { accessCode, signIn, signOut } = useMechanicAuth();
-  const [openJobId, setOpenJobId] = useState<Id<"jobCards"> | null>(null);
+  const [openJobId, setOpenJobId] = useState<JobId | null>(null);
 
   if (!accessCode) {
     return <MechanicLogin onSignedIn={signIn} />;
@@ -40,5 +44,13 @@ export function MechanicPortal() {
       }}
       onOpenJob={(id) => setOpenJobId(id)}
     />
+  );
+}
+
+export function MechanicPortal() {
+  return (
+    <MechanicDataProvider>
+      <MechanicPortalInner />
+    </MechanicDataProvider>
   );
 }
