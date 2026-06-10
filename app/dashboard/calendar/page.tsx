@@ -105,10 +105,10 @@ const serviceTypes = [
 ]
 
 const priorityColors = {
-  low: 'bg-slate-100 text-slate-700 border-slate-400',
-  normal: 'bg-blue-100 text-blue-700 border-blue-500',
-  high: 'bg-amber-100 text-amber-700 border-amber-500',
-  urgent: 'bg-red-100 text-red-700 border-red-500',
+  low: 'bg-slate-50 text-slate-600 border-slate-400',
+  normal: 'bg-blue-50 text-blue-700 border-blue-500',
+  high: 'bg-amber-50 text-amber-700 border-amber-500',
+  urgent: 'bg-red-50 text-red-700 border-red-500',
 }
 
 const statusColors = {
@@ -364,55 +364,60 @@ export default function CalendarPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
           {/* Calendar */}
           <div className="lg:col-span-3">
-            <Card className="rounded-none border border-black/80 overflow-hidden bg-white text-black shadow-sm">
-              <CardHeader className="pb-3 border-b border-black/80 bg-white">
+            <Card className="rounded-xl border border-slate-200 overflow-hidden bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.12)]">
+              <CardHeader className="pb-4 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg font-semibold flex items-center gap-2.5 text-black">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-none bg-blue-600 border border-black">
-                      <CalendarIcon className="h-4 w-4 text-white" />
-                    </span>
-                    {format(currentDate, 'MMMM yyyy')}
-                  </CardTitle>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-col gap-0.5">
+                    <CardTitle className="text-xl font-semibold tracking-tight flex items-center gap-3 text-slate-900">
+                      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900 shadow-sm">
+                        <CalendarIcon className="h-4 w-4 text-white" />
+                      </span>
+                      {format(currentDate, 'MMMM yyyy')}
+                    </CardTitle>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={handleToday}
-                      className="rounded-none bg-white border-black/80 text-black hover:bg-black hover:text-white"
+                      className="rounded-lg bg-white border-slate-200 text-slate-700 font-medium shadow-sm hover:bg-slate-50 hover:text-slate-900"
                     >
                       Today
                     </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-8 w-8 rounded-none bg-white border-black/80 text-black hover:bg-black hover:text-white"
-                      onClick={handlePrevMonth}
-                    >
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      className="h-8 w-8 rounded-none bg-white border-black/80 text-black hover:bg-black hover:text-white"
-                      onClick={handleNextMonth}
-                    >
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
+                    <div className="flex items-center rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 rounded-none text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                        onClick={handlePrevMonth}
+                      >
+                        <ChevronLeft className="h-4 w-4" />
+                      </Button>
+                      <div className="h-5 w-px bg-slate-200" />
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 rounded-none text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                        onClick={handleNextMonth}
+                      >
+                        <ChevronRight className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-2 md:p-4 bg-white">
+              <CardContent className="p-3 md:p-5 bg-white">
                 {/* Day headers */}
-                <div className="grid grid-cols-7 mb-0 border border-black/80 border-b-0">
+                <div className="grid grid-cols-7">
                   {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
-                    <div key={day} className="text-center text-[11px] font-semibold uppercase tracking-wider text-black/60 py-2.5 border-r border-black/15 last:border-r-0">
+                    <div key={day} className="text-center text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400 pb-3">
                       {day}
                     </div>
                   ))}
                 </div>
                 
                 {/* Calendar grid */}
-                <div className="grid grid-cols-7 border-l border-t border-black/80">
+                <div className="grid grid-cols-7 gap-1.5">
                   {calendarDays.map(day => {
                     const { reminders: dayReminders, jobs: dayJobs } = getEventsForDay(day)
                     const hasEvents = dayReminders.length > 0 || dayJobs.length > 0
@@ -424,24 +429,24 @@ export default function CalendarPage() {
                         key={day.toISOString()}
                         onClick={() => handleDayClick(day)}
                         className={cn(
-                          'relative min-h-[80px] md:min-h-[110px] p-1.5 md:p-2 rounded-none transition-all text-left border-r border-b border-black/80',
-                          'bg-white hover:bg-blue-50',
-                          !isCurrentMonth && 'bg-black/[0.03] text-black/40',
-                          isToday(day) && 'bg-blue-50',
-                          isSelected && 'bg-blue-100 ring-2 ring-inset ring-blue-600'
+                          'group relative min-h-[84px] md:min-h-[116px] p-2 rounded-lg transition-all text-left border',
+                          'bg-white border-slate-100 hover:border-slate-300 hover:shadow-sm',
+                          !isCurrentMonth && 'bg-slate-50/60 border-transparent text-slate-300',
+                          isToday(day) && 'border-slate-900/15 bg-slate-50',
+                          isSelected && 'border-slate-900 bg-white shadow-md ring-1 ring-slate-900'
                         )}
                       >
                         <span className={cn(
-                          'inline-flex items-center justify-center text-sm font-semibold h-6 min-w-6 px-1',
+                          'inline-flex items-center justify-center text-sm font-semibold h-7 min-w-7 px-1 transition-colors',
                           isToday(day)
-                            ? 'rounded-none bg-blue-600 text-white'
-                            : 'text-black/80'
+                            ? 'rounded-full bg-slate-900 text-white'
+                            : isCurrentMonth ? 'text-slate-700' : 'text-slate-300'
                         )}>
                           {format(day, 'd')}
                         </span>
                         
                         {hasEvents && (
-                          <div className="mt-1 space-y-0.5 overflow-hidden">
+                          <div className="mt-1.5 space-y-1 overflow-hidden">
                             {dayReminders.slice(0, 2).map(reminder => (
                               <div
                                 key={reminder.id}
@@ -450,7 +455,7 @@ export default function CalendarPage() {
                                   openReminderDetail(reminder)
                                 }}
                                 className={cn(
-                                  'text-[10px] md:text-xs px-1.5 py-0.5 rounded-none truncate cursor-pointer border-l-2 font-medium',
+                                  'text-[10px] md:text-xs px-2 py-1 rounded-md truncate cursor-pointer border-l-2 font-medium transition-transform hover:translate-x-0.5',
                                   priorityColors[reminder.priority]
                                 )}
                               >
@@ -461,14 +466,14 @@ export default function CalendarPage() {
                             {dayJobs.slice(0, 1).map(job => (
                               <div
                                 key={job.id}
-                                className="text-[10px] md:text-xs px-1.5 py-0.5 rounded-none truncate bg-emerald-100 text-emerald-700 border-l-2 border-emerald-500 font-medium"
+                                className="text-[10px] md:text-xs px-2 py-1 rounded-md truncate bg-emerald-50 text-emerald-700 border-l-2 border-emerald-500 font-medium transition-transform hover:translate-x-0.5"
                               >
                                 <span className="hidden md:inline">{job.title}</span>
                                 <span className="md:hidden"><Wrench className="h-2.5 w-2.5 inline" /></span>
                               </div>
                             ))}
                             {(dayReminders.length + dayJobs.length) > 3 && (
-                              <div className="text-[10px] text-black/50 font-medium">
+                              <div className="text-[10px] text-slate-400 font-medium pl-1">
                                 +{dayReminders.length + dayJobs.length - 3} more
                               </div>
                             )}
@@ -486,12 +491,9 @@ export default function CalendarPage() {
           <div className="space-y-4">
             {/* Selected date info */}
             {selectedDate && (
-              <Card
-                className="rounded-none border border-white/10 text-white"
-                style={{ background: 'linear-gradient(160deg, oklch(0.16 0.03 255) 0%, oklch(0.10 0.015 248) 100%)' }}
-              >
-                <CardHeader className="pb-2 border-b border-white/10">
-                  <CardTitle className="text-sm font-semibold text-white">
+              <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
+                <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
+                  <CardTitle className="text-sm font-semibold tracking-tight text-slate-900">
                     {format(selectedDate, 'EEEE, MMMM d')}
                   </CardTitle>
                 </CardHeader>
@@ -500,7 +502,7 @@ export default function CalendarPage() {
                     const { reminders: dayReminders, jobs: dayJobs } = getEventsForDay(selectedDate)
                     if (dayReminders.length === 0 && dayJobs.length === 0) {
                       return (
-                        <p className="text-sm text-blue-200/50">No events scheduled</p>
+                        <p className="text-sm text-slate-400">No events scheduled</p>
                       )
                     }
                     return (
@@ -509,13 +511,13 @@ export default function CalendarPage() {
                           <button
                             key={reminder.id}
                             onClick={() => openReminderDetail(reminder)}
-                            className="w-full text-left p-2 rounded-none bg-white/5 border-l-2 border-blue-400 hover:bg-white/10 transition-all"
+                            className="w-full text-left p-2.5 rounded-lg bg-slate-50 border border-slate-100 border-l-2 border-l-blue-500 hover:bg-slate-100 hover:shadow-sm transition-all"
                           >
-                            <div className="flex items-start gap-2">
-                              <Bell className="h-4 w-4 text-blue-300 mt-0.5 flex-shrink-0" />
+                            <div className="flex items-start gap-2.5">
+                              <Bell className="h-4 w-4 text-blue-600 mt-0.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate text-white">{reminder.title}</p>
-                                <p className="text-xs text-blue-200/50">
+                                <p className="text-sm font-medium truncate text-slate-900">{reminder.title}</p>
+                                <p className="text-xs text-slate-500">
                                   {reminder.vehicle?.make} {reminder.vehicle?.model} - {reminder.vehicle?.license_plate}
                                 </p>
                               </div>
@@ -525,13 +527,13 @@ export default function CalendarPage() {
                         {dayJobs.map(job => (
                           <div
                             key={job.id}
-                            className="p-2 rounded-none bg-white/5 border-l-2 border-emerald-400"
+                            className="p-2.5 rounded-lg bg-slate-50 border border-slate-100 border-l-2 border-l-emerald-500"
                           >
-                            <div className="flex items-start gap-2">
-                              <Wrench className="h-4 w-4 text-emerald-300 mt-0.5 flex-shrink-0" />
+                            <div className="flex items-start gap-2.5">
+                              <Wrench className="h-4 w-4 text-emerald-600 mt-0.5 flex-shrink-0" />
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate text-white">{job.title}</p>
-                                <p className="text-xs text-blue-200/50">
+                                <p className="text-sm font-medium truncate text-slate-900">{job.title}</p>
+                                <p className="text-xs text-slate-500">
                                   Job #{job.job_number}
                                 </p>
                               </div>
@@ -544,7 +546,7 @@ export default function CalendarPage() {
                   <Button 
                     variant="outline" 
                     size="sm" 
-                    className="w-full mt-2 rounded-none bg-white/5 border-white/15 text-white hover:bg-white/10 hover:text-white"
+                    className="w-full mt-2 rounded-lg bg-slate-900 border-slate-900 text-white shadow-sm hover:bg-slate-800 hover:text-white"
                     onClick={handleAddReminder}
                   >
                     <Plus className="h-4 w-4 mr-2" />
@@ -555,33 +557,30 @@ export default function CalendarPage() {
             )}
 
             {/* Upcoming reminders */}
-            <Card
-              className="rounded-none border border-white/10 text-white"
-              style={{ background: 'linear-gradient(160deg, oklch(0.16 0.03 255) 0%, oklch(0.10 0.015 248) 100%)' }}
-            >
-              <CardHeader className="pb-2 border-b border-white/10">
-                <CardTitle className="text-sm font-semibold flex items-center gap-2 text-white">
-                  <Bell className="h-4 w-4 text-blue-300" />
+            <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
+              <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
+                <CardTitle className="text-sm font-semibold tracking-tight flex items-center gap-2 text-slate-900">
+                  <Bell className="h-4 w-4 text-slate-500" />
                   Upcoming Reminders
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 pt-3">
                 {upcomingReminders.length === 0 ? (
-                  <p className="text-sm text-blue-200/50">No upcoming reminders</p>
+                  <p className="text-sm text-slate-400">No upcoming reminders</p>
                 ) : (
                   upcomingReminders.map(reminder => (
                     <button
                       key={reminder.id}
                       onClick={() => openReminderDetail(reminder)}
-                      className="w-full text-left p-2 rounded-none bg-white/5 border-l-2 border-blue-400/60 hover:bg-white/10 transition-all"
+                      className="w-full text-left p-2.5 rounded-lg bg-slate-50 border border-slate-100 hover:bg-slate-100 hover:shadow-sm transition-all"
                     >
-                      <div className="flex items-center justify-between mb-1">
-                        <p className="text-sm font-medium truncate text-white">{reminder.title}</p>
-                        <Badge variant="outline" className={cn('text-[10px] rounded-none', priorityColors[reminder.priority])}>
+                      <div className="flex items-center justify-between mb-1 gap-2">
+                        <p className="text-sm font-medium truncate text-slate-900">{reminder.title}</p>
+                        <Badge variant="outline" className={cn('text-[10px] rounded-md capitalize shrink-0', priorityColors[reminder.priority])}>
                           {reminder.priority}
                         </Badge>
                       </div>
-                      <div className="flex items-center gap-2 text-xs text-blue-200/50">
+                      <div className="flex items-center gap-2 text-xs text-slate-500">
                         <Car className="h-3 w-3" />
                         <span className="truncate">
                           {reminder.vehicle?.license_plate}
@@ -596,28 +595,25 @@ export default function CalendarPage() {
             </Card>
 
             {/* Legend */}
-            <Card
-              className="rounded-none border border-white/10 text-white"
-              style={{ background: 'linear-gradient(160deg, oklch(0.16 0.03 255) 0%, oklch(0.10 0.015 248) 100%)' }}
-            >
-              <CardHeader className="pb-2 border-b border-white/10">
-                <CardTitle className="text-sm font-semibold text-white">Legend</CardTitle>
+            <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
+              <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
+                <CardTitle className="text-sm font-semibold tracking-tight text-slate-900">Legend</CardTitle>
               </CardHeader>
-              <CardContent className="space-y-2 pt-3">
-                <div className="flex items-center gap-2 text-xs text-white/80">
-                  <div className="w-3 h-3 rounded-none bg-blue-500/20 border border-blue-400/40" />
+              <CardContent className="space-y-2.5 pt-3">
+                <div className="flex items-center gap-2.5 text-xs text-slate-600">
+                  <div className="w-3 h-3 rounded-sm bg-blue-50 border-l-2 border border-l-blue-500 border-blue-200" />
                   <span>Service Reminder</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-white/80">
-                  <div className="w-3 h-3 rounded-none bg-emerald-500/20 border border-emerald-400/40" />
+                <div className="flex items-center gap-2.5 text-xs text-slate-600">
+                  <div className="w-3 h-3 rounded-sm bg-emerald-50 border-l-2 border border-l-emerald-500 border-emerald-200" />
                   <span>Job Due Date</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-white/80">
-                  <div className="w-3 h-3 rounded-none bg-amber-500/20 border border-amber-400/40" />
+                <div className="flex items-center gap-2.5 text-xs text-slate-600">
+                  <div className="w-3 h-3 rounded-sm bg-amber-50 border-l-2 border border-l-amber-500 border-amber-200" />
                   <span>High Priority</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-white/80">
-                  <div className="w-3 h-3 rounded-none bg-red-500/20 border border-red-400/40" />
+                <div className="flex items-center gap-2.5 text-xs text-slate-600">
+                  <div className="w-3 h-3 rounded-sm bg-red-50 border-l-2 border border-l-red-500 border-red-200" />
                   <span>Urgent</span>
                 </div>
               </CardContent>
