@@ -104,6 +104,9 @@ importers:
       '@vercel/blob':
         specifier: ^2.4.0
         version: 2.4.0
+      '@vercel/speed-insights':
+        specifier: ^2.0.0
+        version: 2.0.0(next@16.2.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.24(postcss@8.5.6)
@@ -1650,6 +1653,32 @@ packages:
   '@vercel/blob@2.4.0':
     resolution: {integrity: sha512-ncQ8CRb6XoEAYJwjOTRGpACRT6h/AeY+/33gLyeVxG5BIes27OPm1jmqreF+JHjcTmGhClTP+kBpmyLfbV0xew==}
     engines: {node: '>=20.0.0'}
+
+  '@vercel/speed-insights@2.0.0':
+    resolution: {integrity: sha512-jwkNcrTeafWxjmWq4AHBaptSqZiJkYU5adLC9QBSqeim0GcqDMgN5Ievh8OG1rJ6W3A4l1oiP7qr9CWxGuzu3w==}
+    peerDependencies:
+      '@sveltejs/kit': ^1 || ^2
+      next: '>= 13'
+      nuxt: '>= 3'
+      react: ^18 || ^19 || ^19.0.0-rc
+      svelte: '>= 4'
+      vue: ^3
+      vue-router: ^4
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
+      next:
+        optional: true
+      nuxt:
+        optional: true
+      react:
+        optional: true
+      svelte:
+        optional: true
+      vue:
+        optional: true
+      vue-router:
+        optional: true
 
   aria-hidden@1.2.6:
     resolution: {integrity: sha512-ik3ZgC9dY/lYVVM++OISsaYDeg1tb0VtP5uL3ouh1koGOaUMDPpbFIei4JkFimWUFPn90sbMNMXQAIVOlnYKJA==}
@@ -3610,6 +3639,11 @@ snapshots:
       is-node-process: 1.2.0
       throttleit: 2.1.0
       undici: 6.26.0
+
+  '@vercel/speed-insights@2.0.0(next@16.2.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4)':
+    optionalDependencies:
+      next: 16.2.6(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
+      react: 19.2.4
 
   aria-hidden@1.2.6:
     dependencies:
