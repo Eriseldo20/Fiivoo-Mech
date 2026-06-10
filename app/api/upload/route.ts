@@ -5,6 +5,11 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const file = formData.get('file') as File
+    const folderRaw = (formData.get('folder') as string) || 'vehicles'
+
+    // Whitelist allowed folders to avoid arbitrary paths
+    const allowedFolders = ['vehicles', 'jobs']
+    const folder = allowedFolders.includes(folderRaw) ? folderRaw : 'vehicles'
 
     if (!file) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 })
@@ -15,7 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'File must be an image' }, { status: 400 })
     }
 
-    // Validate file size (max 5MB)
+    // Validate file size (max 5MB). Clients should compress large phone photos first.
     if (file.size > 5 * 1024 * 1024) {
       return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 })
     }
@@ -23,7 +28,7 @@ export async function POST(request: NextRequest) {
     // Generate unique filename
     const timestamp = Date.now()
     const extension = file.name.split('.').pop()
-    const filename = `vehicles/${timestamp}-${Math.random().toString(36).substring(7)}.${extension}`
+    const filename = `${folder}/${timestamp}-${Math.random().toString(36).substring(7)}.${extension}`
 
     const blob = await put(filename, file, {
       access: 'private',

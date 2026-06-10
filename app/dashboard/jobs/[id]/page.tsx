@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/currency'
 import { getBlobUrl } from '@/lib/blob'
 import { JobStatusActions } from '@/components/jobs/job-status-actions'
+import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 
 const statusStyles = {
   pending: { label: 'Pending', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
@@ -70,6 +71,16 @@ export default async function JobDetailPage({
     .from('estimates')
     .select('id, estimate_number, status, total')
     .eq('job_card_id', id)
+
+  // Get job photos (before/after) and the user's shop for uploads
+  const { data: jobPhotos } = await supabase
+    .from('job_photos')
+    .select('id, pathname, category, caption')
+    .eq('job_card_id', id)
+    .order('created_at', { ascending: true })
+
+  const photos = (jobPhotos ?? []) as JobPhoto[]
+  const shopId = job.shop_id as string
 
   return (
     <div className="min-h-screen">
@@ -145,6 +156,9 @@ export default async function JobDetailPage({
 
             {/* Status Actions */}
             <JobStatusActions jobId={job.id} currentStatus={job.status} />
+
+            {/* Job Photos (Before / After) */}
+            <JobPhotos jobId={job.id} shopId={shopId} photos={photos} />
 
             {/* Related Estimates */}
             {estimates && estimates.length > 0 && (
