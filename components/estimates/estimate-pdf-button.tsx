@@ -55,7 +55,7 @@ export function EstimatePDFButton({ estimate }: EstimatePDFButtonProps) {
     try {
       // Small delay for UX feedback
       await new Promise(resolve => setTimeout(resolve, 100))
-      downloadEstimatePDF(estimate)
+      await downloadEstimatePDF(estimate)
     } catch (error) {
       console.error('Failed to generate PDF:', error)
     } finally {

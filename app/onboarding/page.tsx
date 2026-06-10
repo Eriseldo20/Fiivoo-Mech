@@ -6,7 +6,8 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { Wrench, Building2, Phone, Mail, MapPin, ArrowRight, Loader2 } from 'lucide-react'
+import { Building2, Phone, Mail, MapPin, ArrowRight, Loader2 } from 'lucide-react'
+import Image from 'next/image'
 
 export default function OnboardingPage() {
   const router = useRouter()
@@ -69,10 +70,14 @@ export default function OnboardingPage() {
       <div className="w-full max-w-lg">
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="p-3 rounded-xl bg-primary/10 border border-primary/20">
-            <Wrench className="h-8 w-8 text-primary" />
-          </div>
-          <span className="text-2xl font-semibold tracking-tight">Fiivoo Mech</span>
+          <Image
+            src="/brand/fiivoo-logo-black.png"
+            alt="Fiivoo"
+            width={180}
+            height={56}
+            className="h-11 w-auto object-contain dark:invert"
+            priority
+          />
         </div>
 
         {/* Card */}

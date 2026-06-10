@@ -1,12 +1,12 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname, useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/client'
 import {
-  Wrench,
   LayoutDashboard,
   ClipboardList,
   FileText,
@@ -131,15 +131,26 @@ export function Sidebar({ shopName }: SidebarProps) {
         style={{ background: 'linear-gradient(180deg, oklch(0.19 0.02 255 / 0.6) 0%, transparent 100%)' }}
       >
         <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
-          <div className="flex-shrink-0 h-9 w-9 rounded-xl bg-sidebar-primary flex items-center justify-center shadow-sm">
-            <Wrench className="h-4 w-4 text-sidebar-primary-foreground" />
-          </div>
-          {!collapsed && (
-            <div className="flex flex-col min-w-0">
-              <span className="font-bold text-sm text-sidebar-foreground tracking-tight leading-tight">
-                Fiivoo Mech
-              </span>
-              <span className="text-[11px] text-sidebar-muted truncate max-w-[130px] leading-tight">
+          {collapsed ? (
+            <Image
+              src="/brand/fiivoo-icon.png"
+              alt="Fiivoo"
+              width={36}
+              height={36}
+              className="flex-shrink-0 h-9 w-9 rounded-xl object-cover"
+              priority
+            />
+          ) : (
+            <div className="flex flex-col min-w-0 gap-0.5">
+              <Image
+                src="/brand/fiivoo-logo-white.png"
+                alt="Fiivoo"
+                width={120}
+                height={36}
+                className="h-7 w-auto object-contain"
+                priority
+              />
+              <span className="text-[11px] text-sidebar-muted truncate max-w-[150px] leading-tight pl-0.5">
                 {shopName}
               </span>
             </div>

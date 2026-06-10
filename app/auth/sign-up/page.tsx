@@ -5,9 +5,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { Wrench } from "lucide-react"
 
 export default function SignUpPage() {
   const [firstName, setFirstName] = useState("")
@@ -66,17 +66,17 @@ export default function SignUpPage() {
         <div className="flex flex-col gap-8">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary glow-primary">
-              <Wrench className="h-7 w-7 text-primary-foreground" />
-            </div>
-            <div className="text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">
-                Fiivoo Mech
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Premium Auto Shop Management
-              </p>
-            </div>
+            <Image
+              src="/brand/fiivoo-logo-black.png"
+              alt="Fiivoo"
+              width={200}
+              height={64}
+              className="h-12 w-auto object-contain dark:invert"
+              priority
+            />
+            <p className="text-sm text-muted-foreground">
+              Premium Auto Shop Management
+            </p>
           </div>
 
           {/* Sign Up Card */}

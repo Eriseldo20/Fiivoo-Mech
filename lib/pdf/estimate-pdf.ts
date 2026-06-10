@@ -45,7 +45,7 @@ interface EstimatePDFData {
   }
 }
 
-export function generateEstimatePDF(data: EstimatePDFData): jsPDF {
+export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string): jsPDF {
   const doc = new jsPDF()
   const pageWidth = doc.internal.pageSize.getWidth()
   
@@ -55,6 +55,13 @@ export function generateEstimatePDF(data: EstimatePDFData): jsPDF {
   const grayColor: [number, number, number] = [107, 114, 128]
   
   let yPos = 20
+
+  // Brand logo (if available) above the shop name
+  if (logoDataUrl) {
+    // Logo aspect ratio ~ 3.2:1; render at 40mm wide
+    doc.addImage(logoDataUrl, 'PNG', 20, yPos - 6, 40, 12.5)
+    yPos += 12
+  }
 
   // Header with shop info
   doc.setFontSize(24)
@@ -279,7 +286,24 @@ export function generateEstimatePDF(data: EstimatePDFData): jsPDF {
   return doc
 }
 
-export function downloadEstimatePDF(data: EstimatePDFData): void {
-  const doc = generateEstimatePDF(data)
+async function loadLogoDataUrl(): Promise<string | undefined> {
+  try {
+    const res = await fetch('/brand/fiivoo-logo-black.png')
+    if (!res.ok) return undefined
+    const blob = await res.blob()
+    return await new Promise((resolve) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result as string)
+      reader.onerror = () => resolve(undefined)
+      reader.readAsDataURL(blob)
+    })
+  } catch {
+    return undefined
+  }
+}
+
+export async function downloadEstimatePDF(data: EstimatePDFData): Promise<void> {
+  const logoDataUrl = await loadLogoDataUrl()
+  const doc = generateEstimatePDF(data, logoDataUrl)
   doc.save(`estimate-${data.estimate_number}.pdf`)
 }
