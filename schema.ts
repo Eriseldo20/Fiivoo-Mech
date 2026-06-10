@@ -26,7 +26,12 @@ export default defineSchema({
     email: v.optional(v.string()),
     phone: v.optional(v.string()),
     active: v.boolean(),
-  }).index("by_shopId", ["shopId"]),
+    // Owner-generated login code so the employee can access their assigned jobs.
+    // Globally unique so a mechanic only needs to type the code (no shop selection).
+    accessCode: v.optional(v.string()),
+  })
+    .index("by_shopId", ["shopId"])
+    .index("by_accessCode", ["accessCode"]),
 
   jobCards: defineTable({
     shopId: v.optional(v.id("users")),
@@ -52,6 +57,10 @@ export default defineSchema({
     estimatedId: v.optional(v.id("estimates")),
     photoStorageIds: v.optional(v.array(v.string())),
     paid: v.optional(v.boolean()),
+    // Customer sign-off captured by the mechanic on job completion.
+    signatureStorageId: v.optional(v.string()),
+    signedByName: v.optional(v.string()),
+    signedAt: v.optional(v.number()),
   })
     .index("by_shopId", ["shopId"])
     .index("by_shop_status", ["shopId", "status"])

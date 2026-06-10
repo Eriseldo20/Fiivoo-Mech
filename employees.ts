@@ -15,6 +15,25 @@ async function requireShop(ctx: MutationCtx | QueryCtx): Promise<Id<"users">> {
   return user._id;
 }
 
+// Human-friendly, unambiguous access code (no 0/O/1/I). Format: ABCD-1234
+async function generateUniqueAccessCode(ctx: MutationCtx): Promise<string> {
+  const letters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const digits = "23456789";
+  for (let attempt = 0; attempt < 12; attempt++) {
+    let left = "";
+    for (let i = 0; i < 4; i++) left += letters[Math.floor(Math.random() * letters.length)];
+    let right = "";
+    for (let i = 0; i < 4; i++) right += digits[Math.floor(Math.random() * digits.length)];
+    const code = `${left}-${right}`;
+    const clash = await ctx.db
+      .query("employees")
+      .withIndex("by_accessCode", (q) => q.eq("accessCode", code))
+      .unique();
+    if (!clash) return code;
+  }
+  throw new ConvexError({ message: "Could not generate a unique code", code: "INTERNAL" });
+}
+
 export const listActive = query({
   args: {},
   handler: async (ctx) => {
@@ -112,5 +131,30 @@ export const remove = mutation({
       await ctx.db.patch(j._id, { assignedEmployeeId: undefined });
     }
     await ctx.db.delete(args.id);
+  },
+});
+
+// Generate (or regenerate) a login access code for an employee so they can
+// sign in to the mechanic portal and work their assigned jobs.
+export const generateAccessCode = mutation({
+  args: { id: v.id("employees") },
+  handler: async (ctx, args) => {
+    const shopId = await requireShop(ctx);
+    const emp = await ctx.db.get(args.id);
+    if (!emp || emp.shopId !== shopId) throw new ConvexError({ message: "Not found", code: "NOT_FOUND" });
+    const code = await generateUniqueAccessCode(ctx);
+    await ctx.db.patch(args.id, { accessCode: code });
+    return code;
+  },
+});
+
+// Revoke an employee's access code so they can no longer log in.
+export const clearAccessCode = mutation({
+  args: { id: v.id("employees") },
+  handler: async (ctx, args) => {
+    const shopId = await requireShop(ctx);
+    const emp = await ctx.db.get(args.id);
+    if (!emp || emp.shopId !== shopId) throw new ConvexError({ message: "Not found", code: "NOT_FOUND" });
+    await ctx.db.patch(args.id, { accessCode: undefined });
   },
 });
