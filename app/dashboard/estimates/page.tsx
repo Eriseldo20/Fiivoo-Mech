@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getTranslations } from 'next-intl/server'
 import { Header } from '@/components/dashboard/header'
 import { EstimatesList } from '@/components/estimates/estimates-list'
 import { EstimateFilters } from '@/components/estimates/estimate-filters'
@@ -48,13 +49,15 @@ export default async function EstimatesPage({
 
   const { data: estimates } = await query
 
+  const t = await getTranslations('estimates')
+
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       <Header 
-        title="Estimates" 
-        description="Create and manage price quotes"
+        title={t('title')} 
+        description={t('description')}
         action={{
-          label: 'New Estimate',
+          label: t('newEstimate'),
           href: '/dashboard/estimates/new',
         }}
       />

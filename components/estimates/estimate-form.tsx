@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
@@ -58,6 +59,7 @@ interface LineItem {
 }
 
 export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob, initialData }: EstimateFormProps) {
+  const t = useTranslations('estimateForm')
   const router = useRouter()
   const isEditing = !!initialData
   
@@ -245,7 +247,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
       router.push(`/dashboard/estimates/${estimateId}`)
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save estimate')
+      setError(err instanceof Error ? err.message : t('failedToSave'))
     } finally {
       setIsLoading(false)
     }
@@ -265,7 +267,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Estimates
+            {t('backToEstimates')}
           </Link>
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-lg bg-accent/10 border border-accent/20">
@@ -273,10 +275,10 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
             </div>
             <div>
               <h1 className="text-xl font-semibold">
-                {isEditing ? 'Edit Estimate' : 'New Estimate'}
+                {isEditing ? t('editEstimate') : t('newEstimate')}
               </h1>
               <p className="text-sm text-muted-foreground">
-                {isEditing ? 'Update the estimate details' : 'Create a price quote for your customer'}
+                {isEditing ? t('editSubtitle') : t('newSubtitle')}
               </p>
             </div>
           </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams, usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Search, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -18,16 +19,17 @@ interface EstimateFiltersProps {
   currentSearch?: string
 }
 
-const statuses = [
-  { value: 'all', label: 'All Statuses' },
-  { value: 'draft', label: 'Draft' },
-  { value: 'sent', label: 'Sent' },
-  { value: 'approved', label: 'Approved' },
-  { value: 'rejected', label: 'Rejected' },
-  { value: 'expired', label: 'Expired' },
+const statusKeys = [
+  { value: 'all', key: 'allStatuses' },
+  { value: 'draft', key: 'draft' },
+  { value: 'sent', key: 'sent' },
+  { value: 'approved', key: 'approved' },
+  { value: 'rejected', key: 'rejected' },
+  { value: 'expired', key: 'expired' },
 ]
 
 export function EstimateFilters({ currentStatus, currentSearch }: EstimateFiltersProps) {
+  const t = useTranslations('estimates')
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -68,7 +70,7 @@ export function EstimateFilters({ currentStatus, currentSearch }: EstimateFilter
       <form onSubmit={handleSearch} className="relative flex-1 max-w-sm">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
         <Input
-          placeholder="Search estimates..."
+          placeholder={t('searchEstimates')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="pl-10 h-10 bg-card/50 border-border/50 focus:border-primary/50"
@@ -82,12 +84,12 @@ export function EstimateFilters({ currentStatus, currentSearch }: EstimateFilter
           onValueChange={(value) => handleFilter('status', value)}
         >
           <SelectTrigger className="w-[160px] h-10 bg-card/50 border-border/50">
-            <SelectValue placeholder="Status" />
+            <SelectValue placeholder={t('status')} />
           </SelectTrigger>
           <SelectContent>
-            {statuses.map((status) => (
+            {statusKeys.map((status) => (
               <SelectItem key={status.value} value={status.value}>
-                {status.label}
+                {t(status.key)}
               </SelectItem>
             ))}
           </SelectContent>
@@ -101,7 +103,7 @@ export function EstimateFilters({ currentStatus, currentSearch }: EstimateFilter
             className="text-muted-foreground hover:text-foreground"
           >
             <X className="h-4 w-4 mr-1" />
-            Clear
+            {t('clear')}
           </Button>
         )}
       </div>

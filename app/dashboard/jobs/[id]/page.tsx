@@ -65,6 +65,9 @@ export default async function JobDetailPage({
     notFound()
   }
 
+  const t = await getTranslations('jobDetail')
+  const ts = await getTranslations('jobs')
+
   const status = statusStyles[job.status as keyof typeof statusStyles]
   const priority = priorityStyles[job.priority as keyof typeof priorityStyles]
 
@@ -94,7 +97,7 @@ export default async function JobDetailPage({
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Jobs
+            {ts('backToJobs')}
           </Link>
 
           <div className="flex items-start justify-between">
@@ -107,20 +110,20 @@ export default async function JobDetailPage({
                   'text-xs px-2.5 py-1 rounded-full border font-medium',
                   status.class
                 )}>
-                  {status.label}
+                  {ts(status.key)}
                 </span>
                 {job.priority !== 'normal' && (
                   <span className={cn(
                     'text-xs px-2 py-0.5 rounded border font-medium',
                     priority.class
                   )}>
-                    {priority.label}
+                    {ts(priority.key)}
                   </span>
                 )}
               </div>
               <h1 className="text-2xl font-semibold mb-1">{job.title}</h1>
               <p className="text-sm text-muted-foreground">
-                Created {formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}
+                {t('createdAgo', { time: formatDistanceToNow(new Date(job.created_at), { addSuffix: true }) })}
               </p>
             </div>
 
@@ -128,13 +131,13 @@ export default async function JobDetailPage({
               <Link href={`/dashboard/estimates/new?job=${job.id}`}>
                 <Button variant="outline">
                   <FileText className="h-4 w-4 mr-2" />
-                  Create Estimate
+                  {t('createEstimate')}
                 </Button>
               </Link>
               <Link href={`/dashboard/jobs/${job.id}/edit`}>
                 <Button variant="outline">
                   <Edit className="h-4 w-4 mr-2" />
-                  Edit
+                  {t('edit')}
                 </Button>
               </Link>
             </div>
@@ -148,11 +151,11 @@ export default async function JobDetailPage({
           <div className="lg:col-span-2 space-y-6">
             {/* Description */}
             <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-              <h2 className="text-lg font-semibold mb-4">Description</h2>
+              <h2 className="text-lg font-semibold mb-4">{t('description')}</h2>
               {job.description ? (
                 <p className="text-muted-foreground whitespace-pre-wrap">{job.description}</p>
               ) : (
-                <p className="text-muted-foreground italic">No description provided</p>
+                <p className="text-muted-foreground italic">{t('noDescription')}</p>
               )}
             </div>
 
@@ -165,7 +168,7 @@ export default async function JobDetailPage({
             {/* Related Estimates */}
             {estimates && estimates.length > 0 && (
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-                <h2 className="text-lg font-semibold mb-4">Related Estimates</h2>
+                <h2 className="text-lg font-semibold mb-4">{t('relatedEstimates')}</h2>
                 <div className="space-y-3">
                   {estimates.map((estimate) => (
                     <Link
@@ -195,7 +198,7 @@ export default async function JobDetailPage({
                 <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
                   <Car className="h-4 w-4 text-amber-500" />
                 </div>
-                <h2 className="font-semibold">Vehicle</h2>
+                <h2 className="font-semibold">{t('vehicle')}</h2>
               </div>
               {job.vehicle ? (
                 <div className="space-y-4">
@@ -206,13 +209,13 @@ export default async function JobDetailPage({
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
                           <ImageLightbox
                             src={getBlobUrl(job.vehicle.primary_photo) || ''}
-                            alt="Primary vehicle photo"
-                            caption="Primary vehicle photo"
+                            alt={t('primaryVehiclePhoto')}
+                            caption={t('primaryVehiclePhoto')}
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-2.5 w-2.5" />
-                            Primary
+                            {t('primary')}
                           </div>
                         </div>
                       )}
@@ -220,13 +223,13 @@ export default async function JobDetailPage({
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
                           <ImageLightbox
                             src={getBlobUrl(job.vehicle.secondary_photo) || ''}
-                            alt="Secondary vehicle photo"
-                            caption="Secondary vehicle photo"
+                            alt={t('secondaryVehiclePhoto')}
+                            caption={t('secondaryVehiclePhoto')}
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-2.5 w-2.5" />
-                            Secondary
+                            {t('secondary')}
                           </div>
                         </div>
                       )}
@@ -244,32 +247,32 @@ export default async function JobDetailPage({
                     </div>
                     {job.vehicle.license_plate && (
                       <div>
-                        <p className="text-xs text-muted-foreground">License Plate</p>
+                        <p className="text-xs text-muted-foreground">{t('licensePlate')}</p>
                         <p className="font-medium">{job.vehicle.license_plate}</p>
                       </div>
                     )}
                     {job.vehicle.vin && (
                       <div>
-                        <p className="text-xs text-muted-foreground">VIN</p>
+                        <p className="text-xs text-muted-foreground">{t('vin')}</p>
                         <p className="font-mono text-sm">{job.vehicle.vin}</p>
                       </div>
                     )}
                     {job.vehicle.mileage && (
                       <div>
-                        <p className="text-xs text-muted-foreground">Vehicle Mileage</p>
+                        <p className="text-xs text-muted-foreground">{t('vehicleMileage')}</p>
                         <p className="font-medium">{job.vehicle.mileage.toLocaleString()} km</p>
                       </div>
                     )}
                     {(job as any).mileage != null && (
                       <div>
-                        <p className="text-xs text-muted-foreground">Odometer at Job</p>
+                        <p className="text-xs text-muted-foreground">{t('odometerAtJob')}</p>
                         <p className="font-medium">{(job as any).mileage.toLocaleString()} km</p>
                       </div>
                     )}
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground italic">No vehicle assigned</p>
+                <p className="text-sm text-muted-foreground italic">{t('noVehicleAssigned')}</p>
               )}
             </div>
 
@@ -279,26 +282,26 @@ export default async function JobDetailPage({
                 <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                   <User className="h-4 w-4 text-emerald-500" />
                 </div>
-                <h2 className="font-semibold">Customer</h2>
+                <h2 className="font-semibold">{t('customer')}</h2>
               </div>
               {job.customer ? (
                 <div className="space-y-3">
                   <p className="text-lg font-medium">{job.customer.name}</p>
                   {job.customer.phone && (
                     <div>
-                      <p className="text-xs text-muted-foreground">Phone</p>
+                      <p className="text-xs text-muted-foreground">{t('phone')}</p>
                       <p className="font-medium">{job.customer.phone}</p>
                     </div>
                   )}
                   {job.customer.email && (
                     <div>
-                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-xs text-muted-foreground">{t('email')}</p>
                       <p className="text-sm">{job.customer.email}</p>
                     </div>
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground italic">No customer assigned</p>
+                <p className="text-sm text-muted-foreground italic">{t('noCustomerAssigned')}</p>
               )}
             </div>
 
@@ -308,7 +311,7 @@ export default async function JobDetailPage({
                 <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
                   <Users className="h-4 w-4 text-blue-500" />
                 </div>
-                <h2 className="font-semibold">Assigned To</h2>
+                <h2 className="font-semibold">{t('assignedTo')}</h2>
               </div>
               {job.assigned_employee ? (
                 <div className="space-y-3">
@@ -316,12 +319,12 @@ export default async function JobDetailPage({
                     {job.assigned_employee.first_name} {job.assigned_employee.last_name}
                   </p>
                   <div>
-                    <p className="text-xs text-muted-foreground">Role</p>
+                    <p className="text-xs text-muted-foreground">{t('role')}</p>
                     <p className="text-sm capitalize">{job.assigned_employee.role?.replace('_', ' ')}</p>
                   </div>
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground italic">No technician assigned</p>
+                <p className="text-sm text-muted-foreground italic">{t('noTechnicianAssigned')}</p>
               )}
             </div>
 
@@ -331,12 +334,12 @@ export default async function JobDetailPage({
                 <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                   <Clock className="h-4 w-4 text-primary" />
                 </div>
-                <h2 className="font-semibold">Timeline</h2>
+                <h2 className="font-semibold">{t('timeline')}</h2>
               </div>
               <div className="space-y-3">
                 {job.due_date && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Due Date</span>
+                    <span className="text-sm text-muted-foreground">{t('dueDate')}</span>
                     <span className="text-sm font-medium">
                       {format(new Date(job.due_date), 'MMM d, yyyy')}
                     </span>
@@ -344,19 +347,19 @@ export default async function JobDetailPage({
                 )}
                 {job.estimated_hours && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Est. Hours</span>
+                    <span className="text-sm text-muted-foreground">{t('estHours')}</span>
                     <span className="text-sm font-medium">{job.estimated_hours}h</span>
                   </div>
                 )}
                 {job.actual_hours && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Actual Hours</span>
+                    <span className="text-sm text-muted-foreground">{t('actualHours')}</span>
                     <span className="text-sm font-medium">{job.actual_hours}h</span>
                   </div>
                 )}
                 {job.start_date && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Started</span>
+                    <span className="text-sm text-muted-foreground">{t('started')}</span>
                     <span className="text-sm font-medium">
                       {format(new Date(job.start_date), 'MMM d, yyyy')}
                     </span>
@@ -364,7 +367,7 @@ export default async function JobDetailPage({
                 )}
                 {job.completed_date && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Completed</span>
+                    <span className="text-sm text-muted-foreground">{t('completed')}</span>
                     <span className="text-sm font-medium">
                       {format(new Date(job.completed_date), 'MMM d, yyyy')}
                     </span>

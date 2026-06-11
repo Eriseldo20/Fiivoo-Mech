@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { formatDistanceToNow, format } from 'date-fns'
 import { Car, Clock, User, MoreHorizontal, Plus, FileText, Euro, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -36,14 +37,15 @@ interface EstimatesListProps {
 }
 
 const statusStyles = {
-  draft: { label: 'Draft', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
-  sent: { label: 'Sent', class: 'bg-primary/10 text-primary border-primary/20' },
-  approved: { label: 'Approved', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
-  rejected: { label: 'Rejected', class: 'bg-red-500/10 text-red-500 border-red-500/20' },
-  expired: { label: 'Expired', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
+  draft: { key: 'draft', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
+  sent: { key: 'sent', class: 'bg-primary/10 text-primary border-primary/20' },
+  approved: { key: 'approved', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
+  rejected: { key: 'rejected', class: 'bg-red-500/10 text-red-500 border-red-500/20' },
+  expired: { key: 'expired', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
 }
 
 export function EstimatesList({ estimates }: EstimatesListProps) {
+  const t = useTranslations('estimates')
   const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -81,14 +83,14 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
           <div className="p-4 rounded-full bg-accent/10 border border-accent/20 mb-4">
             <FileText className="h-8 w-8 text-accent" />
           </div>
-          <h3 className="text-lg font-semibold mb-2">No estimates found</h3>
+          <h3 className="text-lg font-semibold mb-2">{t('noEstimatesFound')}</h3>
           <p className="text-sm text-muted-foreground mb-6 max-w-sm">
-            Create your first estimate to start quoting prices for your customers
+            {t('noEstimatesDescription')}
           </p>
           <Link href="/dashboard/estimates/new">
             <Button className="bg-primary hover:bg-primary/90">
               <Plus className="h-4 w-4 mr-2" />
-              Create Estimate
+              {t('createEstimate')}
             </Button>
           </Link>
         </div>
@@ -100,11 +102,11 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
     <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
       {/* Header */}
       <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-border/50 bg-muted/30 text-sm font-medium text-muted-foreground">
-        <div className="col-span-3">Estimate</div>
-        <div className="col-span-2">Customer</div>
-        <div className="col-span-2">Vehicle</div>
-        <div className="col-span-2">Status</div>
-        <div className="col-span-2">Total</div>
+        <div className="col-span-3">{t('estimate')}</div>
+        <div className="col-span-2">{t('customer')}</div>
+        <div className="col-span-2">{t('vehicle')}</div>
+        <div className="col-span-2">{t('status')}</div>
+        <div className="col-span-2">{t('total')}</div>
         <div className="col-span-1"></div>
       </div>
 
@@ -144,7 +146,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-sm text-muted-foreground">No customer</span>
+                  <span className="text-sm text-muted-foreground">{t('noCustomer')}</span>
                 )}
               </div>
 
@@ -162,7 +164,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                     </div>
                   </div>
                 ) : (
-                  <span className="text-sm text-muted-foreground">No vehicle</span>
+                  <span className="text-sm text-muted-foreground">{t('noVehicle')}</span>
                 )}
               </div>
 
@@ -172,7 +174,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                   'inline-flex text-xs px-2.5 py-1 rounded-full border font-medium',
                   status.class
                 )}>
-                  {status.label}
+                  {t(status.key)}
                 </span>
               </div>
 
@@ -194,13 +196,13 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href={`/dashboard/estimates/${estimate.id}`}>View Details</Link>
+                      <Link href={`/dashboard/estimates/${estimate.id}`}>{t('viewDetails')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={`/dashboard/estimates/${estimate.id}/edit`}>Edit Estimate</Link>
+                      <Link href={`/dashboard/estimates/${estimate.id}/edit`}>{t('editEstimate')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Duplicate</DropdownMenuItem>
+                    <DropdownMenuItem>{t('duplicate')}</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem 
                       className="text-red-500 focus:text-red-500"
@@ -210,7 +212,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                       }}
                     >
                       <Trash2 className="h-4 w-4 mr-2" />
-                      Delete
+                      {t('delete')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -224,19 +226,19 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Estimate</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteEstimate')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this estimate? This action cannot be undone.
+              {t('deleteConfirm')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
               className="bg-red-500 hover:bg-red-600"
             >
-              {isDeleting ? 'Deleting...' : 'Delete'}
+              {isDeleting ? t('deleting') : t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

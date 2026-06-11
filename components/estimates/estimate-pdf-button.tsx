@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { Download, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { downloadEstimatePDF } from '@/lib/pdf/estimate-pdf'
@@ -48,6 +49,7 @@ interface EstimatePDFButtonProps {
 }
 
 export function EstimatePDFButton({ estimate }: EstimatePDFButtonProps) {
+  const t = useTranslations('estimateDetail')
   const [isGenerating, setIsGenerating] = useState(false)
 
   const handleDownload = async () => {
@@ -74,7 +76,7 @@ export function EstimatePDFButton({ estimate }: EstimatePDFButtonProps) {
       ) : (
         <Download className="h-4 w-4 mr-2" />
       )}
-      Download PDF
+      {t('downloadPdf')}
     </Button>
   )
 }

@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -57,32 +58,33 @@ interface EstimateStatusActionsProps {
   }
 }
 
-const statusFlow: Record<string, { actions: { status: string; label: string; icon: React.ElementType; variant?: 'default' | 'outline' | 'destructive' }[] } | null> = {
+const statusFlow: Record<string, { actions: { status: string; key: string; icon: React.ElementType; variant?: 'default' | 'outline' | 'destructive' }[] } | null> = {
   draft: { 
     actions: [
-      { status: 'sent', label: 'Mark as Sent', icon: Send },
+      { status: 'sent', key: 'markAsSent', icon: Send },
     ]
   },
   sent: { 
     actions: [
-      { status: 'approved', label: 'Client Approved', icon: CheckCircle },
-      { status: 'rejected', label: 'Client Rejected', icon: XCircle, variant: 'outline' },
+      { status: 'approved', key: 'clientApproved', icon: CheckCircle },
+      { status: 'rejected', key: 'clientRejected', icon: XCircle, variant: 'outline' },
     ]
   },
   approved: null, // Special handling - shows "Convert to Job" instead
   rejected: { 
     actions: [
-      { status: 'draft', label: 'Revise Estimate', icon: Send, variant: 'outline' },
+      { status: 'draft', key: 'reviseEstimate', icon: Send, variant: 'outline' },
     ]
   },
   expired: { 
     actions: [
-      { status: 'draft', label: 'Create Revision', icon: Send, variant: 'outline' },
+      { status: 'draft', key: 'createRevision', icon: Send, variant: 'outline' },
     ]
   },
 }
 
 export function EstimateStatusActions({ estimateId, currentStatus, estimate }: EstimateStatusActionsProps) {
+  const t = useTranslations('estimateDetail')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState<string | null>(null)
   const [showConvertDialog, setShowConvertDialog] = useState(false)
@@ -212,7 +214,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
       router.push(`/dashboard/jobs/${jobCard.id}`)
     } catch (err) {
       console.error('Failed to convert to job:', err)
-      alert('Failed to create job card. Please try again.')
+      alert(t('convertFailed'))
     } finally {
       setIsConverting(false)
       setShowConvertDialog(false)
@@ -244,7 +246,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
       router.refresh()
     } catch (err) {
       console.error('Failed to delete estimate:', err)
-      alert('Failed to delete estimate. Please try again.')
+      alert(t('deleteFailed'))
     } finally {
       setIsDeleting(false)
       setShowDeleteDialog(false)
@@ -256,7 +258,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
   return (
     <>
       <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-        <h2 className="text-lg font-semibold mb-4">Update Status</h2>
+        <h2 className="text-lg font-semibold mb-4">{t('updateStatus')}</h2>
         
         <div className="flex flex-wrap items-center gap-3">
           {flow?.actions.map((action) => (
@@ -272,7 +274,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
               ) : (
                 <action.icon className="h-4 w-4 mr-2" />
               )}
-              {action.label}
+              {t(action.key)}
             </Button>
           ))}
 
@@ -283,7 +285,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
               className="bg-emerald-600 hover:bg-emerald-700"
             >
               <ClipboardList className="h-4 w-4 mr-2" />
-              Convert to Job Card
+              {t('convertToJobCard')}
               <ArrowRight className="h-4 w-4 ml-2" />
             </Button>
           )}
@@ -296,7 +298,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
               className="border-emerald-500/30 text-emerald-500 hover:bg-emerald-500/10"
             >
               <CheckCircle className="h-4 w-4 mr-2" />
-              View Job Card
+              {t('viewJobCard')}
             </Button>
           )}
 
@@ -307,7 +309,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
             className="border-red-500/30 text-red-500 hover:bg-red-500/10 ml-auto"
           >
             <Trash2 className="h-4 w-4 mr-2" />
-            Delete
+            {t('delete')}
           </Button>
         </div>
 
@@ -330,9 +332,9 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
           })}
         </div>
         <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-          <span>Draft</span>
-          <span>Sent to Client</span>
-          <span>Client Approved</span>
+          <span>{t('draft')}</span>
+          <span>{t('sentToClient')}</span>
+          <span>{t('clientApprovedLabel')}</span>
         </div>
       </div>
 
@@ -344,24 +346,23 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
               <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                 <ClipboardList className="h-4 w-4 text-emerald-500" />
               </div>
-              Convert to Job Card
+              {t('convertToJobCard')}
             </DialogTitle>
             <DialogDescription>
-              This will create a new job card from Estimate {estimate.estimate_number}. 
-              The job will be linked to the same vehicle and customer.
+              {t('convertDescription', { number: estimate.estimate_number })}
             </DialogDescription>
           </DialogHeader>
 
           <div className="py-4 space-y-3">
             <div className="p-4 rounded-lg bg-background/50 border border-border space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Estimate Total</span>
+                <span className="text-muted-foreground">{t('estimateTotal')}</span>
                 <span className="font-semibold">${estimate.total.toFixed(2)}</span>
               </div>
               {estimate.items && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Line Items</span>
-                  <span>{estimate.items.length} items</span>
+                  <span className="text-muted-foreground">{t('lineItems')}</span>
+                  <span>{t('itemsCount', { count: estimate.items.length })}</span>
                 </div>
               )}
             </div>
@@ -374,19 +375,21 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
 
             <div className="p-4 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
               <p className="text-sm">
-                A new <span className="font-semibold text-emerald-500">Job Card</span> will be created with:
+                {t.rich('jobCardWillBeCreated', {
+                  highlight: (chunks) => <span className="font-semibold text-emerald-500">{chunks}</span>,
+                })}
               </p>
               <ul className="mt-2 text-sm text-muted-foreground space-y-1">
-                <li>• Status: Pending</li>
-                <li>• All estimate details as description</li>
-                <li>• Linked to this estimate</li>
+                <li>{t('jobBullet1')}</li>
+                <li>{t('jobBullet2')}</li>
+                <li>{t('jobBullet3')}</li>
               </ul>
             </div>
           </div>
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowConvertDialog(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleConvertToJob}
@@ -398,7 +401,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
               ) : (
                 <CheckCircle className="h-4 w-4 mr-2" />
               )}
-              Create Job Card
+              {t('createJobCard')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -408,13 +411,13 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Estimate</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteEstimate')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete estimate {estimate.estimate_number}? This action cannot be undone and will remove all associated line items.
+              {t('deleteConfirmWithNumber', { number: estimate.estimate_number })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel disabled={isDeleting}>Cancel</AlertDialogCancel>
+            <AlertDialogCancel disabled={isDeleting}>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleDelete}
               disabled={isDeleting}
@@ -423,12 +426,12 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
               {isDeleting ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  Deleting...
+                  {t('deleting')}
                 </>
               ) : (
                 <>
                   <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
+                  {t('delete')}
                 </>
               )}
             </AlertDialogAction>

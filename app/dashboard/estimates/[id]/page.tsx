@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getTranslations } from 'next-intl/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { formatDistanceToNow, format } from 'date-fns'
@@ -20,17 +21,17 @@ import { EstimateStatusActions } from '@/components/estimates/estimate-status-ac
 import { EstimatePDFButton } from '@/components/estimates/estimate-pdf-button'
 
 const statusStyles = {
-  draft: { label: 'Draft', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
-  sent: { label: 'Sent', class: 'bg-primary/10 text-primary border-primary/20' },
-  approved: { label: 'Approved', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
-  rejected: { label: 'Rejected', class: 'bg-red-500/10 text-red-500 border-red-500/20' },
-  expired: { label: 'Expired', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
+  draft: { key: 'draft', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
+  sent: { key: 'sent', class: 'bg-primary/10 text-primary border-primary/20' },
+  approved: { key: 'approved', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
+  rejected: { key: 'rejected', class: 'bg-red-500/10 text-red-500 border-red-500/20' },
+  expired: { key: 'expired', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
 }
 
-const typeLabels = {
-  labor: 'Labor',
-  parts: 'Parts',
-  other: 'Other',
+const typeKeys = {
+  labor: 'labor',
+  parts: 'parts',
+  other: 'other',
 }
 
 export default async function EstimateDetailPage({
@@ -97,6 +98,8 @@ export default async function EstimateDetailPage({
 
   const status = statusStyles[estimate.status as keyof typeof statusStyles]
 
+  const t = await getTranslations('estimateDetail')
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -107,7 +110,7 @@ export default async function EstimateDetailPage({
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Estimates
+            {t('backToEstimates')}
           </Link>
 
           <div className="flex items-start justify-between">
@@ -120,14 +123,14 @@ export default async function EstimateDetailPage({
                   'text-xs px-2.5 py-1 rounded-full border font-medium',
                   status.class
                 )}>
-                  {status.label}
+                  {t(status.key)}
                 </span>
               </div>
               <h1 className="text-2xl font-semibold mb-1">
-                Estimate for {estimate.customer?.name || 'Customer'}
+                {t('estimateFor', { name: estimate.customer?.name || t('customer') })}
               </h1>
               <p className="text-sm text-muted-foreground">
-                Created {formatDistanceToNow(new Date(estimate.created_at), { addSuffix: true })}
+                {t('createdAgo', { time: formatDistanceToNow(new Date(estimate.created_at), { addSuffix: true }) })}
               </p>
             </div>
 
@@ -174,7 +177,7 @@ export default async function EstimateDetailPage({
               <Link href={`/dashboard/estimates/${estimate.id}/edit`}>
                 <Button variant="outline">
                   <Edit className="h-4 w-4 mr-2" />
-                  Edit
+                  {t('edit')}
                 </Button>
               </Link>
             </div>
@@ -189,7 +192,7 @@ export default async function EstimateDetailPage({
             {/* Line Items */}
             <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
               <div className="px-6 py-4 border-b border-border/50">
-                <h2 className="text-lg font-semibold">Line Items</h2>
+                <h2 className="text-lg font-semibold">{t('lineItems')}</h2>
               </div>
 
               {items && items.length > 0 ? (
@@ -200,19 +203,19 @@ export default async function EstimateDetailPage({
                         <div className="col-span-6">
                           <p className="font-medium">{item.description}</p>
                           <p className="text-sm text-muted-foreground">
-                            {typeLabels[item.type as keyof typeof typeLabels]}
+                            {t(typeKeys[item.type as keyof typeof typeKeys])}
                           </p>
                         </div>
                         <div className="col-span-2 text-center">
-                          <p className="text-sm text-muted-foreground">Qty</p>
+                          <p className="text-sm text-muted-foreground">{t('qty')}</p>
                           <p className="font-medium">{item.quantity}</p>
                         </div>
                         <div className="col-span-2 text-center">
-                          <p className="text-sm text-muted-foreground">Price</p>
+                          <p className="text-sm text-muted-foreground">{t('price')}</p>
                           <p className="font-medium">{formatCurrency(item.unit_price)}</p>
                         </div>
                         <div className="col-span-2 text-right">
-                          <p className="text-sm text-muted-foreground">Total</p>
+                          <p className="text-sm text-muted-foreground">{t('total')}</p>
                           <p className="font-medium">{formatCurrency(item.total)}</p>
                         </div>
                       </div>
@@ -224,15 +227,15 @@ export default async function EstimateDetailPage({
                     <div className="flex justify-end">
                       <div className="w-64 space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Subtotal</span>
+                          <span className="text-muted-foreground">{t('subtotal')}</span>
                           <span className="font-medium">{formatCurrency(estimate.subtotal)}</span>
                         </div>
                         <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">Tax ({estimate.tax_rate}%)</span>
+                          <span className="text-muted-foreground">{t('tax', { rate: estimate.tax_rate })}</span>
                           <span className="font-medium">{formatCurrency(estimate.tax_amount)}</span>
                         </div>
                         <div className="flex justify-between text-lg font-semibold pt-2 border-t border-border/50">
-                          <span>Total</span>
+                          <span>{t('total')}</span>
                           <span className="text-primary">{formatCurrency(estimate.total)}</span>
                         </div>
                       </div>
@@ -241,7 +244,7 @@ export default async function EstimateDetailPage({
                 </>
               ) : (
                 <div className="px-6 py-8 text-center text-muted-foreground">
-                  No line items added
+                  {t('noLineItems')}
                 </div>
               )}
             </div>
@@ -274,7 +277,7 @@ export default async function EstimateDetailPage({
             {/* Notes */}
             {estimate.notes && (
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-                <h2 className="text-lg font-semibold mb-4">Notes</h2>
+                <h2 className="text-lg font-semibold mb-4">{t('notes')}</h2>
                 <p className="text-muted-foreground whitespace-pre-wrap">{estimate.notes}</p>
               </div>
             )}
@@ -288,7 +291,7 @@ export default async function EstimateDetailPage({
                 <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                   <Euro className="h-4 w-4 text-primary" />
                 </div>
-                <h2 className="font-semibold">Total Amount</h2>
+                <h2 className="font-semibold">{t('totalAmount')}</h2>
               </div>
               <p className="text-3xl font-bold text-primary">{formatCurrency(estimate.total)}</p>
             </div>
@@ -300,7 +303,7 @@ export default async function EstimateDetailPage({
                   <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                     <ClipboardList className="h-4 w-4 text-primary" />
                   </div>
-                  <h2 className="font-semibold">Linked Job</h2>
+                  <h2 className="font-semibold">{t('linkedJob')}</h2>
                 </div>
                 <Link
                   href={`/dashboard/jobs/${jobCard.id}`}
@@ -318,26 +321,26 @@ export default async function EstimateDetailPage({
                 <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                   <User className="h-4 w-4 text-emerald-500" />
                 </div>
-                <h2 className="font-semibold">Customer</h2>
+                <h2 className="font-semibold">{t('customer')}</h2>
               </div>
               {estimate.customer ? (
                 <div className="space-y-3">
                   <p className="text-lg font-medium">{estimate.customer.name}</p>
                   {estimate.customer.phone && (
                     <div>
-                      <p className="text-xs text-muted-foreground">Phone</p>
+                      <p className="text-xs text-muted-foreground">{t('phone')}</p>
                       <p className="font-medium">{estimate.customer.phone}</p>
                     </div>
                   )}
                   {estimate.customer.email && (
                     <div>
-                      <p className="text-xs text-muted-foreground">Email</p>
+                      <p className="text-xs text-muted-foreground">{t('email')}</p>
                       <p className="text-sm">{estimate.customer.email}</p>
                     </div>
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground italic">No customer assigned</p>
+                <p className="text-sm text-muted-foreground italic">{t('noCustomerAssigned')}</p>
               )}
             </div>
 
@@ -347,7 +350,7 @@ export default async function EstimateDetailPage({
                 <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
                   <Car className="h-4 w-4 text-amber-500" />
                 </div>
-                <h2 className="font-semibold">Vehicle</h2>
+                <h2 className="font-semibold">{t('vehicle')}</h2>
               </div>
               {estimate.vehicle ? (
                 <div className="space-y-3">
@@ -361,13 +364,13 @@ export default async function EstimateDetailPage({
                   </div>
                   {estimate.vehicle.license_plate && (
                     <div>
-                      <p className="text-xs text-muted-foreground">License Plate</p>
+                      <p className="text-xs text-muted-foreground">{t('licensePlate')}</p>
                       <p className="font-medium">{estimate.vehicle.license_plate}</p>
                     </div>
                   )}
                 </div>
               ) : (
-                <p className="text-sm text-muted-foreground italic">No vehicle assigned</p>
+                <p className="text-sm text-muted-foreground italic">{t('noVehicleAssigned')}</p>
               )}
             </div>
 
@@ -378,7 +381,7 @@ export default async function EstimateDetailPage({
                   <div className="p-2 rounded-lg bg-accent/10 border border-accent/20">
                     <Calendar className="h-4 w-4 text-accent" />
                   </div>
-                  <h2 className="font-semibold">Valid Until</h2>
+                  <h2 className="font-semibold">{t('validUntil')}</h2>
                 </div>
                 <p className="font-medium">{format(new Date(estimate.valid_until), 'MMMM d, yyyy')}</p>
               </div>
