@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { formatDistanceToNow, format } from 'date-fns'
 import { Car, Clock, User, ChevronDown, ChevronUp, CheckCircle2, Receipt } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -17,14 +18,20 @@ interface CompletedJobsListProps {
 }
 
 const statusStyles = {
-  completed: { label: 'Completed', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', icon: CheckCircle2 },
-  invoiced: { label: 'Invoiced', class: 'bg-blue-500/10 text-blue-500 border-blue-500/20', icon: Receipt },
+  completed: { class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20', icon: CheckCircle2 },
+  invoiced: { class: 'bg-blue-500/10 text-blue-500 border-blue-500/20', icon: Receipt },
 }
 
 export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const t = useTranslations('jobs')
   
   if (jobs.length === 0) return null
+
+  const statusLabels: Record<string, string> = {
+    completed: t('completed'),
+    invoiced: t('invoiced'),
+  }
 
   const displayedJobs = isExpanded ? jobs : jobs.slice(0, 5)
 
@@ -36,7 +43,7 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
           <div className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
           </div>
-          <h2 className="text-lg font-semibold">Completed Jobs</h2>
+          <h2 className="text-lg font-semibold">{t('completedJobs')}</h2>
           <span className="text-sm text-muted-foreground">({jobs.length})</span>
         </div>
         {jobs.length > 5 && (
@@ -48,11 +55,11 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
           >
             {isExpanded ? (
               <>
-                Show Less <ChevronUp className="h-4 w-4 ml-1" />
+                {t('showLess')} <ChevronUp className="h-4 w-4 ml-1" />
               </>
             ) : (
               <>
-                Show All ({jobs.length}) <ChevronDown className="h-4 w-4 ml-1" />
+                {t('showAll')} ({jobs.length}) <ChevronDown className="h-4 w-4 ml-1" />
               </>
             )}
           </Button>
@@ -113,7 +120,7 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
                   'text-xs px-2 py-0.5 rounded-full border font-medium whitespace-nowrap',
                   status.class
                 )}>
-                  {status.label}
+                  {statusLabels[job.status] || statusLabels.completed}
                 </span>
               </Link>
             )

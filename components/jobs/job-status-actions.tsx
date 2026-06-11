@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -19,18 +20,19 @@ interface JobStatusActionsProps {
   currentStatus: string
 }
 
-const statusFlow = {
-  pending: { next: 'in_progress', label: 'Start Job', icon: Play },
-  in_progress: { next: 'completed', label: 'Mark Complete', icon: CheckCircle, alt: { status: 'awaiting_parts', label: 'Awaiting Parts', icon: Pause } },
-  awaiting_parts: { next: 'in_progress', label: 'Resume Work', icon: Play },
-  completed: { next: 'invoiced', label: 'Mark Invoiced', icon: FileCheck },
-  invoiced: null,
-}
-
 export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps) {
   const router = useRouter()
+  const t = useTranslations('jobs')
   const [isLoading, setIsLoading] = useState<string | null>(null)
   const [showSuccess, setShowSuccess] = useState(false)
+
+  const statusFlow = {
+    pending: { next: 'in_progress', label: t('startJob'), icon: Play },
+    in_progress: { next: 'completed', label: t('markComplete'), icon: CheckCircle, alt: { status: 'awaiting_parts', label: t('awaitingParts'), icon: Pause } },
+    awaiting_parts: { next: 'in_progress', label: t('resumeWork'), icon: Play },
+    completed: { next: 'invoiced', label: t('markInvoiced'), icon: FileCheck },
+    invoiced: null,
+  }
 
   const handleStatusChange = async (newStatus: string) => {
     setIsLoading(newStatus)
@@ -90,11 +92,11 @@ export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps
           <span className="job-complete-pop flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/15 ring-4 ring-emerald-500/25">
             <CheckCircle className="h-9 w-9 text-emerald-500 job-complete-check" strokeWidth={2.5} />
           </span>
-          <span className="text-sm font-semibold text-emerald-500">Job Completed</span>
+          <span className="text-sm font-semibold text-emerald-500">{t('jobCompleted')}</span>
         </div>
       )}
 
-      <h2 className="text-lg font-semibold mb-4">Update Status</h2>
+      <h2 className="text-lg font-semibold mb-4">{t('updateStatus')}</h2>
       
       <div className="flex items-center gap-3">
         <Button
@@ -143,10 +145,10 @@ export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps
         })}
       </div>
       <div className="mt-2 flex justify-between text-xs text-muted-foreground">
-        <span>Pending</span>
-        <span>In Progress</span>
-        <span>Completed</span>
-        <span>Invoiced</span>
+        <span>{t('pending')}</span>
+        <span>{t('inProgress')}</span>
+        <span>{t('completed')}</span>
+        <span>{t('invoiced')}</span>
       </div>
     </div>
   )

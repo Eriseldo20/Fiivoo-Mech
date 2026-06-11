@@ -1,3 +1,4 @@
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/dashboard/header'
 import { JobCardsList } from '@/components/jobs/job-cards-list'
@@ -87,13 +88,15 @@ export default async function JobsPage({
   // Don't show completed section if filtering by specific status
   const showCompletedSection = !params.status || params.status === 'all'
 
+  const t = await getTranslations('jobs')
+
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       <Header 
-        title="Job Cards" 
-        description="Manage all your service jobs"
+        title={t('title')} 
+        description={t('description')}
         action={{
-          label: 'New Job',
+          label: t('newJob'),
           href: '/dashboard/jobs/new',
         }}
       />

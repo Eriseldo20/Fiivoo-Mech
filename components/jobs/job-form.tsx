@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -61,6 +62,8 @@ interface VehicleWithHistory extends Vehicle {
 
 export function JobForm({ shopId, customers: initialCustomers, vehicles: initialVehicles, employees = [], initialData }: JobFormProps) {
   const router = useRouter()
+  const t = useTranslations('jobs')
+  const tc = useTranslations('common')
   const isEditing = !!initialData
   
   const [isLoading, setIsLoading] = useState(false)
@@ -102,14 +105,14 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
 
     // Odometer reading is mandatory when creating a job with a vehicle attached
     if (!isEditing && formData.vehicle_id && formData.mileage.trim() === '') {
-      setError('Please enter the current odometer reading (km) for the selected vehicle.')
+      setError(t('odometerRequired'))
       setIsLoading(false)
       return
     }
 
     const mileageValue = formData.mileage.trim() !== '' ? parseInt(formData.mileage, 10) : null
     if (formData.mileage.trim() !== '' && (mileageValue === null || isNaN(mileageValue) || mileageValue < 0)) {
-      setError('Please enter a valid odometer reading in kilometers.')
+      setError(t('odometerInvalid'))
       setIsLoading(false)
       return
     }
@@ -157,7 +160,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
 
       router.refresh()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to save job card')
+      setError(err instanceof Error ? err.message : t('failedToSave'))
     } finally {
       setIsLoading(false)
     }
@@ -232,7 +235,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
           >
             <ArrowLeft className="h-4 w-4" />
-            Back to Jobs
+            {t('backToJobs')}
           </Link>
           <div className="flex items-center gap-3">
             <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20">
@@ -240,10 +243,10 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
             </div>
             <div>
               <h1 className="text-xl font-semibold">
-                {isEditing ? 'Edit Job Card' : 'New Job Card'}
+                {isEditing ? t('editJobCard') : t('newJobCard')}
               </h1>
               <p className="text-sm text-muted-foreground">
-                {isEditing ? 'Update the job details' : 'Create a new service job'}
+                {isEditing ? t('updateJobDetails') : t('createServiceJob')}
               </p>
             </div>
           </div>
@@ -255,7 +258,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
           {/* Vehicle Selection - VIN Lookup First */}
           <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Vehicle</h2>
+              <h2 className="text-lg font-semibold">{t('vehicle')}</h2>
               <Button
                 type="button"
                 variant="outline"
@@ -267,7 +270,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                 className="text-xs"
               >
                 <Plus className="h-3 w-3 mr-1" />
-                Add Vehicle
+                {t('addVehicle')}
               </Button>
             </div>
 
@@ -275,11 +278,11 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
               <TabsList className="grid w-full grid-cols-2 mb-4">
                 <TabsTrigger value="vin-lookup" className="flex items-center gap-2">
                   <Search className="h-4 w-4" />
-                  VIN Lookup
+                  {t('vinLookup')}
                 </TabsTrigger>
                 <TabsTrigger value="select-existing" className="flex items-center gap-2">
                   <List className="h-4 w-4" />
-                  Select Existing
+                  {t('selectExisting')}
                 </TabsTrigger>
               </TabsList>
 
@@ -293,7 +296,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
 
               <TabsContent value="select-existing" className="mt-0">
                 <div className="space-y-2">
-                  <Label htmlFor="vehicle">Select Vehicle</Label>
+                  <Label htmlFor="vehicle">{t('selectVehicle')}</Label>
                   <Select
                     value={formData.vehicle_id}
                     onValueChange={(value) => {
@@ -302,7 +305,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                     }}
                   >
                     <SelectTrigger className="h-11 bg-background/50 border-border/50">
-                      <SelectValue placeholder="Choose a vehicle (optional)">
+                      <SelectValue placeholder={t('chooseVehicleOptional')}>
                         {formData.vehicle_id && (
                           <div className="flex items-center gap-2">
                             <Car className="h-4 w-4 text-muted-foreground" />
@@ -342,7 +345,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                   </span>
                   {selectedVehicleInfo.service_history && selectedVehicleInfo.service_history.length > 0 && (
                     <span className="text-muted-foreground">
-                      • {selectedVehicleInfo.service_history.length} previous service{selectedVehicleInfo.service_history.length !== 1 ? 's' : ''}
+                      • {t('previousServices', { count: selectedVehicleInfo.service_history.length })}
                     </span>
                   )}
                 </div>
