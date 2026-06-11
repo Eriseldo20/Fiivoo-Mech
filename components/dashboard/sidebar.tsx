@@ -142,14 +142,19 @@ export function Sidebar({ shopName }: SidebarProps) {
             />
           ) : (
             <div className="flex flex-col min-w-0 gap-0.5">
-              <Image
-                src="/brand/fiivoo-logo-white.png"
-                alt="Fiivoo"
-                width={120}
-                height={36}
-                className="h-7 w-auto object-contain"
-                priority
-              />
+              <div className="flex items-center gap-2 min-w-0">
+                <Image
+                  src="/brand/fiivoo-logo-white.png"
+                  alt="Fiivoo"
+                  width={160}
+                  height={48}
+                  className="h-10 w-auto object-contain"
+                  priority
+                />
+                <span className="text-xl font-extrabold tracking-tight text-orange-500 leading-none">
+                  MECH
+                </span>
+              </div>
               <span className="text-[11px] text-sidebar-muted truncate max-w-[150px] leading-tight pl-0.5">
                 {shopName}
               </span>
