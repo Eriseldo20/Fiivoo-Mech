@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Header } from '@/components/dashboard/header'
 import { Input } from '@/components/ui/input'
@@ -64,12 +65,6 @@ interface Employee {
   created_at: string
 }
 
-const roleLabels: Record<string, string> = {
-  technician: 'Technician',
-  service_advisor: 'Service Advisor',
-  manager: 'Manager',
-}
-
 const roleColors: Record<string, string> = {
   technician: 'bg-blue-500/10 text-blue-500 border-blue-500/20',
   service_advisor: 'bg-amber-500/10 text-amber-500 border-amber-500/20',
@@ -77,6 +72,7 @@ const roleColors: Record<string, string> = {
 }
 
 export default function EmployeesPage() {
+  const t = useTranslations('employees')
   const [employees, setEmployees] = useState<Employee[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -219,7 +215,7 @@ export default function EmployeesPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen">
-        <Header title="Employees" description="Manage your team members" />
+        <Header title={t('title')} description={t('description')} />
         <div className="p-6 flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
         </div>
@@ -230,8 +226,8 @@ export default function EmployeesPage() {
   return (
     <div className="min-h-screen">
       <Header 
-        title="Employees" 
-        description="Manage your team members"
+        title={t('title')} 
+        description={t('description')}
       />
       
       <div className="p-6 space-y-6">
@@ -240,7 +236,7 @@ export default function EmployeesPage() {
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search employees..."
+              placeholder={t('searchEmployees')}
               className="pl-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -248,7 +244,7 @@ export default function EmployeesPage() {
           </div>
           <Button onClick={() => { resetForm(); setShowAddDialog(true); }}>
             <Plus className="h-4 w-4 mr-2" />
-            Add Employee
+            {t('addEmployee')}
           </Button>
         </div>
 
@@ -262,7 +258,7 @@ export default function EmployeesPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{activeEmployees.length}</p>
-                  <p className="text-sm text-muted-foreground">Active Employees</p>
+                  <p className="text-sm text-muted-foreground">{t('activeEmployees')}</p>
                 </div>
               </div>
             </CardContent>
@@ -277,7 +273,7 @@ export default function EmployeesPage() {
                   <p className="text-2xl font-semibold">
                     {employees.filter(e => e.role === 'technician').length}
                   </p>
-                  <p className="text-sm text-muted-foreground">Technicians</p>
+                  <p className="text-sm text-muted-foreground">{t('technicians')}</p>
                 </div>
               </div>
             </CardContent>
@@ -292,7 +288,7 @@ export default function EmployeesPage() {
                   <p className="text-2xl font-semibold">
                     {CURRENCY.symbol}{employees.reduce((acc, e) => acc + (e.hourly_rate || 0), 0).toFixed(0)}
                   </p>
-                  <p className="text-sm text-muted-foreground">Avg Hourly Rate</p>
+                  <p className="text-sm text-muted-foreground">{t('avgHourlyRate')}</p>
                 </div>
               </div>
             </CardContent>
@@ -306,14 +302,14 @@ export default function EmployeesPage() {
               <div className="mx-auto w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mb-4">
                 <Users className="h-6 w-6 text-muted-foreground" />
               </div>
-              <h3 className="font-semibold mb-1">No employees found</h3>
+              <h3 className="font-semibold mb-1">{t('noEmployeesFound')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                {searchQuery ? 'Try adjusting your search' : 'Get started by adding your first employee'}
+                {searchQuery ? t('tryAdjustingSearch') : t('getStartedAdding')}
               </p>
               {!searchQuery && (
                 <Button onClick={() => { resetForm(); setShowAddDialog(true); }}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Employee
+                  {t('addEmployee')}
                 </Button>
               )}
             </CardContent>
@@ -335,7 +331,7 @@ export default function EmployeesPage() {
                           {employee.first_name} {employee.last_name}
                         </h3>
                         <Badge variant="outline" className={roleColors[employee.role]}>
-                          {roleLabels[employee.role]}
+                          {t(`role_${employee.role}`)}
                         </Badge>
                       </div>
                     </div>
@@ -375,20 +371,20 @@ export default function EmployeesPage() {
                     {employee.hourly_rate && (
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Euro className="h-4 w-4" />
-                        <span>{CURRENCY.symbol}{employee.hourly_rate}/hr</span>
+                        <span>{CURRENCY.symbol}{employee.hourly_rate}{t('perHour')}</span>
                       </div>
                     )}
                     {employee.hire_date && (
                       <div className="flex items-center gap-2 text-muted-foreground">
                         <Calendar className="h-4 w-4" />
-                        <span>Hired {format(new Date(employee.hire_date), 'MMM d, yyyy')}</span>
+                        <span>{t('hiredOn', { date: format(new Date(employee.hire_date), 'MMM d, yyyy') })}</span>
                       </div>
                     )}
                   </div>
 
                   {employee.status === 'inactive' && (
                     <Badge variant="outline" className="mt-3 bg-red-500/10 text-red-500 border-red-500/20">
-                      Inactive
+                      {t('inactive')}
                     </Badge>
                   )}
                 </CardContent>
@@ -408,36 +404,36 @@ export default function EmployeesPage() {
       }}>
         <DialogContent className="max-w-md">
           <DialogHeader>
-            <DialogTitle>{editingEmployee ? 'Edit Employee' : 'Add Employee'}</DialogTitle>
+            <DialogTitle>{editingEmployee ? t('editEmployee') : t('addEmployee')}</DialogTitle>
             <DialogDescription>
-              {editingEmployee ? 'Update employee information' : 'Add a new team member to your shop'}
+              {editingEmployee ? t('updateEmployeeInfo') : t('addNewMemberDesc')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="first_name">First Name *</Label>
+                <Label htmlFor="first_name">{t('firstName')} *</Label>
                 <Input
                   id="first_name"
                   value={formData.first_name}
                   onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                  placeholder="John"
+                  placeholder={t('firstNamePlaceholder')}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="last_name">Last Name *</Label>
+                <Label htmlFor="last_name">{t('lastName')} *</Label>
                 <Input
                   id="last_name"
                   value={formData.last_name}
                   onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                  placeholder="Doe"
+                  placeholder={t('lastNamePlaceholder')}
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -448,7 +444,7 @@ export default function EmployeesPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
+              <Label htmlFor="phone">{t('phone')}</Label>
               <Input
                 id="phone"
                 value={formData.phone}
@@ -459,27 +455,27 @@ export default function EmployeesPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role">{t('role')}</Label>
                 <Select value={formData.role} onValueChange={(v) => setFormData({ ...formData, role: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="technician">Technician</SelectItem>
-                    <SelectItem value="service_advisor">Service Advisor</SelectItem>
-                    <SelectItem value="manager">Manager</SelectItem>
+                    <SelectItem value="technician">{t('role_technician')}</SelectItem>
+                    <SelectItem value="service_advisor">{t('role_service_advisor')}</SelectItem>
+                    <SelectItem value="manager">{t('role_manager')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status">Status</Label>
+                <Label htmlFor="status">{t('status')}</Label>
                 <Select value={formData.status} onValueChange={(v) => setFormData({ ...formData, status: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="active">Active</SelectItem>
-                    <SelectItem value="inactive">Inactive</SelectItem>
+                    <SelectItem value="active">{t('active')}</SelectItem>
+                    <SelectItem value="inactive">{t('inactive')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -487,7 +483,7 @@ export default function EmployeesPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="hourly_rate">Hourly Rate ({CURRENCY.symbol})</Label>
+                <Label htmlFor="hourly_rate">{t('hourlyRate', { symbol: CURRENCY.symbol })}</Label>
                 <Input
                   id="hourly_rate"
                   type="number"
@@ -498,7 +494,7 @@ export default function EmployeesPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="hire_date">Hire Date</Label>
+                <Label htmlFor="hire_date">{t('hireDate')}</Label>
                 <Input
                   id="hire_date"
                   type="date"
@@ -509,12 +505,12 @@ export default function EmployeesPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
+              <Label htmlFor="notes">{t('notes')}</Label>
               <Textarea
                 id="notes"
                 value={formData.notes}
                 onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                placeholder="Additional notes..."
+                placeholder={t('notesPlaceholder')}
                 rows={2}
               />
             </div>
@@ -522,13 +518,13 @@ export default function EmployeesPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
               disabled={isSaving || !formData.first_name || !formData.last_name}
             >
-              {isSaving ? 'Saving...' : editingEmployee ? 'Update' : 'Add Employee'}
+              {isSaving ? t('saving') : editingEmployee ? t('update') : t('addEmployee')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -538,15 +534,15 @@ export default function EmployeesPage() {
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Employee</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteEmployee')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this employee? This action cannot be undone.
+              {t('deleteConfirm')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
-              Delete
+              {t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

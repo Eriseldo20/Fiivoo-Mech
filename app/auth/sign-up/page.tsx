@@ -8,8 +8,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 
 export default function SignUpPage() {
+  const t = useTranslations("auth")
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -26,13 +28,13 @@ export default function SignUpPage() {
     setError(null)
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match")
+      setError(t("passwordsNoMatch"))
       setIsLoading(false)
       return
     }
 
     if (password.length < 6) {
-      setError("Password must be at least 6 characters")
+      setError(t("passwordTooShort"))
       setIsLoading(false)
       return
     }
@@ -54,7 +56,7 @@ export default function SignUpPage() {
       if (error) throw error
       router.push("/auth/sign-up-success")
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      setError(error instanceof Error ? error.message : t("genericError"))
     } finally {
       setIsLoading(false)
     }
@@ -75,16 +77,16 @@ export default function SignUpPage() {
               priority
             />
             <p className="text-sm text-muted-foreground">
-              Premium Auto Shop Management
+              {t("tagline")}
             </p>
           </div>
 
           {/* Sign Up Card */}
           <div className="glass rounded-2xl p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold">Create your account</h2>
+              <h2 className="text-xl font-semibold">{t("createYourAccount")}</h2>
               <p className="text-sm text-muted-foreground">
-                Start managing your auto shop today
+                {t("startManaging")}
               </p>
             </div>
 
@@ -92,7 +94,7 @@ export default function SignUpPage() {
               <div className="grid grid-cols-2 gap-4">
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="firstName" className="text-sm font-medium">
-                    First name
+                    {t("firstName")}
                   </Label>
                   <Input
                     id="firstName"
@@ -106,7 +108,7 @@ export default function SignUpPage() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <Label htmlFor="lastName" className="text-sm font-medium">
-                    Last name
+                    {t("lastName")}
                   </Label>
                   <Input
                     id="lastName"
@@ -122,7 +124,7 @@ export default function SignUpPage() {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email" className="text-sm font-medium">
-                  Email
+                  {t("email")}
                 </Label>
                 <Input
                   id="email"
@@ -137,7 +139,7 @@ export default function SignUpPage() {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="password" className="text-sm font-medium">
-                  Password
+                  {t("password")}
                 </Label>
                 <Input
                   id="password"
@@ -151,7 +153,7 @@ export default function SignUpPage() {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="confirmPassword" className="text-sm font-medium">
-                  Confirm password
+                  {t("confirmPassword")}
                 </Label>
                 <Input
                   id="confirmPassword"
@@ -174,17 +176,17 @@ export default function SignUpPage() {
                 className="h-11 w-full font-medium"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating account..." : "Create account"}
+                {isLoading ? t("creatingAccount") : t("createAccount")}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              Already have an account?{" "}
+              {t("hasAccount") + " "}
               <Link
                 href="/auth/login"
                 className="font-medium text-primary hover:underline underline-offset-4"
               >
-                Sign in
+                {t("signIn")}
               </Link>
             </div>
           </div>

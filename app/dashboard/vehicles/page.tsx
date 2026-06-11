@@ -431,7 +431,7 @@ export default function VehiclesPage() {
                               </div>
                               {record.completed_date && (
                                 <div className="text-xs text-emerald-400 mt-1">
-                                  Completed {format(new Date(record.completed_date), 'MMM d, yyyy')}
+                                  {t('completedOn', { date: format(new Date(record.completed_date), 'MMM d, yyyy') })}
                                 </div>
                               )}
                             </div>
@@ -442,10 +442,10 @@ export default function VehiclesPage() {
                   ) : (
                     <div className="text-center py-8 text-muted-foreground">
                       <History className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                      <p>No service history for this vehicle</p>
+                      <p>{t('noServiceHistory')}</p>
                       <Link href={`/dashboard/jobs/new?vehicle=${selectedVehicle.id}`}>
                         <Button variant="outline" size="sm" className="mt-4">
-                          Create First Job
+                          {t('createFirstJob')}
                         </Button>
                       </Link>
                     </div>
@@ -457,9 +457,9 @@ export default function VehiclesPage() {
             <Card className="glass-card">
               <CardContent className="py-16 text-center">
                 <Car className="h-16 w-16 mx-auto mb-4 text-muted-foreground/50" />
-                <h3 className="text-lg font-medium mb-2">Select a Vehicle</h3>
+                <h3 className="text-lg font-medium mb-2">{t('selectVehicle')}</h3>
                 <p className="text-muted-foreground">
-                  Search by VIN or license plate, or select a vehicle from the list to view details and service history
+                  {t('selectVehicleDesc')}
                 </p>
               </CardContent>
             </Card>

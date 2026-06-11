@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic'
 export const revalidate = 0 // Don't cache at edge, data is user-specific
 
 import { redirect } from 'next/navigation'
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/dashboard/header'
 import { StatsCards } from '@/components/dashboard/stats-cards'
@@ -11,6 +12,7 @@ import { QuickActions } from '@/components/dashboard/quick-actions'
 import { getDashboardStats, getRecentJobs } from '@/lib/data/cached-queries'
 
 export default async function DashboardPage() {
+  const t = await getTranslations('dashboard')
   const supabase = await createClient()
   
   const { data: { user } } = await supabase.auth.getUser()
@@ -35,8 +37,8 @@ export default async function DashboardPage() {
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       <Header 
-        title="Dashboard" 
-        description="Welcome back! Here's what's happening today."
+        title={t('title')} 
+        description={t('overview')}
       />
       
       <div className="p-4 md:p-6 space-y-4 md:space-y-6">

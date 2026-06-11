@@ -1,8 +1,10 @@
 import Link from "next/link"
+import { getTranslations } from "next-intl/server"
 import { Button } from "@/components/ui/button"
 import { Wrench, AlertCircle } from "lucide-react"
 
-export default function AuthErrorPage() {
+export default async function AuthErrorPage() {
+  const t = await getTranslations("auth")
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-md">
@@ -17,7 +19,7 @@ export default function AuthErrorPage() {
                 Fiivoo Mech
               </h1>
               <p className="text-sm text-muted-foreground">
-                Premium Auto Shop Management
+                {t("tagline")}
               </p>
             </div>
           </div>
@@ -28,17 +30,17 @@ export default function AuthErrorPage() {
               <AlertCircle className="h-8 w-8 text-destructive" />
             </div>
 
-            <h2 className="mb-2 text-xl font-semibold">Authentication Error</h2>
+            <h2 className="mb-2 text-xl font-semibold">{t("authError")}</h2>
             <p className="mb-6 text-sm text-muted-foreground">
-              Something went wrong during authentication. Please try again.
+              {t("authErrorDesc")}
             </p>
 
             <div className="flex flex-col gap-3">
               <Button asChild className="w-full">
-                <Link href="/auth/login">Try again</Link>
+                <Link href="/auth/login">{t("tryAgain")}</Link>
               </Button>
               <Button asChild variant="outline" className="w-full">
-                <Link href="/auth/sign-up">Create new account</Link>
+                <Link href="/auth/sign-up">{t("createNewAccount")}</Link>
               </Button>
             </div>
           </div>

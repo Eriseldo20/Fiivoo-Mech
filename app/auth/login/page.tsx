@@ -8,8 +8,10 @@ import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { useTranslations } from "next-intl"
 
 export default function LoginPage() {
+  const t = useTranslations("auth")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [error, setError] = useState<string | null>(null)
@@ -31,7 +33,7 @@ export default function LoginPage() {
       router.push("/dashboard")
       router.refresh()
     } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
+      setError(error instanceof Error ? error.message : t("genericError"))
     } finally {
       setIsLoading(false)
     }
@@ -52,23 +54,23 @@ export default function LoginPage() {
               priority
             />
             <p className="text-sm text-muted-foreground">
-              Premium Auto Shop Management
+              {t("tagline")}
             </p>
           </div>
 
           {/* Login Card */}
           <div className="glass rounded-2xl p-8">
             <div className="mb-6">
-              <h2 className="text-xl font-semibold">Welcome back</h2>
+              <h2 className="text-xl font-semibold">{t("welcomeBack")}</h2>
               <p className="text-sm text-muted-foreground">
-                Sign in to your account to continue
+                {t("signInToContinue")}
               </p>
             </div>
 
             <form onSubmit={handleLogin} className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
                 <Label htmlFor="email" className="text-sm font-medium">
-                  Email
+                  {t("email")}
                 </Label>
                 <Input
                   id="email"
@@ -83,7 +85,7 @@ export default function LoginPage() {
 
               <div className="flex flex-col gap-2">
                 <Label htmlFor="password" className="text-sm font-medium">
-                  Password
+                  {t("password")}
                 </Label>
                 <Input
                   id="password"
@@ -106,17 +108,17 @@ export default function LoginPage() {
                 className="h-11 w-full font-medium"
                 disabled={isLoading}
               >
-                {isLoading ? "Signing in..." : "Sign in"}
+                {isLoading ? t("signingIn") : t("signIn")}
               </Button>
             </form>
 
             <div className="mt-6 text-center text-sm text-muted-foreground">
-              {"Don't have an account? "}
+              {t("noAccount") + " "}
               <Link
                 href="/auth/sign-up"
                 className="font-medium text-primary hover:underline underline-offset-4"
               >
-                Create one
+                {t("createOne")}
               </Link>
             </div>
           </div>
