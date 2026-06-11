@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { useLowStockItems } from '@/lib/hooks/use-data'
 import { Button } from '@/components/ui/button'
@@ -62,6 +63,7 @@ const priorityColors = {
 }
 
 export function NotificationBell() {
+  const t = useTranslations('notifications')
   const [reminders, setReminders] = useState<ServiceReminder[]>([])
   const [shopId, setShopId] = useState<string | null>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -101,20 +103,20 @@ export function NotificationBell() {
           const isOutOfStock = item.quantity === 0
           
           if (isOutOfStock) {
-            toast.error(`Out of Stock: ${item.name}`, {
-              description: `${item.name} is completely out of stock. Restock immediately.`,
+            toast.error(t('outOfStockToast', { name: item.name }), {
+              description: t('outOfStockToastDesc', { name: item.name }),
               duration: 8000,
               action: {
-                label: 'View Inventory',
+                label: t('viewInventory'),
                 onClick: () => window.location.href = '/dashboard/inventory',
               },
             })
           } else {
-            toast.warning(`Low Stock Alert: ${item.name}`, {
-              description: `Only ${item.quantity} left (min: ${item.min_quantity})`,
+            toast.warning(t('lowStockToast', { name: item.name }), {
+              description: t('lowStockToastDesc', { quantity: item.quantity, min: item.min_quantity }),
               duration: 6000,
               action: {
-                label: 'Restock',
+                label: t('restock'),
                 onClick: () => window.location.href = '/dashboard/inventory',
               },
             })
@@ -188,14 +190,14 @@ export function NotificationBell() {
   const totalNotifications = activeReminders.length + activeLowStock.length
   const totalUrgent = urgentCount + criticalStockCount
 
-  const getDateLabel = (dateStr: string) => {
+  const getDateInfo = (dateStr: string) => {
     const date = parseISO(dateStr)
-    if (isToday(date)) return 'Today'
-    if (isTomorrow(date)) return 'Tomorrow'
+    if (isToday(date)) return { label: t('today'), isOverdue: false, isToday: true }
+    if (isTomorrow(date)) return { label: t('tomorrow'), isOverdue: false, isToday: false }
     const days = differenceInDays(date, new Date())
-    if (days < 0) return 'Overdue'
-    if (days <= 7) return `In ${days} days`
-    return format(date, 'MMM d')
+    if (days < 0) return { label: t('overdue'), isOverdue: true, isToday: false }
+    if (days <= 7) return { label: t('inDays', { days }), isOverdue: false, isToday: false }
+    return { label: format(date, 'MMM d'), isOverdue: false, isToday: false }
   }
 
   return (
@@ -235,7 +237,7 @@ export function NotificationBell() {
           >
             <span className="flex items-center justify-center gap-2">
               <Calendar className="h-4 w-4" />
-              Services
+              {t('services')}
               {activeReminders.length > 0 && (
                 <Badge variant="secondary" className="h-5 px-1.5 text-[10px]">
                   {activeReminders.length}
@@ -257,7 +259,7 @@ export function NotificationBell() {
           >
             <span className="flex items-center justify-center gap-2">
               <Package className="h-4 w-4" />
-              Stock
+              {t('stock')}
               {activeLowStock.length > 0 && (
                 <Badge 
                   variant="secondary" 
@@ -283,14 +285,14 @@ export function NotificationBell() {
               {activeReminders.length === 0 ? (
                 <div className="p-6 text-center">
                   <Bell className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                  <p className="text-sm text-muted-foreground">No upcoming services</p>
+                  <p className="text-sm text-muted-foreground">{t('noUpcomingServices')}</p>
                 </div>
               ) : (
                 <div className="divide-y divide-border/50">
                   {activeReminders.map(reminder => {
-                    const dateLabel = getDateLabel(reminder.scheduled_date)
-                    const isOverdue = dateLabel === 'Overdue'
-                    const isUrgent = reminder.priority === 'urgent' || reminder.priority === 'high' || isOverdue || dateLabel === 'Today'
+                    const dateInfo = getDateInfo(reminder.scheduled_date)
+                    const isOverdue = dateInfo.isOverdue
+                    const isUrgent = reminder.priority === 'urgent' || reminder.priority === 'high' || isOverdue || dateInfo.isToday
 
                     return (
                       <div 
@@ -320,7 +322,7 @@ export function NotificationBell() {
                                   isOverdue ? 'bg-red-500/10 text-red-500 border-red-500/20' : priorityColors[reminder.priority]
                                 )}
                               >
-                                {isOverdue ? 'Overdue' : dateLabel}
+                                {isOverdue ? t('overdue') : dateInfo.label}
                               </Badge>
                             </div>
                             <div className="flex items-center gap-1.5 mt-1 text-xs text-muted-foreground">
@@ -343,7 +345,7 @@ export function NotificationBell() {
                                 onClick={() => handleMarkComplete(reminder.id)}
                               >
                                 <CheckCircle className="h-3 w-3 mr-1" />
-                                Complete
+                                {t('complete')}
                               </Button>
                               <Button
                                 size="sm"
@@ -352,7 +354,7 @@ export function NotificationBell() {
                                 onClick={() => handleDismiss(reminder.id)}
                               >
                                 <X className="h-3 w-3 mr-1" />
-                                Dismiss
+                                {t('dismiss')}
                               </Button>
                             </div>
                           </div>
@@ -371,7 +373,7 @@ export function NotificationBell() {
               {activeLowStock.length === 0 ? (
                 <div className="p-6 text-center">
                   <Package className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                  <p className="text-sm text-muted-foreground">All stock levels are good</p>
+                  <p className="text-sm text-muted-foreground">{t('allStockGood')}</p>
                 </div>
               ) : (
                 <div className="divide-y divide-border/50">
@@ -411,7 +413,7 @@ export function NotificationBell() {
                                     : 'bg-amber-500/10 text-amber-500 border-amber-500/20'
                                 )}
                               >
-                                {isOutOfStock ? 'Out of Stock' : 'Low Stock'}
+                                {isOutOfStock ? t('outOfStock') : t('lowStock')}
                               </Badge>
                             </div>
                             {item.sku && (
@@ -419,14 +421,14 @@ export function NotificationBell() {
                             )}
                             <div className="flex items-center gap-3 mt-1.5">
                               <div className="text-xs">
-                                <span className="text-muted-foreground">Qty: </span>
+                                <span className="text-muted-foreground">{t('qty')} </span>
                                 <span className={cn(
                                   'font-medium',
                                   isOutOfStock ? 'text-red-500' : isCritical ? 'text-orange-500' : 'text-amber-500'
                                 )}>
                                   {item.quantity}
                                 </span>
-                                <span className="text-muted-foreground"> / {item.min_quantity} min</span>
+                                <span className="text-muted-foreground"> {t('minSuffix', { min: item.min_quantity })}</span>
                               </div>
                               {item.location && (
                                 <div className="flex items-center gap-1 text-xs text-muted-foreground">
@@ -443,7 +445,7 @@ export function NotificationBell() {
                                   className="h-7 text-xs"
                                 >
                                   <Package className="h-3 w-3 mr-1" />
-                                  Restock
+                                  {t('restock')}
                                 </Button>
                               </Link>
                               <Button
@@ -453,7 +455,7 @@ export function NotificationBell() {
                                 onClick={() => handleDismissStock(item.id)}
                               >
                                 <X className="h-3 w-3 mr-1" />
-                                Dismiss
+                                {t('dismiss')}
                               </Button>
                             </div>
                           </div>
@@ -476,12 +478,12 @@ export function NotificationBell() {
               {activeTab === 'services' ? (
                 <>
                   <Calendar className="h-3.5 w-3.5 mr-2" />
-                  Open Calendar
+                  {t('openCalendar')}
                 </>
               ) : (
                 <>
                   <Package className="h-3.5 w-3.5 mr-2" />
-                  Open Inventory
+                  {t('openInventory')}
                 </>
               )}
             </Button>

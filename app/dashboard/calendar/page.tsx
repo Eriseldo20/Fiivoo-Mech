@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Header } from '@/components/dashboard/header'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -90,18 +91,18 @@ interface JobCard {
   }
 }
 
-const serviceTypes = [
-  { value: 'oil_change', label: 'Oil Change' },
-  { value: 'tire_rotation', label: 'Tire Rotation' },
-  { value: 'brake_inspection', label: 'Brake Inspection' },
-  { value: 'air_filter', label: 'Air Filter' },
-  { value: 'coolant_flush', label: 'Coolant Flush' },
-  { value: 'transmission_service', label: 'Transmission Service' },
-  { value: 'battery_check', label: 'Battery Check' },
-  { value: 'wheel_alignment', label: 'Wheel Alignment' },
-  { value: 'timing_belt', label: 'Timing Belt' },
-  { value: 'general_inspection', label: 'General Inspection' },
-  { value: 'other', label: 'Other' },
+const serviceTypeValues = [
+  'oil_change',
+  'tire_rotation',
+  'brake_inspection',
+  'air_filter',
+  'coolant_flush',
+  'transmission_service',
+  'battery_check',
+  'wheel_alignment',
+  'timing_belt',
+  'general_inspection',
+  'other',
 ]
 
 const priorityColors = {
@@ -120,6 +121,7 @@ const statusColors = {
 }
 
 export default function CalendarPage() {
+  const t = useTranslations('calendar')
   const [currentDate, setCurrentDate] = useState(new Date())
   const [reminders, setReminders] = useState<ServiceReminder[]>([])
   const [jobs, setJobs] = useState<JobCard[]>([])
@@ -352,10 +354,10 @@ export default function CalendarPage() {
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       <Header 
-        title="Calendar" 
-        description="Schedule and manage service reminders"
+        title={t('title')} 
+        description={t('description')}
         action={{
-          label: 'New Reminder',
+          label: t('newReminder'),
           onClick: handleAddReminder,
         }}
       />
@@ -382,7 +384,7 @@ export default function CalendarPage() {
                       onClick={handleToday}
                       className="rounded-lg bg-white border-slate-200 text-slate-700 font-medium shadow-sm hover:bg-slate-50 hover:text-slate-900"
                     >
-                      Today
+                      {t('today')}
                     </Button>
                     <div className="flex items-center rounded-lg border border-slate-200 bg-white shadow-sm overflow-hidden">
                       <Button
@@ -409,9 +411,9 @@ export default function CalendarPage() {
               <CardContent className="p-3 md:p-5 bg-white">
                 {/* Day headers */}
                 <div className="grid grid-cols-7">
-                  {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(day => (
+                  {['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].map(day => (
                     <div key={day} className="text-center text-[11px] font-semibold uppercase tracking-[0.08em] text-slate-400 pb-3">
-                      {day}
+                      {t(`weekday_${day}`)}
                     </div>
                   ))}
                 </div>
@@ -474,7 +476,7 @@ export default function CalendarPage() {
                             ))}
                             {(dayReminders.length + dayJobs.length) > 3 && (
                               <div className="text-[10px] text-slate-400 font-medium pl-1">
-                                +{dayReminders.length + dayJobs.length - 3} more
+                                {t('moreEvents', { count: dayReminders.length + dayJobs.length - 3 })}
                               </div>
                             )}
                           </div>
@@ -502,7 +504,7 @@ export default function CalendarPage() {
                     const { reminders: dayReminders, jobs: dayJobs } = getEventsForDay(selectedDate)
                     if (dayReminders.length === 0 && dayJobs.length === 0) {
                       return (
-                        <p className="text-sm text-slate-400">No events scheduled</p>
+                        <p className="text-sm text-slate-400">{t('noEventsScheduled')}</p>
                       )
                     }
                     return (
@@ -534,7 +536,7 @@ export default function CalendarPage() {
                               <div className="flex-1 min-w-0">
                                 <p className="text-sm font-medium truncate text-slate-900">{job.title}</p>
                                 <p className="text-xs text-slate-500">
-                                  Job #{job.job_number}
+                                  {t('jobNumber', { number: job.job_number })}
                                 </p>
                               </div>
                             </div>
@@ -550,7 +552,7 @@ export default function CalendarPage() {
                     onClick={handleAddReminder}
                   >
                     <Plus className="h-4 w-4 mr-2" />
-                    Add Reminder
+                    {t('addReminder')}
                   </Button>
                 </CardContent>
               </Card>
@@ -561,12 +563,12 @@ export default function CalendarPage() {
               <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
                 <CardTitle className="text-sm font-semibold tracking-tight flex items-center gap-2 text-slate-900">
                   <Bell className="h-4 w-4 text-slate-500" />
-                  Upcoming Reminders
+                  {t('upcomingReminders')}
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-2 pt-3">
                 {upcomingReminders.length === 0 ? (
-                  <p className="text-sm text-slate-400">No upcoming reminders</p>
+                  <p className="text-sm text-slate-400">{t('noUpcomingReminders')}</p>
                 ) : (
                   upcomingReminders.map(reminder => (
                     <button
@@ -577,7 +579,7 @@ export default function CalendarPage() {
                       <div className="flex items-center justify-between mb-1 gap-2">
                         <p className="text-sm font-medium truncate text-slate-900">{reminder.title}</p>
                         <Badge variant="outline" className={cn('text-[10px] rounded-md capitalize shrink-0', priorityColors[reminder.priority])}>
-                          {reminder.priority}
+                          {t(`priority_${reminder.priority}`)}
                         </Badge>
                       </div>
                       <div className="flex items-center gap-2 text-xs text-slate-500">
@@ -597,24 +599,24 @@ export default function CalendarPage() {
             {/* Legend */}
             <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
               <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
-                <CardTitle className="text-sm font-semibold tracking-tight text-slate-900">Legend</CardTitle>
+                <CardTitle className="text-sm font-semibold tracking-tight text-slate-900">{t('legend')}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2.5 pt-3">
                 <div className="flex items-center gap-2.5 text-xs text-slate-600">
                   <div className="w-3 h-3 rounded-sm bg-blue-50 border-l-2 border border-l-blue-500 border-blue-200" />
-                  <span>Service Reminder</span>
+                  <span>{t('serviceReminder')}</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600">
                   <div className="w-3 h-3 rounded-sm bg-emerald-50 border-l-2 border border-l-emerald-500 border-emerald-200" />
-                  <span>Job Due Date</span>
+                  <span>{t('jobDueDate')}</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600">
                   <div className="w-3 h-3 rounded-sm bg-amber-50 border-l-2 border border-l-amber-500 border-amber-200" />
-                  <span>High Priority</span>
+                  <span>{t('priority_high')}</span>
                 </div>
                 <div className="flex items-center gap-2.5 text-xs text-slate-600">
                   <div className="w-3 h-3 rounded-sm bg-red-50 border-l-2 border border-l-red-500 border-red-200" />
-                  <span>Urgent</span>
+                  <span>{t('priority_urgent')}</span>
                 </div>
               </CardContent>
             </Card>
@@ -628,16 +630,16 @@ export default function CalendarPage() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Bell className="h-5 w-5 text-primary" />
-              Schedule Service Reminder
+              {t('scheduleServiceReminder')}
             </DialogTitle>
           </DialogHeader>
           
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="title">Title *</Label>
+              <Label htmlFor="title">{t('titleLabel')} *</Label>
               <Input
                 id="title"
-                placeholder="e.g., Oil Change Due"
+                placeholder={t('titlePlaceholder')}
                 value={formData.title}
                 onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
               />
@@ -645,7 +647,7 @@ export default function CalendarPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="service_type">Service Type *</Label>
+                <Label htmlFor="service_type">{t('serviceType')} *</Label>
                 <Select
                   value={formData.service_type}
                   onValueChange={(value) => setFormData(prev => ({ ...prev, service_type: value }))}
@@ -654,9 +656,9 @@ export default function CalendarPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {serviceTypes.map(type => (
-                      <SelectItem key={type.value} value={type.value}>
-                        {type.label}
+                    {serviceTypeValues.map(type => (
+                      <SelectItem key={type} value={type}>
+                        {t(`service_${type}`)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -664,7 +666,7 @@ export default function CalendarPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="priority">Priority</Label>
+                <Label htmlFor="priority">{t('priority')}</Label>
                 <Select
                   value={formData.priority}
                   onValueChange={(value: 'low' | 'normal' | 'high' | 'urgent') => setFormData(prev => ({ ...prev, priority: value }))}
@@ -673,23 +675,23 @@ export default function CalendarPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="low">Low</SelectItem>
-                    <SelectItem value="normal">Normal</SelectItem>
-                    <SelectItem value="high">High</SelectItem>
-                    <SelectItem value="urgent">Urgent</SelectItem>
+                    <SelectItem value="low">{t('priority_low')}</SelectItem>
+                    <SelectItem value="normal">{t('priority_normal')}</SelectItem>
+                    <SelectItem value="high">{t('priority_high')}</SelectItem>
+                    <SelectItem value="urgent">{t('priority_urgent')}</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="vehicle">Vehicle *</Label>
+              <Label htmlFor="vehicle">{t('vehicle')} *</Label>
               <Select
                 value={formData.vehicle_id}
                 onValueChange={handleVehicleChange}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select vehicle" />
+                  <SelectValue placeholder={t('selectVehicle')} />
                 </SelectTrigger>
                 <SelectContent>
                   {vehicles.map(vehicle => (
@@ -702,13 +704,13 @@ export default function CalendarPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="customer">Customer</Label>
+              <Label htmlFor="customer">{t('customer')}</Label>
               <Select
                 value={formData.customer_id}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, customer_id: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="Select customer (optional)" />
+                  <SelectValue placeholder={t('selectCustomer')} />
                 </SelectTrigger>
                 <SelectContent>
                   {customers.map(customer => (
@@ -722,7 +724,7 @@ export default function CalendarPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="scheduled_date">Scheduled Date *</Label>
+                <Label htmlFor="scheduled_date">{t('scheduledDate')} *</Label>
                 <Input
                   id="scheduled_date"
                   type="date"
@@ -732,7 +734,7 @@ export default function CalendarPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="scheduled_time">Time (optional)</Label>
+                <Label htmlFor="scheduled_time">{t('timeOptional')}</Label>
                 <Input
                   id="scheduled_time"
                   type="time"
@@ -743,10 +745,10 @@ export default function CalendarPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('description')}</Label>
               <Textarea
                 id="description"
-                placeholder="Additional details about the service..."
+                placeholder={t('descriptionPlaceholder')}
                 value={formData.description}
                 onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                 rows={2}
@@ -754,7 +756,7 @@ export default function CalendarPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="notify_days_before">Reminder Notification</Label>
+              <Label htmlFor="notify_days_before">{t('reminderNotification')}</Label>
               <Select
                 value={formData.notify_days_before.toString()}
                 onValueChange={(value) => setFormData(prev => ({ ...prev, notify_days_before: parseInt(value) }))}
@@ -763,21 +765,21 @@ export default function CalendarPage() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="0">No reminder</SelectItem>
-                  <SelectItem value="1">1 day before</SelectItem>
-                  <SelectItem value="3">3 days before</SelectItem>
-                  <SelectItem value="7">1 week before</SelectItem>
-                  <SelectItem value="14">2 weeks before</SelectItem>
-                  <SelectItem value="30">1 month before</SelectItem>
+                  <SelectItem value="0">{t('noReminder')}</SelectItem>
+                  <SelectItem value="1">{t('dayBefore', { count: 1 })}</SelectItem>
+                  <SelectItem value="3">{t('daysBefore', { count: 3 })}</SelectItem>
+                  <SelectItem value="7">{t('weekBefore', { count: 1 })}</SelectItem>
+                  <SelectItem value="14">{t('weeksBefore', { count: 2 })}</SelectItem>
+                  <SelectItem value="30">{t('monthBefore', { count: 1 })}</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="notes">Notes</Label>
+              <Label htmlFor="notes">{t('notes')}</Label>
               <Textarea
                 id="notes"
-                placeholder="Internal notes..."
+                placeholder={t('notesPlaceholder')}
                 value={formData.notes}
                 onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                 rows={2}
@@ -787,14 +789,14 @@ export default function CalendarPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleSubmit}
               disabled={!formData.title || !formData.vehicle_id || !formData.scheduled_date}
             >
               <Bell className="h-4 w-4 mr-2" />
-              Schedule Reminder
+              {t('scheduleReminder')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -810,7 +812,7 @@ export default function CalendarPage() {
                 {selectedReminder?.title}
               </span>
               <Badge variant="outline" className={cn(statusColors[selectedReminder?.status || 'scheduled'])}>
-                {selectedReminder?.status}
+                {selectedReminder?.status ? t(`status_${selectedReminder.status}`) : ''}
               </Badge>
             </DialogTitle>
           </DialogHeader>
@@ -859,7 +861,7 @@ export default function CalendarPage() {
               <div className="flex items-center gap-2">
                 <Wrench className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm">
-                  {serviceTypes.find(t => t.value === selectedReminder.service_type)?.label || selectedReminder.service_type}
+                  {serviceTypeValues.includes(selectedReminder.service_type) ? t(`service_${selectedReminder.service_type}`) : selectedReminder.service_type}
                 </span>
               </div>
 
@@ -871,7 +873,7 @@ export default function CalendarPage() {
 
               {selectedReminder.notes && (
                 <div className="p-3 rounded-lg bg-muted/50 border-l-2 border-primary">
-                  <p className="text-xs text-muted-foreground mb-1">Notes</p>
+                  <p className="text-xs text-muted-foreground mb-1">{t('notes')}</p>
                   <p className="text-sm">{selectedReminder.notes}</p>
                 </div>
               )}
@@ -886,7 +888,7 @@ export default function CalendarPage() {
                       onClick={() => handleUpdateStatus(selectedReminder.id, 'completed')}
                     >
                       <CheckCircle className="h-4 w-4 mr-2" />
-                      Mark Complete
+                      {t('markComplete')}
                     </Button>
                     <Button
                       size="sm"
@@ -894,7 +896,7 @@ export default function CalendarPage() {
                       onClick={() => handleUpdateStatus(selectedReminder.id, 'cancelled')}
                     >
                       <X className="h-4 w-4 mr-2" />
-                      Cancel
+                      {t('cancel')}
                     </Button>
                   </>
                 )}
@@ -905,7 +907,7 @@ export default function CalendarPage() {
                     onClick={() => handleUpdateStatus(selectedReminder.id, 'scheduled')}
                   >
                     <AlertCircle className="h-4 w-4 mr-2" />
-                    Reopen
+                    {t('reopen')}
                   </Button>
                 )}
                 <Button
@@ -915,7 +917,7 @@ export default function CalendarPage() {
                   onClick={() => handleDeleteReminder(selectedReminder.id)}
                 >
                   <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
+                  {t('delete')}
                 </Button>
               </div>
             </div>

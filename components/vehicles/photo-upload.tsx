@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import { useTranslations } from 'next-intl'
 import { Camera, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -14,6 +15,7 @@ interface PhotoUploadProps {
 }
 
 export function PhotoUpload({ label, value, onChange, className }: PhotoUploadProps) {
+  const t = useTranslations('photoUpload')
   const [isUploading, setIsUploading] = useState(false)
   const [dragOver, setDragOver] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)

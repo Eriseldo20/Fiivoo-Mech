@@ -11,6 +11,7 @@ import { Building2, Phone, Mail, MapPin, ArrowRight, Loader2 } from 'lucide-reac
 import Image from 'next/image'
 
 export default function OnboardingPage() {
+  const t = useTranslations('onboarding')
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -60,7 +61,7 @@ export default function OnboardingPage() {
 
       router.push('/dashboard')
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create shop')
+      setError(err instanceof Error ? err.message : t('failedToCreate'))
     } finally {
       setIsLoading(false)
     }
@@ -84,22 +85,22 @@ export default function OnboardingPage() {
         {/* Card */}
         <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-2xl p-8 shadow-2xl">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-semibold mb-2">Set up your shop</h1>
+            <h1 className="text-2xl font-semibold mb-2">{t('title')}</h1>
             <p className="text-muted-foreground">
-              Let&apos;s get your workshop ready to manage jobs and estimates
+              {t('subtitle')}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-sm font-medium">
-                Shop Name *
+                {t('shopName')} *
               </Label>
               <div className="relative">
                 <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
-                  placeholder="Mike's Auto Repair"
+                  placeholder={t('shopNamePlaceholder')}
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="pl-10 h-12 bg-background/50 border-border/50 focus:border-primary/50"
@@ -110,13 +111,13 @@ export default function OnboardingPage() {
 
             <div className="space-y-2">
               <Label htmlFor="address" className="text-sm font-medium">
-                Address
+                {t('address')}
               </Label>
               <div className="relative">
                 <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="address"
-                  placeholder="123 Main St, City, State"
+                  placeholder={t('addressPlaceholder')}
                   value={formData.address}
                   onChange={(e) => setFormData({ ...formData, address: e.target.value })}
                   className="pl-10 h-12 bg-background/50 border-border/50 focus:border-primary/50"
@@ -127,7 +128,7 @@ export default function OnboardingPage() {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="phone" className="text-sm font-medium">
-                  Phone
+                  {t('phone')}
                 </Label>
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -144,7 +145,7 @@ export default function OnboardingPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="shopEmail" className="text-sm font-medium">
-                  Shop Email
+                  {t('shopEmail')}
                 </Label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -175,7 +176,7 @@ export default function OnboardingPage() {
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (
                 <>
-                  Continue to Dashboard
+                  {t('continueToDashboard')}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </>
               )}
@@ -184,7 +185,7 @@ export default function OnboardingPage() {
         </div>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
-          You can update these details later in settings
+          {t('updateLater')}
         </p>
       </div>
     </div>
