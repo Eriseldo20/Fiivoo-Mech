@@ -360,7 +360,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                 <div className="mt-4 space-y-2">
                   <Label htmlFor="mileage" className="flex items-center gap-2">
                     <Gauge className="h-4 w-4 text-primary" />
-                    Current Odometer (km)
+                    {t('currentOdometer')}
                     {!isEditing && <span className="text-destructive">*</span>}
                   </Label>
                   <Input
@@ -371,16 +371,16 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                     required={!isEditing}
                     value={formData.mileage}
                     onChange={(e) => setFormData({ ...formData, mileage: e.target.value })}
-                    placeholder="e.g. 125000"
+                    placeholder={t('odometerPlaceholder')}
                     className="h-11 bg-background/50 border-border/50"
                   />
                   {currentMileage !== null ? (
                     <p className="text-xs text-muted-foreground">
-                      Last recorded mileage: {currentMileage.toLocaleString()} km. Saving a higher reading updates the vehicle&apos;s current mileage.
+                      {t('lastRecordedMileage', { mileage: currentMileage.toLocaleString() })}
                     </p>
                   ) : (
                     <p className="text-xs text-muted-foreground">
-                      No mileage recorded yet for this vehicle. This reading will become its current mileage.
+                      {t('noMileageRecorded')}
                     </p>
                   )}
                 </div>
@@ -391,7 +391,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
           {/* Customer Selection */}
           <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold">Customer</h2>
+              <h2 className="text-lg font-semibold">{t('customer')}</h2>
               <Button
                 type="button"
                 variant="outline"
@@ -400,18 +400,18 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                 className="text-xs"
               >
                 <Plus className="h-3 w-3 mr-1" />
-                Add Customer
+                {t('addCustomer')}
               </Button>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="customer">Select Customer</Label>
+              <Label htmlFor="customer">{t('selectCustomer')}</Label>
               <Select
                 value={formData.customer_id}
                 onValueChange={(value) => setFormData({ ...formData, customer_id: value })}
               >
                 <SelectTrigger className="h-11 bg-background/50 border-border/50">
-                  <SelectValue placeholder="Choose a customer (optional)">
+                  <SelectValue placeholder={t('chooseCustomerOptional')}>
                     {formData.customer_id && (
                       <div className="flex items-center gap-2">
                         <User className="h-4 w-4 text-muted-foreground" />
@@ -439,13 +439,13 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
 
           {/* Job Details */}
           <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-            <h2 className="text-lg font-semibold mb-4">Job Details</h2>
+            <h2 className="text-lg font-semibold mb-4">{t('jobDetails')}</h2>
             <div className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="title">Job Title *</Label>
+                <Label htmlFor="title">{t('jobTitle')} *</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., Oil Change and Tire Rotation"
+                  placeholder={t('jobTitlePlaceholder')}
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="h-11 bg-background/50 border-border/50"
@@ -454,10 +454,10 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('descriptionLabel')}</Label>
                 <Textarea
                   id="description"
-                  placeholder="Detailed description of the work to be done..."
+                  placeholder={t('jobDescriptionPlaceholder')}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="min-h-[100px] bg-background/50 border-border/50"
@@ -466,7 +466,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="priority">Priority</Label>
+                  <Label htmlFor="priority">{t('priority')}</Label>
                   <Select
                     value={formData.priority}
                     onValueChange={(value) => setFormData({ ...formData, priority: value })}
@@ -475,22 +475,22 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="normal">Normal</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
+                      <SelectItem value="low">{t('low')}</SelectItem>
+                      <SelectItem value="normal">{t('normal')}</SelectItem>
+                      <SelectItem value="high">{t('high')}</SelectItem>
+                      <SelectItem value="urgent">{t('urgent')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="assigned_employee">Assign To</Label>
+                  <Label htmlFor="assigned_employee">{t('assignTo')}</Label>
                   <Select
                     value={formData.assigned_employee_id}
                     onValueChange={(value) => setFormData({ ...formData, assigned_employee_id: value })}
                   >
                     <SelectTrigger className="h-11 bg-background/50 border-border/50">
-                      <SelectValue placeholder="Select employee (optional)">
+                      <SelectValue placeholder={t('selectEmployeeOptional')}>
                         {formData.assigned_employee_id && (
                           <div className="flex items-center gap-2">
                             <Users className="h-4 w-4 text-muted-foreground" />
@@ -503,7 +503,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                     <SelectContent>
                       {employees.length === 0 ? (
                         <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                          No employees found. Add employees in Settings.
+                          {t('noEmployeesFound')}
                         </div>
                       ) : (
                         employees.map((employee) => (
@@ -524,7 +524,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
               <div className="grid grid-cols-2 gap-4">
                 {isEditing && (
                   <div className="space-y-2">
-                    <Label htmlFor="status">Status</Label>
+                    <Label htmlFor="status">{t('status')}</Label>
                     <Select
                       value={formData.status}
                       onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -533,11 +533,11 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="pending">Pending</SelectItem>
-                        <SelectItem value="in_progress">In Progress</SelectItem>
-                        <SelectItem value="awaiting_parts">Awaiting Parts</SelectItem>
-                        <SelectItem value="completed">Completed</SelectItem>
-                        <SelectItem value="invoiced">Invoiced</SelectItem>
+                        <SelectItem value="pending">{t('pending')}</SelectItem>
+                        <SelectItem value="in_progress">{t('inProgress')}</SelectItem>
+                        <SelectItem value="awaiting_parts">{t('awaitingParts')}</SelectItem>
+                        <SelectItem value="completed">{t('completed')}</SelectItem>
+                        <SelectItem value="invoiced">{t('invoiced')}</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -546,13 +546,13 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="estimated_hours">Estimated Hours</Label>
+                  <Label htmlFor="estimated_hours">{t('estimatedHours')}</Label>
                   <Input
                     id="estimated_hours"
                     type="number"
                     step="0.5"
                     min="0"
-                    placeholder="e.g., 2.5"
+                    placeholder={t('estimatedHoursPlaceholder')}
                     value={formData.estimated_hours}
                     onChange={(e) => setFormData({ ...formData, estimated_hours: e.target.value })}
                     className="h-11 bg-background/50 border-border/50"
@@ -560,7 +560,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="due_date">Due Date</Label>
+                  <Label htmlFor="due_date">{t('dueDate')}</Label>
                   <Input
                     id="due_date"
                     type="date"
@@ -589,14 +589,14 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : null}
-              {isEditing ? 'Update Job Card' : 'Create Job Card'}
+              {isEditing ? t('updateJobCard') : t('createJobCard')}
             </Button>
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
             >
-              Cancel
+              {tc('cancel')}
             </Button>
           </div>
         </form>

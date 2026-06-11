@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -35,6 +36,8 @@ interface VehicleModalProps {
 }
 
 export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, onCreated }: VehicleModalProps) {
+  const t = useTranslations('vehicles')
+  const tc = useTranslations('common')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
@@ -108,7 +111,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
       onCreated(data)
       onClose()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create vehicle')
+      setError(err instanceof Error ? err.message : t('failedToCreate'))
     } finally {
       setIsLoading(false)
     }
@@ -122,7 +125,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
             <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
               <Car className="h-4 w-4 text-amber-500" />
             </div>
-            Add New Vehicle
+            {t('addNewVehicle')}
           </DialogTitle>
         </DialogHeader>
 
@@ -130,12 +133,12 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
           {/* Vehicle Photos */}
           <div className="grid grid-cols-2 gap-4">
             <PhotoUpload
-              label="Primary Photo"
+              label={t('primaryPhoto')}
               value={formData.primary_photo}
               onChange={(url) => setFormData({ ...formData, primary_photo: url })}
             />
             <PhotoUpload
-              label="Secondary Photo"
+              label={t('secondaryPhoto')}
               value={formData.secondary_photo}
               onChange={(url) => setFormData({ ...formData, secondary_photo: url })}
             />
@@ -143,10 +146,10 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="vehicle-make">Make *</Label>
+              <Label htmlFor="vehicle-make">{t('make')} *</Label>
               <Input
                 id="vehicle-make"
-                placeholder="e.g., Toyota"
+                placeholder={t('makePlaceholder')}
                 value={formData.make}
                 onChange={(e) => setFormData({ ...formData, make: e.target.value })}
                 className="h-10 bg-background/50 border-border/50"
@@ -154,10 +157,10 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vehicle-model">Model *</Label>
+              <Label htmlFor="vehicle-model">{t('model')} *</Label>
               <Input
                 id="vehicle-model"
-                placeholder="e.g., Camry"
+                placeholder={t('modelPlaceholder')}
                 value={formData.model}
                 onChange={(e) => setFormData({ ...formData, model: e.target.value })}
                 className="h-10 bg-background/50 border-border/50"
@@ -168,7 +171,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
 
           <div className="grid grid-cols-3 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="vehicle-year">Year</Label>
+              <Label htmlFor="vehicle-year">{t('year')}</Label>
               <Input
                 id="vehicle-year"
                 type="number"
@@ -181,17 +184,17 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vehicle-color">Color</Label>
+              <Label htmlFor="vehicle-color">{t('color')}</Label>
               <Input
                 id="vehicle-color"
-                placeholder="Silver"
+                placeholder={t('colorPlaceholder')}
                 value={formData.color}
                 onChange={(e) => setFormData({ ...formData, color: e.target.value })}
                 className="h-10 bg-background/50 border-border/50"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vehicle-mileage">Mileage (km)</Label>
+              <Label htmlFor="vehicle-mileage">{t('mileageKm')}</Label>
               <Input
                 id="vehicle-mileage"
                 type="number"
@@ -205,7 +208,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="vehicle-license">License Plate</Label>
+              <Label htmlFor="vehicle-license">{t('licensePlate')}</Label>
               <Input
                 id="vehicle-license"
                 placeholder="ABC-1234"
@@ -215,10 +218,10 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vehicle-vin">VIN</Label>
+              <Label htmlFor="vehicle-vin">{t('vin')}</Label>
               <Input
                 id="vehicle-vin"
-                placeholder="Vehicle ID number"
+                placeholder={t('vinPlaceholder')}
                 value={formData.vin}
                 onChange={(e) => setFormData({ ...formData, vin: e.target.value })}
                 className="h-10 bg-background/50 border-border/50"
@@ -227,10 +230,10 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="vehicle-notes">Notes</Label>
+            <Label htmlFor="vehicle-notes">{t('notes')}</Label>
             <Textarea
               id="vehicle-notes"
-              placeholder="Any additional notes about the vehicle..."
+              placeholder={t('vehicleNotesPlaceholder')}
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               className="min-h-[80px] bg-background/50 border-border/50"
@@ -245,7 +248,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
 
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button
               type="submit"
@@ -253,7 +256,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
               className="bg-amber-600 hover:bg-amber-700"
             >
               {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              Add Vehicle
+              {t('addVehicle')}
             </Button>
           </div>
         </form>

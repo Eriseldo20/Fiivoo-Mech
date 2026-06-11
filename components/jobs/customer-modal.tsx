@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -22,6 +23,8 @@ interface CustomerModalProps {
 }
 
 export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModalProps) {
+  const t = useTranslations('customers')
+  const tc = useTranslations('common')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState({
@@ -59,7 +62,7 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
       setFormData({ name: '', email: '', phone: '', address: '', notes: '' })
       onClose()
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create customer')
+      setError(err instanceof Error ? err.message : t('failedToCreate'))
     } finally {
       setIsLoading(false)
     }
@@ -73,16 +76,16 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
             <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
               <User className="h-4 w-4 text-emerald-500" />
             </div>
-            Add New Customer
+            {t('addNewCustomer')}
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="customer-name">Name *</Label>
+            <Label htmlFor="customer-name">{t('name')} *</Label>
             <Input
               id="customer-name"
-              placeholder="Customer name"
+              placeholder={t('customerNamePlaceholder')}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="h-10 bg-background/50 border-border/50"
@@ -92,7 +95,7 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="customer-phone">Phone</Label>
+              <Label htmlFor="customer-phone">{t('phone')}</Label>
               <Input
                 id="customer-phone"
                 type="tel"
@@ -103,7 +106,7 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="customer-email">Email</Label>
+              <Label htmlFor="customer-email">{t('email')}</Label>
               <Input
                 id="customer-email"
                 type="email"
@@ -116,10 +119,10 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="customer-address">Address</Label>
+            <Label htmlFor="customer-address">{t('address')}</Label>
             <Input
               id="customer-address"
-              placeholder="Street address"
+              placeholder={t('addressPlaceholder')}
               value={formData.address}
               onChange={(e) => setFormData({ ...formData, address: e.target.value })}
               className="h-10 bg-background/50 border-border/50"
@@ -127,10 +130,10 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="customer-notes">Notes</Label>
+            <Label htmlFor="customer-notes">{t('notes')}</Label>
             <Textarea
               id="customer-notes"
-              placeholder="Any additional notes..."
+              placeholder={t('notesPlaceholder')}
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
               className="min-h-[80px] bg-background/50 border-border/50"
@@ -145,7 +148,7 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
 
           <div className="flex justify-end gap-3 pt-2">
             <Button type="button" variant="outline" onClick={onClose}>
-              Cancel
+              {tc('cancel')}
             </Button>
             <Button
               type="submit"
@@ -153,7 +156,7 @@ export function CustomerModal({ open, onClose, shopId, onCreated }: CustomerModa
               className="bg-emerald-600 hover:bg-emerald-700"
             >
               {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              Add Customer
+              {t('addCustomer')}
             </Button>
           </div>
         </form>

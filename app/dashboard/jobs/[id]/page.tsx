@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { getTranslations } from 'next-intl/server'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { formatDistanceToNow, format } from 'date-fns'
@@ -23,18 +24,18 @@ import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 
 const statusStyles = {
-  pending: { label: 'Pending', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
-  in_progress: { label: 'In Progress', class: 'bg-primary/10 text-primary border-primary/20' },
-  awaiting_parts: { label: 'Awaiting Parts', class: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
-  completed: { label: 'Completed', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
-  invoiced: { label: 'Invoiced', class: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
+  pending: { key: 'pending', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
+  in_progress: { key: 'inProgress', class: 'bg-primary/10 text-primary border-primary/20' },
+  awaiting_parts: { key: 'awaitingParts', class: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
+  completed: { key: 'completed', class: 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' },
+  invoiced: { key: 'invoiced', class: 'bg-blue-500/10 text-blue-500 border-blue-500/20' },
 }
 
 const priorityStyles = {
-  low: { label: 'Low', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
-  normal: { label: 'Normal', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
-  high: { label: 'High', class: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
-  urgent: { label: 'Urgent', class: 'bg-red-500/10 text-red-500 border-red-500/20' },
+  low: { key: 'low', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
+  normal: { key: 'normal', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
+  high: { key: 'high', class: 'bg-orange-500/10 text-orange-500 border-orange-500/20' },
+  urgent: { key: 'urgent', class: 'bg-red-500/10 text-red-500 border-red-500/20' },
 }
 
 export default async function JobDetailPage({

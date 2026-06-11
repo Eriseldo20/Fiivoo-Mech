@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Camera, X, Loader2, Plus } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
@@ -25,6 +26,7 @@ interface JobPhotosProps {
 const MAX_PER_CATEGORY = 5
 
 export function JobPhotos({ jobId, shopId, photos }: JobPhotosProps) {
+  const t = useTranslations('jobPhotos')
   const before = photos.filter((p) => p.category === 'before')
   const after = photos.filter((p) => p.category === 'after')
 
@@ -34,11 +36,10 @@ export function JobPhotos({ jobId, shopId, photos }: JobPhotosProps) {
         <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
           <Camera className="h-4 w-4 text-primary" />
         </div>
-        <h2 className="text-lg font-semibold">Job Photos</h2>
+        <h2 className="text-lg font-semibold">{t('jobPhotos')}</h2>
       </div>
       <p className="text-sm text-muted-foreground mb-6">
-        Upload up to {MAX_PER_CATEGORY} photos for each stage. Phone photos are
-        automatically compressed before upload.
+        {t('uploadHint', { max: MAX_PER_CATEGORY })}
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -46,14 +47,14 @@ export function JobPhotos({ jobId, shopId, photos }: JobPhotosProps) {
           jobId={jobId}
           shopId={shopId}
           category="before"
-          title="Before"
+          title={t('before')}
           photos={before}
         />
         <PhotoColumn
           jobId={jobId}
           shopId={shopId}
           category="after"
-          title="After"
+          title={t('after')}
           photos={after}
         />
       </div>
@@ -75,6 +76,7 @@ function PhotoColumn({
   photos: JobPhoto[]
 }) {
   const router = useRouter()
+  const t = useTranslations('jobPhotos')
   const inputRef = useRef<HTMLInputElement>(null)
   const [isUploading, setIsUploading] = useState(false)
   const [busyId, setBusyId] = useState<string | null>(null)
@@ -94,7 +96,7 @@ function PhotoColumn({
     try {
       for (const original of selected) {
         if (!original.type.startsWith('image/')) {
-          setError('Only image files are allowed')
+          setError(t('onlyImages'))
           continue
         }
 
@@ -112,7 +114,7 @@ function PhotoColumn({
         const res = await fetch('/api/upload', { method: 'POST', body: formData })
         if (!res.ok) {
           const data = await res.json().catch(() => ({}))
-          throw new Error(data.error || 'Upload failed')
+          throw new Error(data.error || t('uploadFailed'))
         }
         const { pathname } = await res.json()
 
@@ -127,7 +129,7 @@ function PhotoColumn({
       router.refresh()
     } catch (err) {
       console.error('Photo upload error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to upload photo')
+      setError(err instanceof Error ? err.message : t('failedToUpload'))
     } finally {
       setIsUploading(false)
       if (inputRef.current) inputRef.current.value = ''
@@ -147,7 +149,7 @@ function PhotoColumn({
       router.refresh()
     } catch (err) {
       console.error('Photo delete error:', err)
-      setError('Failed to remove photo')
+      setError(t('failedToRemove'))
     } finally {
       setBusyId(null)
     }
@@ -170,15 +172,15 @@ function PhotoColumn({
           >
             <ImageLightbox
               src={getBlobUrl(photo.pathname) || ''}
-              alt={`${title} photo`}
-              caption={photo.caption || `${title} photo`}
+              alt={t('photoAlt', { title })}
+              caption={photo.caption || t('photoAlt', { title })}
               className="w-full h-full object-cover"
             />
             <button
               type="button"
               onClick={() => handleDelete(photo)}
               disabled={busyId === photo.id}
-              aria-label="Remove photo"
+              aria-label={t('removePhoto')}
               className="absolute top-1 right-1 p-1 rounded-md bg-black/60 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500 disabled:opacity-100"
             >
               {busyId === photo.id ? (
@@ -207,7 +209,7 @@ function PhotoColumn({
             ) : (
               <>
                 <Plus className="h-5 w-5 text-muted-foreground" />
-                <span className="text-[10px] text-muted-foreground">Add</span>
+                <span className="text-[10px] text-muted-foreground">{t('add')}</span>
               </>
             )}
           </button>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -49,6 +50,7 @@ const statusColors: Record<string, string> = {
 }
 
 export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupProps) {
+  const t = useTranslations('jobs')
   const [vin, setVin] = useState('')
   const [loading, setLoading] = useState(false)
   const [searched, setSearched] = useState(false)
@@ -102,7 +104,7 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
       }
     } catch (err) {
       console.error('VIN lookup error:', err)
-      setError('Failed to look up VIN. Please try again.')
+      setError(t('vinLookupFailed'))
     } finally {
       setLoading(false)
     }
@@ -121,13 +123,13 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
   return (
     <div className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="vin-search" className="text-foreground">VIN Lookup</Label>
+        <Label htmlFor="vin-search" className="text-foreground">{t('vinLookup')}</Label>
         <div className="flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="vin-search"
-              placeholder="Enter VIN to search vehicle history..."
+              placeholder={t('vinSearchPlaceholder')}
               value={vin}
               onChange={(e) => setVin(e.target.value.toUpperCase())}
               onKeyDown={handleKeyDown}
@@ -140,11 +142,11 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
             disabled={loading || !vin.trim()}
             className="bg-primary hover:bg-primary/90"
           >
-            {loading ? <Spinner className="h-4 w-4" /> : 'Search'}
+            {loading ? <Spinner className="h-4 w-4" /> : t('search')}
           </Button>
         </div>
         <p className="text-xs text-muted-foreground">
-          Enter the 17-character Vehicle Identification Number
+          {t('vinHint')}
         </p>
       </div>
 
@@ -193,7 +195,7 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
                         />
                         <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1">
                           <Camera className="h-3 w-3" />
-                          Primary
+                          {t('primary')}
                         </div>
                       </div>
                     )}
@@ -206,7 +208,7 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
                         />
                         <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1">
                           <Camera className="h-3 w-3" />
-                          Secondary
+                          {t('secondary')}
                         </div>
                       </div>
                     )}
@@ -215,20 +217,20 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
 
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
                   <div>
-                    <span className="text-muted-foreground">License Plate</span>
+                    <span className="text-muted-foreground">{t('licensePlate')}</span>
                     <p className="font-medium">{vehicle.license_plate || 'N/A'}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Color</span>
+                    <span className="text-muted-foreground">{t('color')}</span>
                     <p className="font-medium">{vehicle.color || 'N/A'}</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Mileage</span>
+                    <span className="text-muted-foreground">{t('mileage')}</span>
                     <p className="font-medium">{vehicle.mileage?.toLocaleString() || 'N/A'} km</p>
                   </div>
                   <div>
-                    <span className="text-muted-foreground">Services</span>
-                    <p className="font-medium">{vehicle.service_history?.length || 0} jobs</p>
+                    <span className="text-muted-foreground">{t('services')}</span>
+                    <p className="font-medium">{t('jobsCount', { count: vehicle.service_history?.length || 0 })}</p>
                   </div>
                 </div>
 
@@ -236,7 +238,7 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
                   <div className="pt-3 border-t border-border">
                     <div className="flex items-center gap-2 mb-3">
                       <History className="h-4 w-4 text-muted-foreground" />
-                      <span className="text-sm font-medium">Service History</span>
+                      <span className="text-sm font-medium">{t('serviceHistory')}</span>
                     </div>
                     <div className="space-y-2 max-h-48 overflow-y-auto pr-2">
                       {vehicle.service_history.map((job) => (
@@ -269,7 +271,7 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
                   onClick={() => onVehicleFound(vehicle)}
                   className="w-full bg-primary hover:bg-primary/90"
                 >
-                  Use This Vehicle
+                  {t('useThisVehicle')}
                 </Button>
               </CardContent>
             </Card>
@@ -281,16 +283,16 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
                     <Car className="h-6 w-6 text-muted-foreground" />
                   </div>
                   <div>
-                    <p className="font-medium">No vehicle found</p>
+                    <p className="font-medium">{t('noVehicleFound')}</p>
                     <p className="text-sm text-muted-foreground">
-                      VIN <span className="font-mono">{vin}</span> is not in the system yet
+                      {t('vinNotInSystem', { vin })}
                     </p>
                   </div>
                   <Button 
                     onClick={handleUseNewVehicle}
                     className="bg-primary hover:bg-primary/90"
                   >
-                    Register New Vehicle
+                    {t('registerNewVehicle')}
                   </Button>
                 </div>
               </CardContent>
