@@ -20,6 +20,7 @@ import { formatCurrency } from '@/lib/currency'
 import { getBlobUrl } from '@/lib/blob'
 import { JobStatusActions } from '@/components/jobs/job-status-actions'
 import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
+import { ImageLightbox } from '@/components/ui/image-lightbox'
 
 const statusStyles = {
   pending: { label: 'Pending', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
@@ -202,12 +203,13 @@ export default async function JobDetailPage({
                     <div className="grid grid-cols-2 gap-2">
                       {job.vehicle.primary_photo && (
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
-                          <img
+                          <ImageLightbox
                             src={getBlobUrl(job.vehicle.primary_photo) || ''}
                             alt="Primary vehicle photo"
+                            caption="Primary vehicle photo"
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white flex items-center gap-1">
+                          <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-2.5 w-2.5" />
                             Primary
                           </div>
@@ -215,12 +217,13 @@ export default async function JobDetailPage({
                       )}
                       {job.vehicle.secondary_photo && (
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
-                          <img
+                          <ImageLightbox
                             src={getBlobUrl(job.vehicle.secondary_photo) || ''}
                             alt="Secondary vehicle photo"
+                            caption="Secondary vehicle photo"
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white flex items-center gap-1">
+                          <div className="absolute bottom-1 left-1 px-1.5 py-0.5 rounded bg-black/60 text-[10px] text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-2.5 w-2.5" />
                             Secondary
                           </div>

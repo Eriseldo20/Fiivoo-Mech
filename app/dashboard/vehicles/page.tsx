@@ -10,6 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Search, Car, History, User, Wrench, Calendar, Hash, Camera, Edit } from 'lucide-react'
 import { format } from 'date-fns'
 import { getBlobUrl } from '@/lib/blob'
+import { ImageLightbox } from '@/components/ui/image-lightbox'
 import Link from 'next/link'
 
 interface Vehicle {
@@ -304,12 +305,13 @@ export default function VehiclesPage() {
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       {selectedVehicle.primary_photo && (
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
-                          <img
+                          <ImageLightbox
                             src={getBlobUrl(selectedVehicle.primary_photo) || ''}
                             alt="Primary vehicle photo"
+                            caption="Primary vehicle photo"
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1">
+                          <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-3 w-3" />
                             Primary
                           </div>
@@ -317,12 +319,13 @@ export default function VehiclesPage() {
                       )}
                       {selectedVehicle.secondary_photo && (
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
-                          <img
+                          <ImageLightbox
                             src={getBlobUrl(selectedVehicle.secondary_photo) || ''}
                             alt="Secondary vehicle photo"
+                            caption="Secondary vehicle photo"
                             className="w-full h-full object-cover"
                           />
-                          <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1">
+                          <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-3 w-3" />
                             Secondary
                           </div>

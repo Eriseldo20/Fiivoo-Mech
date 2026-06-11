@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { cn } from '@/lib/utils'
 import { getBlobUrl } from '@/lib/blob'
 import { compressImage } from '@/lib/image-compress'
+import { ImageLightbox } from '@/components/ui/image-lightbox'
 
 export interface JobPhoto {
   id: string
@@ -167,9 +168,10 @@ function PhotoColumn({
             key={photo.id}
             className="relative group aspect-square rounded-lg overflow-hidden border border-border bg-background/50"
           >
-            <img
+            <ImageLightbox
               src={getBlobUrl(photo.pathname) || ''}
               alt={`${title} photo`}
+              caption={photo.caption || `${title} photo`}
               className="w-full h-full object-cover"
             />
             <button
