@@ -305,7 +305,7 @@ export default function InventoryPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{inventory.length}</p>
-                  <p className="text-sm text-muted-foreground">Total Items</p>
+                  <p className="text-sm text-muted-foreground">{t('totalItems')}</p>
                 </div>
               </div>
             </CardContent>
@@ -318,7 +318,7 @@ export default function InventoryPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{lowStockItems.length}</p>
-                  <p className="text-sm text-muted-foreground">Low Stock</p>
+                  <p className="text-sm text-muted-foreground">{t('lowStock')}</p>
                 </div>
               </div>
             </CardContent>
@@ -331,7 +331,7 @@ export default function InventoryPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-semibold">{formatCurrency(totalValue)}</p>
-                  <p className="text-sm text-muted-foreground">Inventory Value</p>
+                  <p className="text-sm text-muted-foreground">{t('inventoryValue')}</p>
                 </div>
               </div>
             </CardContent>
@@ -346,7 +346,7 @@ export default function InventoryPage() {
                   <p className="text-2xl font-semibold">
                     {inventory.reduce((acc, item) => acc + item.quantity, 0)}
                   </p>
-                  <p className="text-sm text-muted-foreground">Total Units</p>
+                  <p className="text-sm text-muted-foreground">{t('totalUnits')}</p>
                 </div>
               </div>
             </CardContent>
@@ -359,17 +359,17 @@ export default function InventoryPage() {
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
                 <AlertTriangle className="h-5 w-5 text-amber-500" />
-                <span className="font-semibold text-amber-500">Low Stock Alert</span>
+                <span className="font-semibold text-amber-500">{t('lowStockAlert')}</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {lowStockItems.slice(0, 5).map(item => (
                   <Badge key={item.id} variant="outline" className="bg-amber-500/10 text-amber-600 border-amber-500/20">
-                    {item.name} ({item.quantity} left)
+                    {t('itemsLeft', { name: item.name, count: item.quantity })}
                   </Badge>
                 ))}
                 {lowStockItems.length > 5 && (
                   <Badge variant="outline" className="bg-amber-500/10 text-amber-600 border-amber-500/20">
-                    +{lowStockItems.length - 5} more
+                    {t('moreItems', { count: lowStockItems.length - 5 })}
                   </Badge>
                 )}
               </div>
@@ -382,7 +382,7 @@ export default function InventoryPage() {
           <div className="relative flex-1 min-w-0">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Search inventory..."
+              placeholder={t('searchInventory')}
               className="pl-10"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
@@ -391,12 +391,12 @@ export default function InventoryPage() {
           <div className="flex gap-2">
             <Select value={categoryFilter} onValueChange={setCategoryFilter}>
               <SelectTrigger className="w-full sm:w-[150px]">
-                <SelectValue placeholder="All Categories" />
+                <SelectValue placeholder={t('allCategories')} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Categories</SelectItem>
+                <SelectItem value="all">{t('allCategories')}</SelectItem>
                 {categories.map(cat => (
-                  <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                  <SelectItem key={cat} value={cat}>{t(`category_${cat}`)}</SelectItem>
                 ))}
               </SelectContent>
             </Select>
@@ -405,8 +405,8 @@ export default function InventoryPage() {
               setShowAddDialog(true)
             }} className="whitespace-nowrap">
               <Plus className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">Add Item</span>
-              <span className="sm:hidden">Add</span>
+              <span className="hidden sm:inline">{t('addItem')}</span>
+              <span className="sm:hidden">{t('add')}</span>
             </Button>
           </div>
         </div>
@@ -418,14 +418,14 @@ export default function InventoryPage() {
               <div className="mx-auto w-12 h-12 rounded-full bg-muted/50 flex items-center justify-center mb-4">
                 <Package className="h-6 w-6 text-muted-foreground" />
               </div>
-              <h3 className="font-semibold mb-1">No inventory items found</h3>
+              <h3 className="font-semibold mb-1">{t('noItemsFound')}</h3>
               <p className="text-sm text-muted-foreground mb-4">
-                {searchQuery || categoryFilter !== 'all' ? 'Try adjusting your filters' : 'Get started by adding your first item'}
+                {searchQuery || categoryFilter !== 'all' ? t('tryAdjustingFilters') : t('getStartedAdding')}
               </p>
               {!searchQuery && categoryFilter === 'all' && (
                 <Button onClick={() => { resetForm(); setShowAddDialog(true); }}>
                   <Plus className="h-4 w-4 mr-2" />
-                  Add Item
+                  {t('addItem')}
                 </Button>
               )}
             </CardContent>
@@ -451,7 +451,7 @@ export default function InventoryPage() {
                         <div className="flex flex-wrap gap-2 mb-3">
                           {item.category && (
                             <Badge variant="outline" className={`text-xs ${categoryColors[item.category] || categoryColors.other}`}>
-                              {categories.find(c => c.value === item.category)?.label || item.category}
+                              {item.category ? t(`category_${item.category}`) : item.category}
                             </Badge>
                           )}
                           {item.location && (
@@ -463,17 +463,17 @@ export default function InventoryPage() {
                         </div>
                         <div className="grid grid-cols-3 gap-2 text-sm">
                           <div>
-                            <p className="text-muted-foreground text-xs">Qty</p>
+                            <p className="text-muted-foreground text-xs">{t('qty')}</p>
                             <p className={`font-medium ${item.quantity <= item.min_quantity ? 'text-amber-500' : ''}`}>
                               {item.quantity}
                             </p>
                           </div>
                           <div>
-                            <p className="text-muted-foreground text-xs">Cost</p>
+                            <p className="text-muted-foreground text-xs">{t('cost')}</p>
                             <p className="font-medium">{item.unit_cost ? formatCurrency(item.unit_cost) : '-'}</p>
                           </div>
                           <div>
-                            <p className="text-muted-foreground text-xs">Price</p>
+                            <p className="text-muted-foreground text-xs">{t('price')}</p>
                             <p className="font-medium">{item.sell_price ? formatCurrency(item.sell_price) : '-'}</p>
                           </div>
                         </div>
@@ -518,14 +518,14 @@ export default function InventoryPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>Item</TableHead>
-                  <TableHead>SKU</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead className="text-right">Qty</TableHead>
-                  <TableHead className="text-right">Unit Cost</TableHead>
-                  <TableHead className="text-right">Sell Price</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead className="w-[100px]">Actions</TableHead>
+                  <TableHead>{t('item')}</TableHead>
+                  <TableHead>{t('sku')}</TableHead>
+                  <TableHead>{t('category')}</TableHead>
+                  <TableHead className="text-right">{t('qty')}</TableHead>
+                  <TableHead className="text-right">{t('unitCost')}</TableHead>
+                  <TableHead className="text-right">{t('sellPrice')}</TableHead>
+                  <TableHead>{t('location')}</TableHead>
+                  <TableHead className="w-[100px]">{t('actions')}</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -547,7 +547,7 @@ export default function InventoryPage() {
                     <TableCell>
                       {item.category && (
                         <Badge variant="outline" className={categoryColors[item.category] || categoryColors.other}>
-                          {categories.find(c => c.value === item.category)?.label || item.category}
+                          {item.category ? t(`category_${item.category}`) : item.category}
                         </Badge>
                       )}
                     </TableCell>
@@ -585,7 +585,7 @@ export default function InventoryPage() {
                             setRestockItem(item)
                             setShowRestockDialog(true)
                           }}
-                          title="Restock"
+                          title={t('restock')}
                         >
                           <TrendingUp className="h-4 w-4 text-emerald-500" />
                         </Button>
@@ -626,28 +626,28 @@ export default function InventoryPage() {
       }}>
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>{editingItem ? 'Edit Item' : 'Add Inventory Item'}</DialogTitle>
+            <DialogTitle>{editingItem ? t('editItem') : t('addInventoryItem')}</DialogTitle>
             <DialogDescription>
-              {editingItem ? 'Update item information' : 'Add a new item to your inventory'}
+              {editingItem ? t('updateItemInfo') : t('addNewItemDesc')}
             </DialogDescription>
           </DialogHeader>
 
           <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2 col-span-2">
-                <Label htmlFor="name">Item Name *</Label>
+                <Label htmlFor="name">{t('itemName')} *</Label>
                 <Input
                   id="name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder="Oil Filter"
+                  placeholder={t('itemNamePlaceholder')}
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="sku">SKU</Label>
+                <Label htmlFor="sku">{t('sku')}</Label>
                 <Input
                   id="sku"
                   value={formData.sku}
@@ -656,14 +656,14 @@ export default function InventoryPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="category">Category</Label>
+                <Label htmlFor="category">{t('category')}</Label>
                 <Select value={formData.category} onValueChange={(v) => setFormData({ ...formData, category: v })}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map(cat => (
-                      <SelectItem key={cat.value} value={cat.value}>{cat.label}</SelectItem>
+                      <SelectItem key={cat} value={cat}>{t(`category_${cat}`)}</SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
@@ -671,19 +671,19 @@ export default function InventoryPage() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Description</Label>
+              <Label htmlFor="description">{t('descriptionLabel')}</Label>
               <Textarea
                 id="description"
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                placeholder="Brief description..."
+                placeholder={t('descriptionPlaceholder')}
                 rows={2}
               />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="quantity">Quantity</Label>
+                <Label htmlFor="quantity">{t('quantity')}</Label>
                 <Input
                   id="quantity"
                   type="number"
@@ -692,7 +692,7 @@ export default function InventoryPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="min_quantity">Min Quantity (Alert)</Label>
+                <Label htmlFor="min_quantity">{t('minQuantity')}</Label>
                 <Input
                   id="min_quantity"
                   type="number"
@@ -704,7 +704,7 @@ export default function InventoryPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="unit_cost">Unit Cost ($)</Label>
+                <Label htmlFor="unit_cost">{t('unitCostField')}</Label>
                 <Input
                   id="unit_cost"
                   type="number"
@@ -715,7 +715,7 @@ export default function InventoryPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="sell_price">Sell Price ($)</Label>
+                <Label htmlFor="sell_price">{t('sellPriceField')}</Label>
                 <Input
                   id="sell_price"
                   type="number"
@@ -729,7 +729,7 @@ export default function InventoryPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="location">Storage Location</Label>
+                <Label htmlFor="location">{t('storageLocation')}</Label>
                 <Input
                   id="location"
                   value={formData.location}
@@ -738,7 +738,7 @@ export default function InventoryPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="supplier">Supplier</Label>
+                <Label htmlFor="supplier">{t('supplier')}</Label>
                 <Input
                   id="supplier"
                   value={formData.supplier}
@@ -751,13 +751,13 @@ export default function InventoryPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleSave} 
               disabled={isSaving || !formData.name}
             >
-              {isSaving ? 'Saving...' : editingItem ? 'Update' : 'Add Item'}
+              {isSaving ? t('saving') : editingItem ? t('update') : t('addItem')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -773,25 +773,25 @@ export default function InventoryPage() {
       }}>
         <DialogContent className="max-w-sm">
           <DialogHeader>
-            <DialogTitle>Restock Item</DialogTitle>
+            <DialogTitle>{t('restockItem')}</DialogTitle>
             <DialogDescription>
-              Add stock to {restockItem?.name}
+              {t('addStockTo', { name: restockItem?.name ?? '' })}
             </DialogDescription>
           </DialogHeader>
 
           <div className="py-4">
             <div className="text-center mb-4">
-              <p className="text-sm text-muted-foreground">Current Quantity</p>
+              <p className="text-sm text-muted-foreground">{t('currentQuantity')}</p>
               <p className="text-3xl font-semibold">{restockItem?.quantity}</p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="restock_qty">Add Quantity</Label>
+              <Label htmlFor="restock_qty">{t('addQuantity')}</Label>
               <Input
                 id="restock_qty"
                 type="number"
                 value={restockQty}
                 onChange={(e) => setRestockQty(e.target.value)}
-                placeholder="Enter quantity to add"
+                placeholder={t('enterQuantityToAdd')}
                 min="1"
               />
             </div>
@@ -799,14 +799,14 @@ export default function InventoryPage() {
 
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowRestockDialog(false)}>
-              Cancel
+              {t('cancel')}
             </Button>
             <Button 
               onClick={handleRestock} 
               disabled={!restockQty || parseInt(restockQty) <= 0}
             >
               <TrendingUp className="h-4 w-4 mr-2" />
-              Restock
+              {t('restock')}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -816,15 +816,15 @@ export default function InventoryPage() {
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Item</AlertDialogTitle>
+            <AlertDialogTitle>{t('deleteItem')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this inventory item? This action cannot be undone.
+              {t('deleteConfirm')}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('cancel')}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDelete} className="bg-red-500 hover:bg-red-600">
-              Delete
+              {t('delete')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

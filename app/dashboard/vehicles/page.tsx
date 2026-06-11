@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Header } from '@/components/dashboard/header'
 import { Input } from '@/components/ui/input'
@@ -53,6 +54,7 @@ const statusColors: Record<string, string> = {
 }
 
 export default function VehiclesPage() {
+  const t = useTranslations('vehicles')
   const [searchVin, setSearchVin] = useState('')
   const [searchPlate, setSearchPlate] = useState('')
   const [vehicles, setVehicles] = useState<Vehicle[]>([])
@@ -172,8 +174,8 @@ export default function VehiclesPage() {
   return (
     <div className="space-y-4 md:space-y-6 p-4 md:p-6 pb-24 md:pb-6">
       <Header 
-        title="Vehicle Lookup" 
-        description="Search by VIN or license plate to view vehicle info and service history"
+        title={t('title')} 
+        description={t('description')}
       />
 
       {/* Search Section */}
@@ -182,13 +184,13 @@ export default function VehiclesPage() {
           <CardHeader className="pb-2 md:pb-3 p-4 md:p-6">
             <CardTitle className="text-sm md:text-base flex items-center gap-2">
               <Hash className="h-4 w-4 text-primary" />
-              Search by VIN
+              {t('searchByVin')}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 md:p-6 pt-0 md:pt-0">
             <div className="flex gap-2">
               <Input
-                placeholder="Enter VIN number..."
+                placeholder={t('enterVin')}
                 value={searchVin}
                 onChange={(e) => setSearchVin(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === 'Enter' && searchByVin()}
@@ -205,13 +207,13 @@ export default function VehiclesPage() {
           <CardHeader className="pb-2 md:pb-3 p-4 md:p-6">
             <CardTitle className="text-sm md:text-base flex items-center gap-2">
               <Car className="h-4 w-4 text-primary" />
-              Search by License Plate
+              {t('searchByPlate')}
             </CardTitle>
           </CardHeader>
           <CardContent className="p-4 md:p-6 pt-0 md:pt-0">
             <div className="flex gap-2">
               <Input
-                placeholder="Enter license plate..."
+                placeholder={t('enterPlate')}
                 value={searchPlate}
                 onChange={(e) => setSearchPlate(e.target.value.toUpperCase())}
                 onKeyDown={(e) => e.key === 'Enter' && searchByPlate()}
@@ -229,8 +231,8 @@ export default function VehiclesPage() {
         {/* Vehicle List */}
         <Card className="glass-card lg:col-span-1">
           <CardHeader>
-            <CardTitle className="text-lg">All Vehicles</CardTitle>
-            <CardDescription>{vehicles.length} vehicles registered</CardDescription>
+            <CardTitle className="text-lg">{t('allVehicles')}</CardTitle>
+            <CardDescription>{t('vehiclesRegistered', { count: vehicles.length })}</CardDescription>
           </CardHeader>
           <CardContent className="p-0">
             <div className="max-h-[500px] overflow-y-auto">
@@ -247,19 +249,19 @@ export default function VehiclesPage() {
                   </div>
                   {vehicle.vin && (
                     <div className="text-xs font-mono text-muted-foreground mt-1">
-                      VIN: {vehicle.vin}
+                      {t('vinLabel', { vin: vehicle.vin })}
                     </div>
                   )}
                   {vehicle.license_plate && (
                     <div className="text-xs text-muted-foreground">
-                      Plate: {vehicle.license_plate}
+                      {t('plateLabel', { plate: vehicle.license_plate })}
                     </div>
                   )}
                 </button>
               ))}
               {vehicles.length === 0 && (
                 <div className="p-8 text-center text-muted-foreground">
-                  No vehicles registered yet
+                  {t('noVehiclesYet')}
                 </div>
               )}
             </div>
@@ -280,7 +282,7 @@ export default function VehiclesPage() {
                       </CardTitle>
                       {selectedVehicle.vin && (
                         <CardDescription className="font-mono mt-1">
-                          VIN: {selectedVehicle.vin}
+                          {t('vinLabel', { vin: selectedVehicle.vin })}
                         </CardDescription>
                       )}
                     </div>
@@ -288,13 +290,13 @@ export default function VehiclesPage() {
                       <Link href={`/dashboard/vehicles/${selectedVehicle.id}/edit`}>
                         <Button size="sm" variant="outline">
                           <Edit className="h-4 w-4 mr-2" />
-                          Edit
+                          {t('edit')}
                         </Button>
                       </Link>
                       <Link href={`/dashboard/jobs/new?vehicle=${selectedVehicle.id}`}>
                         <Button size="sm">
                           <Wrench className="h-4 w-4 mr-2" />
-                          New Job
+                          {t('newJob')}
                         </Button>
                       </Link>
                     </div>
@@ -308,13 +310,13 @@ export default function VehiclesPage() {
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
                           <ImageLightbox
                             src={getBlobUrl(selectedVehicle.primary_photo) || ''}
-                            alt="Primary vehicle photo"
-                            caption="Primary vehicle photo"
+                            alt={t('primaryPhoto')}
+                            caption={t('primaryPhoto')}
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-3 w-3" />
-                            Primary
+                            {t('primary')}
                           </div>
                         </div>
                       )}
@@ -322,13 +324,13 @@ export default function VehiclesPage() {
                         <div className="relative aspect-video rounded-lg overflow-hidden border border-border bg-background/50">
                           <ImageLightbox
                             src={getBlobUrl(selectedVehicle.secondary_photo) || ''}
-                            alt="Secondary vehicle photo"
-                            caption="Secondary vehicle photo"
+                            alt={t('secondaryPhoto')}
+                            caption={t('secondaryPhoto')}
                             className="w-full h-full object-cover"
                           />
                           <div className="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/60 text-xs text-white flex items-center gap-1 pointer-events-none">
                             <Camera className="h-3 w-3" />
-                            Secondary
+                            {t('secondary')}
                           </div>
                         </div>
                       )}
@@ -337,29 +339,29 @@ export default function VehiclesPage() {
 
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                     <div className="space-y-1">
-                      <div className="text-xs text-muted-foreground">License Plate</div>
+                      <div className="text-xs text-muted-foreground">{t('licensePlate')}</div>
                       <div className="font-medium font-mono">
                         {selectedVehicle.license_plate || '-'}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-xs text-muted-foreground">Color</div>
+                      <div className="text-xs text-muted-foreground">{t('color')}</div>
                       <div className="font-medium">{selectedVehicle.color || '-'}</div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-xs text-muted-foreground">Current Mileage</div>
+                      <div className="text-xs text-muted-foreground">{t('currentMileage')}</div>
                       <div className="font-medium">
                         {selectedVehicle.mileage?.toLocaleString() || '-'} km
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-xs text-muted-foreground">Last Recorded</div>
+                      <div className="text-xs text-muted-foreground">{t('lastRecorded')}</div>
                       <div className="font-medium">
                         {selectedVehicle.last_mileage != null ? `${selectedVehicle.last_mileage.toLocaleString()} km` : '-'}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-xs text-muted-foreground">Registered</div>
+                      <div className="text-xs text-muted-foreground">{t('registered')}</div>
                       <div className="font-medium">
                         {format(new Date(selectedVehicle.created_at), 'MMM d, yyyy')}
                       </div>
@@ -387,10 +389,10 @@ export default function VehiclesPage() {
                 <CardHeader>
                   <CardTitle className="text-lg flex items-center gap-2">
                     <History className="h-5 w-5 text-primary" />
-                    Service History
+                    {t('serviceHistory')}
                   </CardTitle>
                   <CardDescription>
-                    {serviceHistory.length} service record{serviceHistory.length !== 1 ? 's' : ''} found
+                    {t('serviceRecordsFound', { count: serviceHistory.length })}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -412,7 +414,7 @@ export default function VehiclesPage() {
                                   variant="outline" 
                                   className={statusColors[record.status]}
                                 >
-                                  {record.status.replace('_', ' ')}
+                                  {t(`status_${record.status}`)}
                                 </Badge>
                               </div>
                               <div className="font-medium mt-1">{record.title}</div>
