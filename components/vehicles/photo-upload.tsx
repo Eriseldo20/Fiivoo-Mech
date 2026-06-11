@@ -22,12 +22,12 @@ export function PhotoUpload({ label, value, onChange, className }: PhotoUploadPr
 
   const handleUpload = async (file: File) => {
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file')
+      alert(t('selectImageFile'))
       return
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      alert('Image must be less than 5MB')
+      alert(t('imageTooLarge'))
       return
     }
 
@@ -50,7 +50,7 @@ export function PhotoUpload({ label, value, onChange, className }: PhotoUploadPr
       onChange(data.pathname)
     } catch (error) {
       console.error('Upload error:', error)
-      alert('Failed to upload image')
+      alert(t('uploadFailed'))
     } finally {
       setIsUploading(false)
     }
@@ -106,7 +106,7 @@ export function PhotoUpload({ label, value, onChange, className }: PhotoUploadPr
                 className="gap-2"
               >
                 <X className="h-4 w-4" />
-                Remove
+                {t('remove')}
               </Button>
             </div>
           </div>
@@ -128,7 +128,7 @@ export function PhotoUpload({ label, value, onChange, className }: PhotoUploadPr
           {isUploading ? (
             <>
               <Loader2 className="h-8 w-8 text-muted-foreground animate-spin" />
-              <span className="text-sm text-muted-foreground">Uploading...</span>
+              <span className="text-sm text-muted-foreground">{t('uploading')}</span>
             </>
           ) : (
             <>
@@ -137,10 +137,10 @@ export function PhotoUpload({ label, value, onChange, className }: PhotoUploadPr
               </div>
               <div className="text-center">
                 <p className="text-sm font-medium text-foreground">
-                  Click to upload or drag and drop
+                  {t('clickToUpload')}
                 </p>
                 <p className="text-xs text-muted-foreground mt-1">
-                  PNG, JPG up to 5MB
+                  {t('fileTypes')}
                 </p>
               </div>
             </>

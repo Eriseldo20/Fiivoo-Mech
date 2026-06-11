@@ -686,5 +686,38 @@
     "service_timing_belt": "Cinghia di distribuzione",
     "service_general_inspection": "Ispezione generale",
     "service_other": "Altro"
+  },
+  "notifications": {
+    "services": "Servizi",
+    "stock": "Magazzino",
+    "noUpcomingServices": "Nessun servizio imminente",
+    "allStockGood": "Tutti i livelli di magazzino sono buoni",
+    "today": "Oggi",
+    "tomorrow": "Domani",
+    "overdue": "Scaduto",
+    "inDays": "Tra {days} giorni",
+    "complete": "Completa",
+    "dismiss": "Ignora",
+    "restock": "Rifornisci",
+    "outOfStock": "Esaurito",
+    "lowStock": "Scorte basse",
+    "qty": "Qtà:",
+    "minSuffix": "/ {min} min",
+    "openCalendar": "Apri calendario",
+    "openInventory": "Apri magazzino",
+    "viewInventory": "Visualizza magazzino",
+    "outOfStockToast": "Esaurito: {name}",
+    "outOfStockToastDesc": "{name} è completamente esaurito. Rifornisci immediatamente.",
+    "lowStockToast": "Avviso scorte basse: {name}",
+    "lowStockToastDesc": "Rimasti solo {quantity} (min: {min})"
+  },
+  "photoUpload": {
+    "selectImageFile": "Seleziona un file immagine",
+    "imageTooLarge": "L'immagine deve essere inferiore a 5MB",
+    "uploadFailed": "Caricamento dell'immagine non riuscito",
+    "remove": "Rimuovi",
+    "uploading": "Caricamento...",
+    "clickToUpload": "Clicca per caricare o trascina e rilascia",
+    "fileTypes": "PNG, JPG fino a 5MB"
   }
 }

@@ -758,5 +758,38 @@
     "service_timing_belt": "Rrip shpërndarjeje",
     "service_general_inspection": "Inspektim i përgjithshëm",
     "service_other": "Tjetër"
+  },
+  "notifications": {
+    "services": "Shërbimet",
+    "stock": "Stoku",
+    "noUpcomingServices": "Asnjë shërbim i ardhshëm",
+    "allStockGood": "Të gjitha nivelet e stokut janë të mira",
+    "today": "Sot",
+    "tomorrow": "Nesër",
+    "overdue": "E vonuar",
+    "inDays": "Pas {days} ditësh",
+    "complete": "Përfundo",
+    "dismiss": "Hiq",
+    "restock": "Rifurnizo",
+    "outOfStock": "Pa stok",
+    "lowStock": "Stok i ulët",
+    "qty": "Sasia:",
+    "minSuffix": "/ {min} min",
+    "openCalendar": "Hap kalendarin",
+    "openInventory": "Hap inventarin",
+    "viewInventory": "Shiko inventarin",
+    "outOfStockToast": "Pa stok: {name}",
+    "outOfStockToastDesc": "{name} ka mbaruar plotësisht. Rifurnizoni menjëherë.",
+    "lowStockToast": "Paralajmërim stoku i ulët: {name}",
+    "lowStockToastDesc": "Kanë mbetur vetëm {quantity} (min: {min})"
+  },
+  "photoUpload": {
+    "selectImageFile": "Ju lutemi zgjidhni një skedar imazhi",
+    "imageTooLarge": "Imazhi duhet të jetë më pak se 5MB",
+    "uploadFailed": "Ngarkimi i imazhit dështoi",
+    "remove": "Hiq",
+    "uploading": "Duke ngarkuar...",
+    "clickToUpload": "Klikoni për të ngarkuar ose tërhiqni dhe lëshoni",
+    "fileTypes": "PNG, JPG deri në 5MB"
   }
 }

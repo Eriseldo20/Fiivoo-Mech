@@ -758,5 +758,38 @@
     "service_timing_belt": "Zahnriemen",
     "service_general_inspection": "Allgemeine Inspektion",
     "service_other": "Sonstiges"
+  },
+  "notifications": {
+    "services": "Service",
+    "stock": "Bestand",
+    "noUpcomingServices": "Keine anstehenden Services",
+    "allStockGood": "Alle Bestände sind gut",
+    "today": "Heute",
+    "tomorrow": "Morgen",
+    "overdue": "Überfällig",
+    "inDays": "In {days} Tagen",
+    "complete": "Erledigt",
+    "dismiss": "Verwerfen",
+    "restock": "Nachbestellen",
+    "outOfStock": "Nicht vorrätig",
+    "lowStock": "Niedriger Bestand",
+    "qty": "Menge:",
+    "minSuffix": "/ {min} min",
+    "openCalendar": "Kalender öffnen",
+    "openInventory": "Inventar öffnen",
+    "viewInventory": "Inventar anzeigen",
+    "outOfStockToast": "Nicht vorrätig: {name}",
+    "outOfStockToastDesc": "{name} ist komplett ausverkauft. Sofort nachbestellen.",
+    "lowStockToast": "Warnung niedriger Bestand: {name}",
+    "lowStockToastDesc": "Nur noch {quantity} übrig (min: {min})"
+  },
+  "photoUpload": {
+    "selectImageFile": "Bitte wählen Sie eine Bilddatei",
+    "imageTooLarge": "Das Bild muss kleiner als 5 MB sein",
+    "uploadFailed": "Bild konnte nicht hochgeladen werden",
+    "remove": "Entfernen",
+    "uploading": "Wird hochgeladen...",
+    "clickToUpload": "Klicken zum Hochladen oder per Drag & Drop",
+    "fileTypes": "PNG, JPG bis zu 5 MB"
   }
 }

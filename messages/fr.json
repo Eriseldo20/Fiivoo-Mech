@@ -686,5 +686,38 @@
     "service_timing_belt": "Courroie de distribution",
     "service_general_inspection": "Inspection générale",
     "service_other": "Autre"
+  },
+  "notifications": {
+    "services": "Services",
+    "stock": "Stock",
+    "noUpcomingServices": "Aucun service à venir",
+    "allStockGood": "Tous les niveaux de stock sont bons",
+    "today": "Aujourd'hui",
+    "tomorrow": "Demain",
+    "overdue": "En retard",
+    "inDays": "Dans {days} jours",
+    "complete": "Terminer",
+    "dismiss": "Ignorer",
+    "restock": "Réapprovisionner",
+    "outOfStock": "Rupture de stock",
+    "lowStock": "Stock faible",
+    "qty": "Qté :",
+    "minSuffix": "/ {min} min",
+    "openCalendar": "Ouvrir le calendrier",
+    "openInventory": "Ouvrir l'inventaire",
+    "viewInventory": "Voir l'inventaire",
+    "outOfStockToast": "Rupture de stock : {name}",
+    "outOfStockToastDesc": "{name} est en rupture totale. Réapprovisionnez immédiatement.",
+    "lowStockToast": "Alerte stock faible : {name}",
+    "lowStockToastDesc": "Plus que {quantity} (min : {min})"
+  },
+  "photoUpload": {
+    "selectImageFile": "Veuillez sélectionner un fichier image",
+    "imageTooLarge": "L'image doit faire moins de 5 Mo",
+    "uploadFailed": "Échec du téléchargement de l'image",
+    "remove": "Supprimer",
+    "uploading": "Téléchargement...",
+    "clickToUpload": "Cliquez pour télécharger ou glissez-déposez",
+    "fileTypes": "PNG, JPG jusqu'à 5 Mo"
   }
 }

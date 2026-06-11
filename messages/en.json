@@ -747,5 +747,38 @@
     "service_timing_belt": "Timing Belt",
     "service_general_inspection": "General Inspection",
     "service_other": "Other"
+  },
+  "notifications": {
+    "services": "Services",
+    "stock": "Stock",
+    "noUpcomingServices": "No upcoming services",
+    "allStockGood": "All stock levels are good",
+    "today": "Today",
+    "tomorrow": "Tomorrow",
+    "overdue": "Overdue",
+    "inDays": "In {days} days",
+    "complete": "Complete",
+    "dismiss": "Dismiss",
+    "restock": "Restock",
+    "outOfStock": "Out of Stock",
+    "lowStock": "Low Stock",
+    "qty": "Qty:",
+    "minSuffix": "/ {min} min",
+    "openCalendar": "Open Calendar",
+    "openInventory": "Open Inventory",
+    "viewInventory": "View Inventory",
+    "outOfStockToast": "Out of Stock: {name}",
+    "outOfStockToastDesc": "{name} is completely out of stock. Restock immediately.",
+    "lowStockToast": "Low Stock Alert: {name}",
+    "lowStockToastDesc": "Only {quantity} left (min: {min})"
+  },
+  "photoUpload": {
+    "selectImageFile": "Please select an image file",
+    "imageTooLarge": "Image must be less than 5MB",
+    "uploadFailed": "Failed to upload image",
+    "remove": "Remove",
+    "uploading": "Uploading...",
+    "clickToUpload": "Click to upload or drag and drop",
+    "fileTypes": "PNG, JPG up to 5MB"
   }
 }
