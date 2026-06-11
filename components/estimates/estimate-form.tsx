@@ -293,7 +293,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               {/* Line Items */}
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold">Line Items</h2>
+                  <h2 className="text-lg font-semibold">{t('lineItems')}</h2>
                   <Button
                     type="button"
                     variant="outline"
@@ -301,18 +301,18 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                     onClick={addLineItem}
                   >
                     <Plus className="h-4 w-4 mr-1" />
-                    Add Item
+                    {t('addItem')}
                   </Button>
                 </div>
 
                 <div className="space-y-4">
                   {/* Header */}
                   <div className="grid grid-cols-12 gap-3 text-sm font-medium text-muted-foreground px-1">
-                    <div className="col-span-2">Type</div>
-                    <div className="col-span-5">Description</div>
-                    <div className="col-span-1">Qty</div>
-                    <div className="col-span-2">Price</div>
-                    <div className="col-span-1">Total</div>
+                    <div className="col-span-2">{t('type')}</div>
+                    <div className="col-span-5">{t('descriptionLabel')}</div>
+                    <div className="col-span-1">{t('qty')}</div>
+                    <div className="col-span-2">{t('price')}</div>
+                    <div className="col-span-1">{t('total')}</div>
                     <div className="col-span-1"></div>
                   </div>
 
@@ -335,15 +335,15 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                               <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="labor">Labor</SelectItem>
-                              <SelectItem value="parts">Parts</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
+                              <SelectItem value="labor">{t('labor')}</SelectItem>
+                              <SelectItem value="parts">{t('parts')}</SelectItem>
+                              <SelectItem value="other">{t('other')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
                         <div className="col-span-5">
                           <Input
-                            placeholder="Description"
+                            placeholder={t('descriptionLabel')}
                             value={item.description}
                             onChange={(e) => updateLineItem(item.id, 'description', e.target.value)}
                             className="h-10 bg-background/50 border-border/50"
@@ -399,7 +399,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                             onValueChange={(value) => handleInventorySelect(item.id, value)}
                           >
                             <SelectTrigger className="h-9 bg-background/50 border-border/50 text-sm flex-1">
-                              <SelectValue placeholder="Select from inventory (optional)" />
+                              <SelectValue placeholder={t('selectInventory')} />
                             </SelectTrigger>
                             <SelectContent>
                               {inventory.map((inv) => (
@@ -407,14 +407,14 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                                   <div className="flex items-center justify-between gap-4 w-full">
                                     <span>{inv.name}</span>
                                     <span className="text-muted-foreground text-xs">
-                                      {inv.quantity} in stock • {CURRENCY.symbol}{inv.sell_price?.toFixed(2) || '0.00'}
+                                      {t('inStock', { count: inv.quantity })} • {CURRENCY.symbol}{inv.sell_price?.toFixed(2) || '0.00'}
                                     </span>
                                   </div>
                                 </SelectItem>
                               ))}
                               {inventory.length === 0 && (
                                 <SelectItem value="_empty" disabled>
-                                  No inventory items available
+                                  {t('noInventory')}
                                 </SelectItem>
                               )}
                             </SelectContent>
@@ -430,11 +430,11 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                   <div className="flex justify-end">
                     <div className="w-64 space-y-2">
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Subtotal</span>
+                        <span className="text-muted-foreground">{t('subtotal')}</span>
                         <span className="font-medium">{CURRENCY.symbol}{subtotal.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-sm items-center gap-4">
-                        <span className="text-muted-foreground">Tax Rate (%)</span>
+                        <span className="text-muted-foreground">{t('taxRate')}</span>
                         <Input
                           type="number"
                           min="0"
@@ -446,11 +446,11 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                         />
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-muted-foreground">Tax Amount</span>
+                        <span className="text-muted-foreground">{t('taxAmount')}</span>
                         <span className="font-medium">{CURRENCY.symbol}{taxAmount.toFixed(2)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-semibold pt-2 border-t border-border/50">
-                        <span>Total</span>
+                        <span>{t('total')}</span>
                         <span className="text-primary">{CURRENCY.symbol}{total.toFixed(2)}</span>
                       </div>
                     </div>
@@ -460,9 +460,9 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
 
               {/* Notes */}
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-                <h2 className="text-lg font-semibold mb-4">Notes</h2>
+                <h2 className="text-lg font-semibold mb-4">{t('notes')}</h2>
                 <Textarea
-                  placeholder="Additional notes or terms for this estimate..."
+                  placeholder={t('notesPlaceholder')}
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   className="min-h-[100px] bg-background/50 border-border/50"
@@ -476,14 +476,14 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <ClipboardList className="h-4 w-4 text-primary" />
-                  <h2 className="font-semibold">Link to Job Card</h2>
+                  <h2 className="font-semibold">{t('linkToJobCard')}</h2>
                 </div>
                 <Select
                   value={formData.job_card_id}
                   onValueChange={(value) => setFormData({ ...formData, job_card_id: value })}
                 >
                   <SelectTrigger className="h-11 bg-background/50 border-border/50">
-                    <SelectValue placeholder="Select job (optional)" />
+                    <SelectValue placeholder={t('selectJob')} />
                   </SelectTrigger>
                   <SelectContent>
                     {jobCards.map((job) => (
@@ -499,14 +499,14 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <User className="h-4 w-4 text-emerald-500" />
-                  <h2 className="font-semibold">Customer</h2>
+                  <h2 className="font-semibold">{t('customer')}</h2>
                 </div>
                 <Select
                   value={formData.customer_id}
                   onValueChange={(value) => setFormData({ ...formData, customer_id: value })}
                 >
                   <SelectTrigger className="h-11 bg-background/50 border-border/50">
-                    <SelectValue placeholder="Select customer (optional)" />
+                    <SelectValue placeholder={t('selectCustomer')} />
                   </SelectTrigger>
                   <SelectContent>
                     {customers.map((customer) => (
@@ -522,14 +522,14 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Car className="h-4 w-4 text-amber-500" />
-                  <h2 className="font-semibold">Vehicle</h2>
+                  <h2 className="font-semibold">{t('vehicle')}</h2>
                 </div>
                 <Select
                   value={formData.vehicle_id}
                   onValueChange={(value) => setFormData({ ...formData, vehicle_id: value })}
                 >
                   <SelectTrigger className="h-11 bg-background/50 border-border/50">
-                    <SelectValue placeholder="Select vehicle (optional)" />
+                    <SelectValue placeholder={t('selectVehicle')} />
                   </SelectTrigger>
                   <SelectContent>
                     {filteredVehicles.map((vehicle) => (
@@ -543,7 +543,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
 
               {/* Valid Until */}
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-                <h2 className="font-semibold mb-4">Valid Until</h2>
+                <h2 className="font-semibold mb-4">{t('validUntil')}</h2>
                 <Input
                   type="date"
                   value={formData.valid_until}
@@ -554,7 +554,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
 
               {isEditing && (
                 <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
-                  <h2 className="font-semibold mb-4">Status</h2>
+                  <h2 className="font-semibold mb-4">{t('status')}</h2>
                   <Select
                     value={formData.status}
                     onValueChange={(value) => setFormData({ ...formData, status: value })}
@@ -563,11 +563,11 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="sent">Sent</SelectItem>
-                      <SelectItem value="approved">Approved</SelectItem>
-                      <SelectItem value="rejected">Rejected</SelectItem>
-                      <SelectItem value="expired">Expired</SelectItem>
+                      <SelectItem value="draft">{t('draft')}</SelectItem>
+                      <SelectItem value="sent">{t('sent')}</SelectItem>
+                      <SelectItem value="approved">{t('approved')}</SelectItem>
+                      <SelectItem value="rejected">{t('rejected')}</SelectItem>
+                      <SelectItem value="expired">{t('expired')}</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -591,14 +591,14 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin mr-2" />
               ) : null}
-              {isEditing ? 'Update Estimate' : 'Create Estimate'}
+              {isEditing ? t('updateEstimate') : t('createEstimate')}
             </Button>
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
             >
-              Cancel
+              {t('cancel')}
             </Button>
           </div>
         </form>

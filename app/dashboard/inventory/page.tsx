@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Header } from '@/components/dashboard/header'
 import { Input } from '@/components/ui/input'
@@ -73,15 +74,15 @@ interface InventoryItem {
 }
 
 const categories = [
-  { value: 'parts', label: 'Parts' },
-  { value: 'fluids', label: 'Fluids' },
-  { value: 'filters', label: 'Filters' },
-  { value: 'tires', label: 'Tires' },
-  { value: 'brakes', label: 'Brakes' },
-  { value: 'electrical', label: 'Electrical' },
-  { value: 'accessories', label: 'Accessories' },
-  { value: 'tools', label: 'Tools' },
-  { value: 'other', label: 'Other' },
+  'parts',
+  'fluids',
+  'filters',
+  'tires',
+  'brakes',
+  'electrical',
+  'accessories',
+  'tools',
+  'other',
 ]
 
 const categoryColors: Record<string, string> = {
@@ -97,6 +98,7 @@ const categoryColors: Record<string, string> = {
 }
 
 export default function InventoryPage() {
+  const t = useTranslations('inventory')
   const [inventory, setInventory] = useState<InventoryItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
@@ -277,7 +279,7 @@ export default function InventoryPage() {
   if (isLoading) {
     return (
       <div className="min-h-screen pb-20 md:pb-0">
-        <Header title="Inventory" description="Track parts and supplies" />
+        <Header title={t('title')} description={t('description')} />
         <div className="p-4 md:p-6 flex items-center justify-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
         </div>
@@ -288,8 +290,8 @@ export default function InventoryPage() {
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       <Header 
-        title="Inventory" 
-        description="Track parts and supplies"
+        title={t('title')} 
+        description={t('description')}
       />
       
       <div className="p-4 md:p-6 space-y-4 md:space-y-6">
