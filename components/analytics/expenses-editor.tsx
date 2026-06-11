@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 import { Pencil } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -18,11 +19,11 @@ import {
 import { saveMonthlyExpenses } from '@/lib/actions/expenses'
 import type { ExpenseBreakdown } from '@/lib/data/analytics-queries'
 
-const FIELDS: { key: keyof ExpenseBreakdown; label: string }[] = [
-  { key: 'rent', label: 'Rent' },
-  { key: 'utilities', label: 'Utilities' },
-  { key: 'payroll', label: 'Payroll' },
-  { key: 'misc', label: 'Miscellaneous' },
+const FIELDS: { key: keyof ExpenseBreakdown; labelKey: string }[] = [
+  { key: 'rent', labelKey: 'rent' },
+  { key: 'utilities', labelKey: 'utilities' },
+  { key: 'payroll', labelKey: 'payroll' },
+  { key: 'misc', labelKey: 'miscellaneous' },
 ]
 
 export function ExpensesEditor({
@@ -35,6 +36,7 @@ export function ExpensesEditor({
   expenses: ExpenseBreakdown
 }) {
   const router = useRouter()
+  const t = useTranslations('analytics')
   const [open, setOpen] = useState(false)
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
@@ -55,7 +57,7 @@ export function ExpensesEditor({
         misc: parseFloat(values.misc) || 0,
       })
       if (!result.success) {
-        setError(result.error || 'Failed to save expenses')
+        setError(result.error || t('failedToSave'))
         return
       }
       setOpen(false)
@@ -68,22 +70,20 @@ export function ExpensesEditor({
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
           <Pencil className="h-4 w-4 mr-2" />
-          Edit expenses
+          {t('editExpenses')}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Edit Monthly Expenses</DialogTitle>
+          <DialogTitle>{t('editMonthlyExpenses')}</DialogTitle>
           <DialogDescription>
-            {expenses.isOverride
-              ? 'These values override the recurring defaults for this month.'
-              : 'Currently showing recurring defaults. Saving creates an override for this month only.'}
+            {expenses.isOverride ? t('overrideDescription') : t('defaultsDescription')}
           </DialogDescription>
         </DialogHeader>
         <div className="grid grid-cols-2 gap-4 py-2">
           {FIELDS.map((f) => (
             <div key={f.key} className="space-y-2">
-              <Label htmlFor={`exp-${f.key}`}>{f.label} (€)</Label>
+              <Label htmlFor={`exp-${f.key}`}>{t(f.labelKey)} (€)</Label>
               <Input
                 id={`exp-${f.key}`}
                 type="number"
@@ -101,10 +101,10 @@ export function ExpensesEditor({
         {error && <p className="text-sm text-destructive">{error}</p>}
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)} disabled={isPending}>
-            Cancel
+            {t('cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isPending}>
-            {isPending ? 'Saving...' : 'Save expenses'}
+            {isPending ? t('saving') : t('saveExpenses')}
           </Button>
         </DialogFooter>
       </DialogContent>

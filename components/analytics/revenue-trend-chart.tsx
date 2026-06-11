@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import {
   Area,
   AreaChart,
@@ -24,11 +25,6 @@ import {
 import { CURRENCY } from '@/lib/currency'
 import type { MonthlyTrendPoint } from '@/lib/data/analytics-queries'
 
-const chartConfig = {
-  revenue: { label: 'Revenue', color: 'var(--chart-1)' },
-  netProfit: { label: 'Net Profit', color: 'var(--chart-3)' },
-} satisfies ChartConfig
-
 function compact(value: number) {
   return new Intl.NumberFormat(CURRENCY.locale, {
     notation: 'compact',
@@ -37,15 +33,27 @@ function compact(value: number) {
 }
 
 export function RevenueTrendChart({ data }: { data: MonthlyTrendPoint[] }) {
+  const t = useTranslations('analytics')
+
+  const chartConfig = {
+    revenue: { label: t('revenue'), color: 'var(--chart-1)' },
+    netProfit: { label: t('netProfit'), color: 'var(--chart-3)' },
+  } satisfies ChartConfig
+
+  const chartData = data.map((p) => ({
+    ...p,
+    label: `${t(`monthsShort.${p.month}`)} ${String(p.year).slice(2)}`,
+  }))
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Revenue & Profit Trend</CardTitle>
-        <CardDescription>Last 12 months of approved revenue and net profit</CardDescription>
+        <CardTitle>{t('revenueProfitTrend')}</CardTitle>
+        <CardDescription>{t('trendDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <ChartContainer config={chartConfig} className="h-[280px] w-full">
-          <AreaChart data={data} margin={{ left: 4, right: 8, top: 8 }}>
+          <AreaChart data={chartData} margin={{ left: 4, right: 8, top: 8 }}>
             <defs>
               <linearGradient id="fillRevenue" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="var(--color-revenue)" stopOpacity={0.3} />

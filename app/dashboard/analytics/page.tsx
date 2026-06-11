@@ -12,6 +12,7 @@ import {
   FileCheck,
   Sparkles,
 } from 'lucide-react'
+import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/dashboard/header'
 import {
@@ -62,6 +63,8 @@ export default async function AnalyticsPage({
   const year = params.year ? parseInt(params.year, 10) : now.getFullYear()
   const month = params.month ? parseInt(params.month, 10) : now.getMonth() + 1
 
+  const t = await getTranslations('analytics')
+
   const [analytics, trend] = await Promise.all([
     getMonthlyAnalytics(shopId, year, month),
     getMonthlyTrend(shopId, year, month, 12),
@@ -81,8 +84,8 @@ export default async function AnalyticsPage({
   return (
     <div className="min-h-screen pb-20 md:pb-0">
       <Header
-        title="Analytics & Revenue"
-        description="Monthly performance, profit, and operating costs"
+        title={t('pageTitle')}
+        description={t('pageDescription')}
       />
 
       <div className="p-4 md:p-6 space-y-4 md:space-y-6">
@@ -95,31 +98,31 @@ export default async function AnalyticsPage({
         {/* KPI cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard
-            title="Revenue"
+            title={t('revenue')}
             value={formatCurrency(analytics.revenue)}
             icon={<TrendingUp className="h-5 w-5" />}
-            hint={`${analytics.approvedCount} approved estimate${analytics.approvedCount !== 1 ? 's' : ''}`}
+            hint={t('approvedEstimates', { count: analytics.approvedCount })}
             tone="primary"
           />
           <KpiCard
-            title="Inventory Profit"
+            title={t('inventoryProfit')}
             value={formatCurrency(analytics.inventoryProfit)}
             icon={<Package className="h-5 w-5" />}
-            hint={`${formatCurrency(analytics.inventoryCost)} parts cost`}
+            hint={t('partsCost', { amount: formatCurrency(analytics.inventoryCost) })}
             tone="neutral"
           />
           <KpiCard
-            title="Operating Expenses"
+            title={t('operatingExpenses')}
             value={formatCurrency(analytics.expenses.total)}
             icon={<Receipt className="h-5 w-5" />}
-            hint={analytics.expenses.isOverride ? 'Custom for this month' : 'Recurring defaults'}
+            hint={analytics.expenses.isOverride ? t('customForMonth') : t('recurringDefaults')}
             tone="neutral"
           />
           <KpiCard
-            title="Net Profit"
+            title={t('netProfit')}
             value={formatCurrency(analytics.netProfit)}
             icon={profitPositive ? <Wallet className="h-5 w-5" /> : <TrendingDown className="h-5 w-5" />}
-            hint="Revenue − parts cost − expenses"
+            hint={t('netProfitHint')}
             tone={profitPositive ? 'success' : 'danger'}
           />
         </div>
@@ -131,20 +134,20 @@ export default async function AnalyticsPage({
           {/* Profit & Loss breakdown */}
           <Card>
             <CardHeader>
-              <CardTitle>Profit & Loss</CardTitle>
-              <CardDescription>How net profit is calculated this month</CardDescription>
+              <CardTitle>{t('profitAndLoss')}</CardTitle>
+              <CardDescription>{t('pnlDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <PnlRow label="Approved revenue" value={analytics.revenue} positive />
-              <PnlRow label="Parts cost (COGS)" value={-analytics.inventoryCost} />
+              <PnlRow label={t('approvedRevenue')} value={analytics.revenue} positive />
+              <PnlRow label={t('partsCostCogs')} value={-analytics.inventoryCost} />
               <Divider />
-              <PnlRow label="Rent" value={-analytics.expenses.rent} muted />
-              <PnlRow label="Utilities" value={-analytics.expenses.utilities} muted />
-              <PnlRow label="Payroll" value={-analytics.expenses.payroll} muted />
-              <PnlRow label="Miscellaneous" value={-analytics.expenses.misc} muted />
+              <PnlRow label={t('rent')} value={-analytics.expenses.rent} muted />
+              <PnlRow label={t('utilities')} value={-analytics.expenses.utilities} muted />
+              <PnlRow label={t('payroll')} value={-analytics.expenses.payroll} muted />
+              <PnlRow label={t('miscellaneous')} value={-analytics.expenses.misc} muted />
               <Divider />
               <div className="flex items-center justify-between pt-1">
-                <span className="font-semibold">Net Profit</span>
+                <span className="font-semibold">{t('netProfit')}</span>
                 <span className={`font-bold ${profitPositive ? 'text-[var(--chart-3)]' : 'text-destructive'}`}>
                   {formatCurrency(analytics.netProfit)}
                 </span>
@@ -152,7 +155,7 @@ export default async function AnalyticsPage({
               <div className="mt-3 flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm">
                 <Sparkles className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                 <span className="text-muted-foreground">
-                  Projected net profit (3-month avg):{' '}
+                  {t('projectedNetProfit')}{' '}
                   <span className="font-medium text-foreground">{formatCurrency(projectedNet)}</span>
                 </span>
               </div>
@@ -164,13 +167,13 @@ export default async function AnalyticsPage({
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Trophy className="h-5 w-5 text-[var(--chart-5)]" />
-                Top Performers
+                {t('topPerformers')}
               </CardTitle>
-              <CardDescription>Based on completed jobs this month</CardDescription>
+              <CardDescription>{t('basedOnCompleted')}</CardDescription>
             </CardHeader>
             <CardContent>
               {analytics.employees.length === 0 ? (
-                <EmptyState icon={<FileCheck className="h-8 w-8" />} text="No completed jobs this month" />
+                <EmptyState icon={<FileCheck className="h-8 w-8" />} text={t('noCompletedJobs')} />
               ) : (
                 <div className="space-y-3">
                   {bestEmployee && (
@@ -182,7 +185,7 @@ export default async function AnalyticsPage({
                         <div>
                           <p className="font-semibold">{bestEmployee.name}</p>
                           <p className="text-xs text-muted-foreground">
-                            {bestEmployee.completedJobs} job{bestEmployee.completedJobs !== 1 ? 's' : ''} completed
+                            {t('jobsCompleted', { count: bestEmployee.completedJobs })}
                           </p>
                         </div>
                       </div>
@@ -198,7 +201,7 @@ export default async function AnalyticsPage({
                         <span className="text-sm">{emp.name}</span>
                       </div>
                       <div className="flex items-center gap-3">
-                        <Badge variant="secondary">{emp.completedJobs} jobs</Badge>
+                        <Badge variant="secondary">{t('jobsCount', { count: emp.completedJobs })}</Badge>
                         <span className="text-sm text-muted-foreground">{formatCurrency(emp.revenue)}</span>
                       </div>
                     </div>
@@ -212,22 +215,22 @@ export default async function AnalyticsPage({
         {/* Inventory profit table */}
         <Card>
           <CardHeader>
-            <CardTitle>Inventory Used & Profit</CardTitle>
-            <CardDescription>Parts consumed this month (sell price − buy price)</CardDescription>
+            <CardTitle>{t('inventoryUsedProfit')}</CardTitle>
+            <CardDescription>{t('inventoryUsedDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             {analytics.inventoryRows.length === 0 ? (
-              <EmptyState icon={<Package className="h-8 w-8" />} text="No inventory used this month" />
+              <EmptyState icon={<Package className="h-8 w-8" />} text={t('noInventoryUsed')} />
             ) : (
               <div className="overflow-x-auto">
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Part</TableHead>
-                      <TableHead className="text-right">Qty</TableHead>
-                      <TableHead className="text-right">Buy</TableHead>
-                      <TableHead className="text-right">Sell</TableHead>
-                      <TableHead className="text-right">Profit</TableHead>
+                      <TableHead>{t('part')}</TableHead>
+                      <TableHead className="text-right">{t('qty')}</TableHead>
+                      <TableHead className="text-right">{t('buy')}</TableHead>
+                      <TableHead className="text-right">{t('sell')}</TableHead>
+                      <TableHead className="text-right">{t('profit')}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
