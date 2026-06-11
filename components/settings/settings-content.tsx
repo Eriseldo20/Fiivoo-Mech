@@ -20,10 +20,12 @@ import {
   Mail,
   Phone,
   MapPin,
+  Receipt,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { LanguageSwitcher } from './language-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { saveExpenseDefaults } from '@/lib/actions/expenses'
 
 interface SettingsContentProps {
   profile: {
@@ -40,17 +42,24 @@ interface SettingsContentProps {
       email: string | null
     } | null
   } | null
+  expenseDefaults?: {
+    rent: number
+    utilities: number
+    payroll: number
+    misc: number
+  }
 }
 
 const tabs = [
   { id: 'profile', icon: User, labelKey: 'profile' },
   { id: 'shop', icon: Building2, labelKey: 'shop' },
+  { id: 'expenses', icon: Receipt, labelKey: 'expenses' },
   { id: 'language', icon: Globe, labelKey: 'language' },
   { id: 'appearance', icon: Palette, labelKey: 'appearance' },
   { id: 'notifications', icon: Bell, labelKey: 'notifications' },
 ]
 
-export function SettingsContent({ profile }: SettingsContentProps) {
+export function SettingsContent({ profile, expenseDefaults }: SettingsContentProps) {
   const t = useTranslations('settings')
   const router = useRouter()
   const [activeTab, setActiveTab] = useState('profile')
@@ -67,6 +76,13 @@ export function SettingsContent({ profile }: SettingsContentProps) {
     address: profile?.shop?.address || '',
     phone: profile?.shop?.phone || '',
     email: profile?.shop?.email || '',
+  })
+
+  const [expenseData, setExpenseData] = useState({
+    rent: String(expenseDefaults?.rent ?? 0),
+    utilities: String(expenseDefaults?.utilities ?? 0),
+    payroll: String(expenseDefaults?.payroll ?? 0),
+    misc: String(expenseDefaults?.misc ?? 0),
   })
 
   const handleSaveProfile = async () => {
@@ -102,6 +118,18 @@ export function SettingsContent({ profile }: SettingsContentProps) {
       })
       .eq('id', profile.shop_id)
 
+    setIsSaving(false)
+    router.refresh()
+  }
+
+  const handleSaveExpenses = async () => {
+    setIsSaving(true)
+    await saveExpenseDefaults({
+      rent: parseFloat(expenseData.rent) || 0,
+      utilities: parseFloat(expenseData.utilities) || 0,
+      payroll: parseFloat(expenseData.payroll) || 0,
+      misc: parseFloat(expenseData.misc) || 0,
+    })
     setIsSaving(false)
     router.refresh()
   }
@@ -258,6 +286,76 @@ export function SettingsContent({ profile }: SettingsContentProps) {
                 </div>
 
                 <Button onClick={handleSaveShop} disabled={isSaving} className="w-full sm:w-auto">
+                  {isSaving ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Save className="h-4 w-4 mr-2" />
+                  )}
+                  {t('saveChanges')}
+                </Button>
+              </div>
+            )}
+
+            {/* Expense Defaults Settings */}
+            {activeTab === 'expenses' && (
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+                <div>
+                  <h2 className="text-lg font-semibold">{t('expenses')}</h2>
+                  <p className="text-sm text-muted-foreground">{t('expensesDescription')}</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label>{t('rent')} (€)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={expenseData.rent}
+                      onChange={(e) => setExpenseData({ ...expenseData, rent: e.target.value })}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t('utilities')} (€)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={expenseData.utilities}
+                      onChange={(e) => setExpenseData({ ...expenseData, utilities: e.target.value })}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t('payroll')} (€)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={expenseData.payroll}
+                      onChange={(e) => setExpenseData({ ...expenseData, payroll: e.target.value })}
+                      className="h-11"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>{t('misc')} (€)</Label>
+                    <Input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      inputMode="decimal"
+                      value={expenseData.misc}
+                      onChange={(e) => setExpenseData({ ...expenseData, misc: e.target.value })}
+                      className="h-11"
+                    />
+                  </div>
+                </div>
+
+                <Button onClick={handleSaveExpenses} disabled={isSaving} className="w-full sm:w-auto">
                   {isSaving ? (
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                   ) : (

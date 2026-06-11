@@ -12,6 +12,7 @@ import {
   Package,
   Settings,
   Calendar,
+  BarChart3,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
@@ -35,6 +36,11 @@ const navItems = [
     key: 'calendar',
     href: '/dashboard/calendar',
     icon: Calendar,
+  },
+  {
+    key: 'analytics',
+    href: '/dashboard/analytics',
+    icon: BarChart3,
   },
   {
     key: 'settings',

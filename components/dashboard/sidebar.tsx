@@ -18,6 +18,7 @@ import {
   Users,
   Package,
   Calendar,
+  BarChart3,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
@@ -27,6 +28,7 @@ const mainNavItems = [
   { key: 'jobCards',   href: '/dashboard/jobs',        icon: ClipboardList },
   { key: 'estimates',  href: '/dashboard/estimates',   icon: FileText },
   { key: 'calendar',   href: '/dashboard/calendar',    icon: Calendar },
+  { key: 'analytics',  href: '/dashboard/analytics',   icon: BarChart3 },
 ]
 
 const fleetNavItems = [

@@ -7,6 +7,7 @@
     "employees": "Employes",
     "inventory": "Inventaire",
     "calendar": "Calendrier",
+    "analytics": "Analyses",
     "settings": "Parametres"
   },
   "common": {
@@ -102,6 +103,12 @@
   },
   "settings": {
     "title": "Parametres",
+    "expenses": "Depenses",
+    "expensesDescription": "Definissez les couts d'exploitation mensuels recurrents utilises dans les analyses",
+    "rent": "Loyer",
+    "utilities": "Charges",
+    "payroll": "Salaires",
+    "misc": "Divers",
     "profile": "Profil",
     "profileDescription": "Gerez vos informations personnelles",
     "shop": "Atelier",

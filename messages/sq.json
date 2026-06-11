@@ -54,6 +54,7 @@
     "employees": "Punonjësit",
     "inventory": "Inventari",
     "calendar": "Kalendari",
+    "analytics": "Analitika",
     "settings": "Cilësimet",
     "signOut": "Dilni"
   },
@@ -205,6 +206,12 @@
   "settings": {
     "title": "Cilësimet",
     "description": "Menaxhoni cilësimet e servisit tuaj",
+    "expenses": "Shpenzimet",
+    "expensesDescription": "Vendosni kostot mujore të përsëritura të përdorura në analitikë",
+    "rent": "Qiraja",
+    "utilities": "Shërbimet",
+    "payroll": "Pagat",
+    "misc": "Të tjera",
     "profile": "Profili",
     "profileDescription": "Menaxhoni informacionin tuaj personal",
     "shop": "Servisi",

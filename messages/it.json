@@ -7,6 +7,7 @@
     "employees": "Dipendenti",
     "inventory": "Inventario",
     "calendar": "Calendario",
+    "analytics": "Analisi",
     "settings": "Impostazioni"
   },
   "common": {
@@ -102,6 +103,12 @@
   },
   "settings": {
     "title": "Impostazioni",
+    "expenses": "Spese",
+    "expensesDescription": "Imposta i costi operativi mensili ricorrenti usati nelle analisi",
+    "rent": "Affitto",
+    "utilities": "Utenze",
+    "payroll": "Stipendi",
+    "misc": "Varie",
     "profile": "Profilo",
     "profileDescription": "Gestisci le tue informazioni personali",
     "shop": "Officina",

@@ -54,6 +54,7 @@
     "employees": "Employees",
     "inventory": "Inventory",
     "calendar": "Calendar",
+    "analytics": "Analytics",
     "settings": "Settings",
     "signOut": "Sign Out"
   },
@@ -209,6 +210,12 @@
   "settings": {
     "title": "Settings",
     "description": "Manage your shop settings",
+    "expenses": "Expenses",
+    "expensesDescription": "Set recurring monthly operating costs used in analytics",
+    "rent": "Rent",
+    "utilities": "Utilities",
+    "payroll": "Payroll",
+    "misc": "Miscellaneous",
     "profile": "Profile",
     "profileDescription": "Manage your personal information",
     "shop": "Shop",

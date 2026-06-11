@@ -54,6 +54,7 @@
     "employees": "Empleados",
     "inventory": "Inventario",
     "calendar": "Calendario",
+    "analytics": "Analíticas",
     "settings": "Configuración",
     "signOut": "Cerrar Sesión"
   },
@@ -205,6 +206,12 @@
   "settings": {
     "title": "Configuración",
     "description": "Gestiona la configuración de tu taller",
+    "expenses": "Gastos",
+    "expensesDescription": "Define los costos operativos mensuales recurrentes usados en las analíticas",
+    "rent": "Alquiler",
+    "utilities": "Servicios",
+    "payroll": "Nómina",
+    "misc": "Varios",
     "profile": "Perfil",
     "profileDescription": "Gestiona tu información personal",
     "shop": "Taller",

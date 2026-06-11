@@ -54,6 +54,7 @@
     "employees": "Mitarbeiter",
     "inventory": "Inventar",
     "calendar": "Kalender",
+    "analytics": "Analysen",
     "settings": "Einstellungen",
     "signOut": "Abmelden"
   },
@@ -205,6 +206,12 @@
   "settings": {
     "title": "Einstellungen",
     "description": "Verwalten Sie Ihre Werkstatteinstellungen",
+    "expenses": "Ausgaben",
+    "expensesDescription": "Wiederkehrende monatliche Betriebskosten für die Analysen festlegen",
+    "rent": "Miete",
+    "utilities": "Nebenkosten",
+    "payroll": "Lohnkosten",
+    "misc": "Sonstiges",
     "profile": "Profil",
     "profileDescription": "Verwalten Sie Ihre persönlichen Informationen",
     "shop": "Werkstatt",
