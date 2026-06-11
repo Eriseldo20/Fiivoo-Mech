@@ -191,7 +191,7 @@ export function VehicleModal({ open, onClose, shopId, customerId, prefillVin, on
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="vehicle-mileage">Mileage</Label>
+              <Label htmlFor="vehicle-mileage">Mileage (km)</Label>
               <Input
                 id="vehicle-mileage"
                 type="number"

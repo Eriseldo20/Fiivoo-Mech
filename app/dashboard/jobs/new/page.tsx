@@ -25,7 +25,7 @@ export default async function NewJobPage() {
       .order('name'),
     supabase
       .from('vehicles')
-      .select('id, make, model, year, license_plate, customer_id, vin')
+      .select('id, make, model, year, license_plate, customer_id, vin, mileage')
       .eq('shop_id', shopId)
       .order('make'),
     supabase

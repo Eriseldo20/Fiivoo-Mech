@@ -41,7 +41,7 @@ export default async function EditJobPage({
       .order('name'),
     supabase
       .from('vehicles')
-      .select('id, make, model, year, license_plate, customer_id')
+      .select('id, make, model, year, license_plate, customer_id, vin, mileage')
       .eq('shop_id', shopId)
       .order('make'),
     supabase

@@ -22,6 +22,7 @@ interface Vehicle {
   license_plate: string | null
   color: string | null
   mileage: number | null
+  last_mileage: number | null
   customer_id: string | null
   created_at: string
   primary_photo: string | null
@@ -346,9 +347,15 @@ export default function VehiclesPage() {
                       <div className="font-medium">{selectedVehicle.color || '-'}</div>
                     </div>
                     <div className="space-y-1">
-                      <div className="text-xs text-muted-foreground">Mileage</div>
+                      <div className="text-xs text-muted-foreground">Current Mileage</div>
                       <div className="font-medium">
-                        {selectedVehicle.mileage?.toLocaleString() || '-'} mi
+                        {selectedVehicle.mileage?.toLocaleString() || '-'} km
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <div className="text-xs text-muted-foreground">Last Recorded</div>
+                      <div className="font-medium">
+                        {selectedVehicle.last_mileage != null ? `${selectedVehicle.last_mileage.toLocaleString()} km` : '-'}
                       </div>
                     </div>
                     <div className="space-y-1">

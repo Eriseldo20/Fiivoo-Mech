@@ -41,6 +41,7 @@ export interface Vehicle {
   license_plate: string | null
   color: string | null
   mileage: number | null
+  last_mileage: number | null
   notes: string | null
   primary_photo: string | null
   secondary_photo: string | null
@@ -61,6 +62,7 @@ export interface JobCard {
   priority: 'low' | 'normal' | 'high' | 'urgent'
   estimated_hours: number | null
   actual_hours: number | null
+  mileage: number | null
   start_date: string | null
   due_date: string | null
   completed_date: string | null

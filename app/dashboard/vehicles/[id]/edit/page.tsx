@@ -267,7 +267,7 @@ export default function VehicleEditPage({ params }: VehicleEditPageProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="mileage">Mileage</Label>
+                <Label htmlFor="mileage">Mileage (km)</Label>
                 <Input
                   id="mileage"
                   type="number"

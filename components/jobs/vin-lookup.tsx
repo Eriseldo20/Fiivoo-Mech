@@ -224,7 +224,7 @@ export function VinLookup({ onVehicleFound, onNewVehicle, shopId }: VinLookupPro
                   </div>
                   <div>
                     <span className="text-muted-foreground">Mileage</span>
-                    <p className="font-medium">{vehicle.mileage?.toLocaleString() || 'N/A'} mi</p>
+                    <p className="font-medium">{vehicle.mileage?.toLocaleString() || 'N/A'} km</p>
                   </div>
                   <div>
                     <span className="text-muted-foreground">Services</span>

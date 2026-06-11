@@ -26,6 +26,7 @@ import {
   Search,
   List,
   Users,
+  Gauge,
 } from 'lucide-react'
 import { CustomerModal } from '@/components/jobs/customer-modal'
 import { VehicleModal } from '@/components/jobs/vehicle-modal'
@@ -35,7 +36,7 @@ import type { JobCard, Vehicle } from '@/lib/types'
 interface JobFormProps {
   shopId: string
   customers: { id: string; name: string; phone: string | null; email: string | null }[]
-  vehicles: { id: string; make: string; model: string; year: number | null; license_plate: string | null; customer_id: string | null; vin: string | null }[]
+  vehicles: { id: string; make: string; model: string; year: number | null; license_plate: string | null; customer_id: string | null; vin: string | null; mileage?: number | null }[]
   employees?: { id: string; first_name: string; last_name: string; role: string }[]
   initialData?: JobCard
 }
@@ -81,6 +82,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
     status: initialData?.status || 'pending',
     estimated_hours: initialData?.estimated_hours?.toString() || '',
     due_date: initialData?.due_date ? new Date(initialData.due_date).toISOString().split('T')[0] : '',
+    mileage: (initialData as any)?.mileage?.toString() || '',
   })
 
   const generateJobNumber = () => {
@@ -98,6 +100,20 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
     setIsLoading(true)
     setError(null)
 
+    // Odometer reading is mandatory when creating a job with a vehicle attached
+    if (!isEditing && formData.vehicle_id && formData.mileage.trim() === '') {
+      setError('Please enter the current odometer reading (km) for the selected vehicle.')
+      setIsLoading(false)
+      return
+    }
+
+    const mileageValue = formData.mileage.trim() !== '' ? parseInt(formData.mileage, 10) : null
+    if (formData.mileage.trim() !== '' && (mileageValue === null || isNaN(mileageValue) || mileageValue < 0)) {
+      setError('Please enter a valid odometer reading in kilometers.')
+      setIsLoading(false)
+      return
+    }
+
     try {
       const supabase = createClient()
       
@@ -112,6 +128,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
         status: formData.status as JobCard['status'],
         estimated_hours: formData.estimated_hours ? parseFloat(formData.estimated_hours) : null,
         due_date: formData.due_date || null,
+        mileage: mileageValue,
         ...(isEditing ? {} : { job_number: generateJobNumber() }),
       }
 
@@ -122,6 +139,8 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
           .eq('id', initialData.id)
 
         if (error) throw error
+
+        await updateVehicleMileage(supabase, formData.vehicle_id, mileageValue)
         router.push(`/dashboard/jobs/${initialData.id}`)
       } else {
         const { data, error } = await supabase
@@ -131,6 +150,8 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
           .single()
 
         if (error) throw error
+
+        await updateVehicleMileage(supabase, formData.vehicle_id, mileageValue)
         router.push(`/dashboard/jobs/${data.id}`)
       }
 
@@ -140,6 +161,37 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Moves the vehicle's current mileage into last_mileage and sets the new reading as current.
+  // Only advances when the new reading is greater than the existing one to avoid regressions.
+  const updateVehicleMileage = async (
+    supabase: ReturnType<typeof createClient>,
+    vehicleId: string,
+    newMileage: number | null,
+  ) => {
+    if (!vehicleId || newMileage === null) return
+
+    const { data: vehicle } = await supabase
+      .from('vehicles')
+      .select('mileage')
+      .eq('id', vehicleId)
+      .single()
+
+    const currentMileage = vehicle?.mileage ?? null
+
+    if (currentMileage !== null && newMileage <= currentMileage) {
+      // Reading is not newer than what we have; keep current as-is.
+      return
+    }
+
+    await supabase
+      .from('vehicles')
+      .update({
+        last_mileage: currentMileage,
+        mileage: newMileage,
+      })
+      .eq('id', vehicleId)
   }
 
   const handleCustomerCreated = (customer: { id: string; name: string; phone: string | null; email: string | null }) => {
@@ -296,6 +348,41 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
                 </div>
               </div>
             )}
+
+            {/* Odometer reading (mandatory for new jobs with a vehicle) */}
+            {formData.vehicle_id && (() => {
+              const selectedVehicle = vehicles.find(v => v.id === formData.vehicle_id) as (typeof vehicles[number] & { mileage?: number | null }) | undefined
+              const currentMileage = selectedVehicle?.mileage ?? null
+              return (
+                <div className="mt-4 space-y-2">
+                  <Label htmlFor="mileage" className="flex items-center gap-2">
+                    <Gauge className="h-4 w-4 text-primary" />
+                    Current Odometer (km)
+                    {!isEditing && <span className="text-destructive">*</span>}
+                  </Label>
+                  <Input
+                    id="mileage"
+                    type="number"
+                    min="0"
+                    inputMode="numeric"
+                    required={!isEditing}
+                    value={formData.mileage}
+                    onChange={(e) => setFormData({ ...formData, mileage: e.target.value })}
+                    placeholder="e.g. 125000"
+                    className="h-11 bg-background/50 border-border/50"
+                  />
+                  {currentMileage !== null ? (
+                    <p className="text-xs text-muted-foreground">
+                      Last recorded mileage: {currentMileage.toLocaleString()} km. Saving a higher reading updates the vehicle&apos;s current mileage.
+                    </p>
+                  ) : (
+                    <p className="text-xs text-muted-foreground">
+                      No mileage recorded yet for this vehicle. This reading will become its current mileage.
+                    </p>
+                  )}
+                </div>
+              )
+            })()}
           </div>
 
           {/* Customer Selection */}

@@ -255,8 +255,14 @@ export default async function JobDetailPage({
                     )}
                     {job.vehicle.mileage && (
                       <div>
-                        <p className="text-xs text-muted-foreground">Mileage</p>
-                        <p className="font-medium">{job.vehicle.mileage.toLocaleString()} mi</p>
+                        <p className="text-xs text-muted-foreground">Vehicle Mileage</p>
+                        <p className="font-medium">{job.vehicle.mileage.toLocaleString()} km</p>
+                      </div>
+                    )}
+                    {(job as any).mileage != null && (
+                      <div>
+                        <p className="text-xs text-muted-foreground">Odometer at Job</p>
+                        <p className="font-medium">{(job as any).mileage.toLocaleString()} km</p>
                       </div>
                     )}
                   </div>
