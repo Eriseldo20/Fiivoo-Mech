@@ -77,15 +77,18 @@ export default function LoginPage() {
         </div>
 
         {/* Logo */}
-        <div className="relative z-10">
+        <div className="relative z-10 flex items-center gap-3">
           <Image
             src="/brand/fiivoo-logo-white.png"
             alt="Fiivoo"
-            width={200}
-            height={64}
-            className="h-9 w-auto object-contain"
+            width={280}
+            height={90}
+            className="h-14 w-auto object-contain"
             priority
           />
+          <span className="text-2xl font-semibold tracking-[0.2em] text-sidebar-primary">
+            MECH
+          </span>
         </div>
 
         {/* Hero copy */}
@@ -119,15 +122,18 @@ export default function LoginPage() {
       <div className="flex w-full items-center justify-center p-6 md:p-10 lg:w-1/2">
         <div className="w-full max-w-sm">
           {/* Mobile logo */}
-          <div className="mb-10 flex justify-center lg:hidden">
+          <div className="mb-10 flex items-center justify-center gap-2.5 lg:hidden">
             <Image
               src="/brand/fiivoo-logo-black.png"
               alt="Fiivoo"
-              width={200}
-              height={64}
-              className="h-9 w-auto object-contain dark:invert"
+              width={280}
+              height={90}
+              className="h-12 w-auto object-contain dark:invert"
               priority
             />
+            <span className="text-xl font-semibold tracking-[0.2em] text-primary">
+              MECH
+            </span>
           </div>
 
           <div className="mb-8">
