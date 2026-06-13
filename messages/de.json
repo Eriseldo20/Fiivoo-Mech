@@ -372,7 +372,10 @@
     "category_electrical": "Elektrik",
     "category_accessories": "Zubehör",
     "category_tools": "Werkzeuge",
-    "category_other": "Sonstiges"
+    "category_other": "Sonstiges",
+    "image": "Bild",
+    "itemPhoto": "Artikelfoto",
+    "noImage": "Kein Bild"
   },
   "settings": {
     "title": "Einstellungen",

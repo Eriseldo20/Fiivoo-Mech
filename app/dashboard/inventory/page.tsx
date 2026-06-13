@@ -53,9 +53,14 @@ import {
   TrendingDown,
   TrendingUp,
   Euro,
-  MapPin
+  MapPin,
+  ImageIcon,
+  Truck,
+  Hash
 } from 'lucide-react'
 import { formatCurrency } from '@/lib/currency'
+import { PhotoUpload } from '@/components/vehicles/photo-upload'
+import { getBlobUrl } from '@/lib/blob'
 
 interface InventoryItem {
   id: string
@@ -70,6 +75,7 @@ interface InventoryItem {
   sell_price: number | null
   location: string | null
   supplier: string | null
+  image_url: string | null
   created_at: string
 }
 
@@ -111,6 +117,7 @@ export default function InventoryPage() {
   const [restockQty, setRestockQty] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [shopId, setShopId] = useState<string | null>(null)
+  const [detailItem, setDetailItem] = useState<InventoryItem | null>(null)
 
   const [formData, setFormData] = useState({
     sku: '',
@@ -123,6 +130,7 @@ export default function InventoryPage() {
     sell_price: '',
     location: '',
     supplier: '',
+    image_url: null as string | null,
   })
 
   useEffect(() => {
@@ -167,6 +175,7 @@ export default function InventoryPage() {
       sell_price: '',
       location: '',
       supplier: '',
+      image_url: null,
     })
   }
 
@@ -183,6 +192,7 @@ export default function InventoryPage() {
       sell_price: item.sell_price?.toString() || '',
       location: item.location || '',
       supplier: item.supplier || '',
+      image_url: item.image_url || null,
     })
     setShowAddDialog(true)
   }
@@ -205,6 +215,7 @@ export default function InventoryPage() {
       sell_price: formData.sell_price ? parseFloat(formData.sell_price) : null,
       location: formData.location || null,
       supplier: formData.supplier || null,
+      image_url: formData.image_url || null,
     }
 
     if (editingItem) {
@@ -438,6 +449,25 @@ export default function InventoryPage() {
                 <Card key={item.id} className={`glass-card ${item.quantity <= item.min_quantity ? 'border-amber-500/30' : ''}`}>
                   <CardContent className="p-4">
                     <div className="flex items-start justify-between gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setDetailItem(item)}
+                        className="flex flex-1 min-w-0 items-start gap-3 text-left"
+                      >
+                        <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border bg-muted/40">
+                          {item.image_url ? (
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img
+                              src={getBlobUrl(item.image_url) || ''}
+                              alt={item.name}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center">
+                              <ImageIcon className="h-6 w-6 text-muted-foreground/50" />
+                            </div>
+                          )}
+                        </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="font-medium truncate">{item.name}</h3>
@@ -478,6 +508,7 @@ export default function InventoryPage() {
                           </div>
                         </div>
                       </div>
+                      </button>
                       <div className="flex flex-col gap-1">
                         <Button
                           variant="ghost"
@@ -518,6 +549,7 @@ export default function InventoryPage() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead className="w-[64px]">{t('image')}</TableHead>
                   <TableHead>{t('item')}</TableHead>
                   <TableHead>{t('sku')}</TableHead>
                   <TableHead>{t('category')}</TableHead>
@@ -530,10 +562,30 @@ export default function InventoryPage() {
               </TableHeader>
               <TableBody>
                 {filteredInventory.map((item) => (
-                  <TableRow key={item.id} className={item.quantity <= item.min_quantity ? 'bg-amber-500/5' : ''}>
+                  <TableRow
+                    key={item.id}
+                    className={`cursor-pointer ${item.quantity <= item.min_quantity ? 'bg-amber-500/5' : ''}`}
+                    onClick={() => setDetailItem(item)}
+                  >
+                    <TableCell>
+                      <div className="h-12 w-12 overflow-hidden rounded-md border bg-muted/40">
+                        {item.image_url ? (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={getBlobUrl(item.image_url) || ''}
+                            alt={item.name}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex h-full w-full items-center justify-center">
+                            <ImageIcon className="h-5 w-5 text-muted-foreground/50" />
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <div>
-                        <p className="font-medium">{item.name}</p>
+                        <p className="font-medium hover:underline">{item.name}</p>
                         {item.description && (
                           <p className="text-xs text-muted-foreground truncate max-w-[200px]">
                             {item.description}
@@ -575,7 +627,7 @@ export default function InventoryPage() {
                         </div>
                       )}
                     </TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <div className="flex items-center gap-1">
                         <Button
                           variant="ghost"
@@ -633,6 +685,12 @@ export default function InventoryPage() {
           </DialogHeader>
 
           <div className="grid gap-4 py-4 max-h-[60vh] overflow-y-auto">
+            <PhotoUpload
+              label={t('itemPhoto')}
+              value={formData.image_url}
+              onChange={(url) => setFormData({ ...formData, image_url: url })}
+            />
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2 col-span-2">
                 <Label htmlFor="name">{t('itemName')} *</Label>
@@ -829,6 +887,131 @@ export default function InventoryPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Item Detail Dialog */}
+      <Dialog open={!!detailItem} onOpenChange={(open) => !open && setDetailItem(null)}>
+        <DialogContent className="max-w-lg p-0 overflow-hidden">
+          {detailItem && (
+            <>
+              <div className="relative aspect-video w-full bg-muted">
+                {detailItem.image_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={getBlobUrl(detailItem.image_url) || ''}
+                    alt={detailItem.name}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted-foreground/50">
+                    <ImageIcon className="h-12 w-12" />
+                    <span className="text-sm">{t('noImage')}</span>
+                  </div>
+                )}
+                {detailItem.quantity <= detailItem.min_quantity && (
+                  <Badge variant="outline" className="absolute top-3 left-3 bg-amber-500/90 text-white border-transparent">
+                    <TrendingDown className="h-3 w-3 mr-1" />
+                    {t('lowStock')}
+                  </Badge>
+                )}
+              </div>
+
+              <div className="p-6 max-h-[55vh] overflow-y-auto">
+                <DialogHeader className="text-left">
+                  <div className="flex items-start justify-between gap-3">
+                    <DialogTitle className="text-xl">{detailItem.name}</DialogTitle>
+                    {detailItem.category && (
+                      <Badge variant="outline" className={categoryColors[detailItem.category] || categoryColors.other}>
+                        {t(`category_${detailItem.category}`)}
+                      </Badge>
+                    )}
+                  </div>
+                  {detailItem.description && (
+                    <DialogDescription>{detailItem.description}</DialogDescription>
+                  )}
+                </DialogHeader>
+
+                <div className="mt-4 grid grid-cols-2 gap-4">
+                  <div className="rounded-lg border bg-card/50 p-3">
+                    <p className="text-xs text-muted-foreground">{t('qty')}</p>
+                    <p className={`text-lg font-semibold ${detailItem.quantity <= detailItem.min_quantity ? 'text-amber-500' : ''}`}>
+                      {detailItem.quantity}
+                    </p>
+                  </div>
+                  <div className="rounded-lg border bg-card/50 p-3">
+                    <p className="text-xs text-muted-foreground">{t('minQuantity')}</p>
+                    <p className="text-lg font-semibold">{detailItem.min_quantity}</p>
+                  </div>
+                  <div className="rounded-lg border bg-card/50 p-3">
+                    <p className="text-xs text-muted-foreground">{t('unitCost')}</p>
+                    <p className="text-lg font-semibold">{detailItem.unit_cost ? formatCurrency(detailItem.unit_cost) : '-'}</p>
+                  </div>
+                  <div className="rounded-lg border bg-card/50 p-3">
+                    <p className="text-xs text-muted-foreground">{t('sellPrice')}</p>
+                    <p className="text-lg font-semibold">{detailItem.sell_price ? formatCurrency(detailItem.sell_price) : '-'}</p>
+                  </div>
+                </div>
+
+                <div className="mt-4 space-y-2 text-sm">
+                  {detailItem.sku && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Hash className="h-4 w-4" />
+                      <span className="font-mono">{detailItem.sku}</span>
+                    </div>
+                  )}
+                  {detailItem.location && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      <span>{detailItem.location}</span>
+                    </div>
+                  )}
+                  {detailItem.supplier && (
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Truck className="h-4 w-4" />
+                      <span>{detailItem.supplier}</span>
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-6 flex flex-wrap gap-2">
+                  <Button
+                    onClick={() => {
+                      const item = detailItem
+                      setDetailItem(null)
+                      setRestockItem(item)
+                      setShowRestockDialog(true)
+                    }}
+                  >
+                    <TrendingUp className="h-4 w-4 mr-2 text-emerald-200" />
+                    {t('restock')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      const item = detailItem
+                      setDetailItem(null)
+                      handleEdit(item)
+                    }}
+                  >
+                    <Edit className="h-4 w-4 mr-2" />
+                    {t('editItem')}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="text-red-500 hover:text-red-600 ml-auto"
+                    onClick={() => {
+                      setDeleteId(detailItem.id)
+                      setDetailItem(null)
+                    }}
+                  >
+                    <Trash2 className="h-4 w-4 mr-2" />
+                    {t('delete')}
+                  </Button>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -326,7 +326,10 @@
     "category_electrical": "Elettrico",
     "category_accessories": "Accessori",
     "category_tools": "Utensili",
-    "category_other": "Altro"
+    "category_other": "Altro",
+    "image": "Immagine",
+    "itemPhoto": "Foto articolo",
+    "noImage": "Nessuna immagine"
   },
   "settings": {
     "title": "Impostazioni",
