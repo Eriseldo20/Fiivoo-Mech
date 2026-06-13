@@ -607,7 +607,12 @@
     "authError": "Erreur d'authentification",
     "authErrorDesc": "Une erreur s'est produite lors de l'authentification. Veuillez réessayer.",
     "tryAgain": "Réessayer",
-    "createNewAccount": "Créer un nouveau compte"
+    "createNewAccount": "Créer un nouveau compte",
+    "loginHeroTitle": "La façon moderne de gérer votre atelier",
+    "loginHeroSubtitle": "Travaux, inventaire et devis réunis dans une plateforme premium pour les professionnels.",
+    "featureInventory": "Inventaire",
+    "featureJobs": "Suivi des travaux",
+    "featureEstimates": "Devis"
   },
   "onboarding": {
     "title": "Configurez votre garage",

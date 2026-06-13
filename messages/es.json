@@ -524,7 +524,12 @@
     "authError": "Error de autenticación",
     "authErrorDesc": "Algo salió mal durante la autenticación. Por favor, inténtelo de nuevo.",
     "tryAgain": "Intentar de nuevo",
-    "createNewAccount": "Crear cuenta nueva"
+    "createNewAccount": "Crear cuenta nueva",
+    "loginHeroTitle": "La forma moderna de gestionar tu taller",
+    "loginHeroSubtitle": "Trabajos, inventario y presupuestos, unificados en una plataforma premium para profesionales.",
+    "featureInventory": "Inventario",
+    "featureJobs": "Seguimiento de trabajos",
+    "featureEstimates": "Presupuestos"
   },
   "customers": {
     "title": "Clientes",

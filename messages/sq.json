@@ -524,7 +524,12 @@
     "authError": "Gabim autentifikimi",
     "authErrorDesc": "Diçka shkoi keq gjatë autentifikimit. Ju lutemi provoni përsëri.",
     "tryAgain": "Provo përsëri",
-    "createNewAccount": "Krijo llogari të re"
+    "createNewAccount": "Krijo llogari të re",
+    "loginHeroTitle": "Mënyra moderne për të menaxhuar punëtorinë tuaj",
+    "loginHeroSubtitle": "Punët, inventari dhe ofertat — të bashkuara në një platformë premium për profesionistët.",
+    "featureInventory": "Inventari",
+    "featureJobs": "Ndjekja e punëve",
+    "featureEstimates": "Ofertat"
   },
   "customers": {
     "title": "Klientët",

@@ -524,7 +524,12 @@
     "authError": "Authentifizierungsfehler",
     "authErrorDesc": "Bei der Authentifizierung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "tryAgain": "Erneut versuchen",
-    "createNewAccount": "Neues Konto erstellen"
+    "createNewAccount": "Neues Konto erstellen",
+    "loginHeroTitle": "Die moderne Art, Ihre Werkstatt zu führen",
+    "loginHeroSubtitle": "Aufträge, Lager und Kostenvoranschläge – vereint in einer Premium-Plattform für Profis.",
+    "featureInventory": "Lager",
+    "featureJobs": "Auftragsverfolgung",
+    "featureEstimates": "Kostenvoranschläge"
   },
   "customers": {
     "title": "Kunden",

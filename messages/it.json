@@ -607,7 +607,12 @@
     "authError": "Errore di autenticazione",
     "authErrorDesc": "Qualcosa è andato storto durante l'autenticazione. Riprova.",
     "tryAgain": "Riprova",
-    "createNewAccount": "Crea nuovo account"
+    "createNewAccount": "Crea nuovo account",
+    "loginHeroTitle": "Il modo moderno di gestire la tua officina",
+    "loginHeroSubtitle": "Lavori, magazzino e preventivi uniti in un'unica piattaforma premium per professionisti.",
+    "featureInventory": "Magazzino",
+    "featureJobs": "Monitoraggio lavori",
+    "featureEstimates": "Preventivi"
   },
   "onboarding": {
     "title": "Configura la tua officina",

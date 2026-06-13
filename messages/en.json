@@ -513,7 +513,12 @@
     "authError": "Authentication Error",
     "authErrorDesc": "Something went wrong during authentication. Please try again.",
     "tryAgain": "Try again",
-    "createNewAccount": "Create new account"
+    "createNewAccount": "Create new account",
+    "loginHeroTitle": "The modern way to run your shop",
+    "loginHeroSubtitle": "Jobs, inventory, and estimates — unified in one premium platform built for auto professionals.",
+    "featureInventory": "Inventory",
+    "featureJobs": "Job Tracking",
+    "featureEstimates": "Estimates"
   },
   "customers": {
     "title": "Customers",
