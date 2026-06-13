@@ -135,6 +135,19 @@
   }
 }
 
+/* Performance: neutralize expensive backdrop-filter blur app-wide.
+   backdrop-blur forces the GPU to re-blur the region behind an element on every
+   paint and on every scroll frame, which made the app feel heavy and janky
+   (the sticky header alone re-blurred continuously while scrolling). Because
+   these surfaces sit over a solid background, blurring a uniform color yields an
+   identical result, so removing it is visually lossless while restoring smooth
+   scrolling. Translucent surfaces with moving content behind them (header,
+   overlays) are made more opaque in their components to compensate. */
+[class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
 /* Safe area padding for mobile devices */
 .safe-area-bottom {
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -160,32 +173,33 @@
   }
 }
 
-/* Premium glass effect */
+/* Premium glass effect
+   Note: backdrop-filter blur is intentionally avoided here. It is extremely
+   expensive to composite (the GPU must re-blur the backdrop on every paint and
+   scroll), and these classes are used on dozens of cards across the app, which
+   caused noticeable scroll jank. Opaque backgrounds give the same look without
+   the cost. */
 .glass {
-  background: oklch(1 0 0 / 0.8);
-  backdrop-filter: blur(20px);
+  background: oklch(0.99 0.003 250);
   border: 1px solid oklch(0.85 0.01 250 / 0.5);
   box-shadow: 0 4px 24px oklch(0.2 0.01 250 / 0.08);
 }
 
 .dark .glass {
-  background: oklch(0.16 0.01 250 / 0.8);
-  backdrop-filter: blur(20px);
+  background: oklch(0.17 0.01 250);
   border: 1px solid oklch(0.30 0.01 250 / 0.3);
   box-shadow: 0 4px 24px oklch(0 0 0 / 0.2);
 }
 
 /* Glass card with colored accents */
 .glass-card {
-  background: oklch(1 0 0 / 0.9);
-  backdrop-filter: blur(16px);
+  background: var(--card);
   border: 1px solid oklch(0.88 0.01 250);
   box-shadow: 0 2px 12px oklch(0.2 0.01 250 / 0.06);
 }
 
 .dark .glass-card {
-  background: oklch(0.16 0.01 250 / 0.6);
-  backdrop-filter: blur(16px);
+  background: oklch(0.17 0.01 250);
   border: 1px solid oklch(0.28 0.01 250 / 0.5);
   box-shadow: 0 2px 12px oklch(0 0 0 / 0.15);
 }

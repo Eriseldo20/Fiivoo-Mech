@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Download, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { downloadEstimatePDF } from '@/lib/pdf/estimate-pdf'
 
 interface EstimateItem {
   description: string
@@ -55,8 +54,9 @@ export function EstimatePDFButton({ estimate }: EstimatePDFButtonProps) {
   const handleDownload = async () => {
     setIsGenerating(true)
     try {
-      // Small delay for UX feedback
-      await new Promise(resolve => setTimeout(resolve, 100))
+      // Lazy-load the PDF generator (jspdf is ~350KB) only when the user
+      // actually downloads, keeping it out of the page's initial bundle.
+      const { downloadEstimatePDF } = await import('@/lib/pdf/estimate-pdf')
       await downloadEstimatePDF(estimate)
     } catch (error) {
       console.error('Failed to generate PDF:', error)

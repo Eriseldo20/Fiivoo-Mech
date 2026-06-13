@@ -40,7 +40,7 @@ export function Header({ title, description, action }: HeaderProps) {
   }
 
   return (
-    <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-xl border-b border-border/50">
+    <header className="sticky top-0 z-30 bg-background/95 border-b border-border/50">
       <div className="h-14 md:h-16 px-4 md:px-6 flex items-center justify-between gap-2 md:gap-4">
         {/* Left: Title */}
         <div className="flex-1 min-w-0">
@@ -101,7 +101,7 @@ export function Header({ title, description, action }: HeaderProps) {
 
       {/* Mobile Search Dropdown */}
       {showMobileSearch && (
-        <div className="md:hidden px-4 pb-3 bg-background/80 backdrop-blur-xl border-b border-border/50">
+        <div className="md:hidden px-4 pb-3 bg-background/95 border-b border-border/50">
           <div className="relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
