@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { Car, Clock, User, MoreHorizontal, Plus, Wrench, ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -43,21 +44,36 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
 
   if (jobs.length === 0) {
     return (
-      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-8 md:p-12">
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="p-3 md:p-4 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <Wrench className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+      <div className="relative overflow-hidden bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-8 md:p-12">
+        <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:justify-center md:gap-12">
+          {/* Illustration (hidden automatically once jobs exist, since this whole block only renders when empty) */}
+          <div className="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
+            <Image
+              src="/illustrations/mechanic-empty-state.png"
+              alt=""
+              aria-hidden="true"
+              fill
+              sizes="(max-width: 768px) 12rem, 16rem"
+              className="object-contain opacity-90 select-none pointer-events-none"
+              priority={false}
+            />
           </div>
-          <h3 className="text-base md:text-lg font-semibold mb-2">{t('jobs.noJobs')}</h3>
-          <p className="text-xs md:text-sm text-muted-foreground mb-6 max-w-sm">
-            {t('jobs.noJobsDesc')}
-          </p>
-          <Link href="/dashboard/jobs/new">
-            <Button className="bg-primary hover:bg-primary/90">
-              <Plus className="h-4 w-4 mr-2" />
-              {t('jobs.createJob')}
-            </Button>
-          </Link>
+
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <div className="p-3 md:p-4 rounded-full bg-primary/10 border border-primary/20 mb-4">
+              <Wrench className="h-6 w-6 md:h-8 md:w-8 text-primary" />
+            </div>
+            <h3 className="text-base md:text-lg font-semibold mb-2">{t('jobs.noJobs')}</h3>
+            <p className="text-xs md:text-sm text-muted-foreground mb-6 max-w-sm">
+              {t('jobs.noJobsDesc')}
+            </p>
+            <Link href="/dashboard/jobs/new">
+              <Button className="bg-primary hover:bg-primary/90">
+                <Plus className="h-4 w-4 mr-2" />
+                {t('jobs.createJob')}
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
     )
