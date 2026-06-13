@@ -18,13 +18,18 @@ export async function GET(request: NextRequest) {
       return new NextResponse('Not found', { status: 404 })
     }
 
+    // Blob pathnames are unique per upload, so the bytes at a given pathname
+    // never change. Let the browser cache them and revalidate in the background
+    // (stale-while-revalidate) so repeat views don't re-download the image.
+    const cacheControl = 'private, max-age=86400, stale-while-revalidate=604800'
+
     // Blob hasn't changed — tell the browser to use its cached copy
     if (result.statusCode === 304) {
       return new NextResponse(null, {
         status: 304,
         headers: {
           ETag: result.blob.etag,
-          'Cache-Control': 'private, no-cache',
+          'Cache-Control': cacheControl,
         },
       })
     }
@@ -33,7 +38,7 @@ export async function GET(request: NextRequest) {
       headers: {
         'Content-Type': result.blob.contentType,
         ETag: result.blob.etag,
-        'Cache-Control': 'private, no-cache',
+        'Cache-Control': cacheControl,
       },
     })
   } catch (error) {

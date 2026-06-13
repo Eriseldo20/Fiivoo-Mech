@@ -6,6 +6,7 @@ import { Camera, X, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { getBlobUrl } from '@/lib/blob'
+import { compressImage } from '@/lib/image-compress'
 
 interface PhotoUploadProps {
   label: string
@@ -20,19 +21,28 @@ export function PhotoUpload({ label, value, onChange, className }: PhotoUploadPr
   const [dragOver, setDragOver] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const handleUpload = async (file: File) => {
-    if (!file.type.startsWith('image/')) {
+  const handleUpload = async (original: File) => {
+    if (!original.type.startsWith('image/')) {
       alert(t('selectImageFile'))
       return
     }
 
-    if (file.size > 5 * 1024 * 1024) {
+    // Guard against absurdly large originals before we even read them
+    if (original.size > 25 * 1024 * 1024) {
       alert(t('imageTooLarge'))
       return
     }
 
     setIsUploading(true)
     try {
+      // Downscale + re-encode in the browser so we store/serve a small file
+      // instead of a multi-megabyte phone photo
+      const file = await compressImage(original, {
+        maxDimension: 1600,
+        quality: 0.8,
+        maxBytes: 5 * 1024 * 1024,
+      })
+
       const formData = new FormData()
       formData.append('file', file)
 

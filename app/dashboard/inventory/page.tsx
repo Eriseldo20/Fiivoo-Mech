@@ -460,6 +460,8 @@ export default function InventoryPage() {
                             <img
                               src={getBlobUrl(item.image_url) || ''}
                               alt={item.name}
+                              loading="lazy"
+                              decoding="async"
                               className="h-full w-full object-cover"
                             />
                           ) : (
@@ -574,6 +576,8 @@ export default function InventoryPage() {
                           <img
                             src={getBlobUrl(item.image_url) || ''}
                             alt={item.name}
+                            loading="lazy"
+                            decoding="async"
                             className="h-full w-full object-cover"
                           />
                         ) : (
