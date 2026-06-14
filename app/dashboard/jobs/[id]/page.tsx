@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/currency'
 import { getBlobUrl } from '@/lib/blob'
 import { JobStatusActions } from '@/components/jobs/job-status-actions'
+import { JobTimingWarning } from '@/components/jobs/job-timing-warning'
 import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 
@@ -149,6 +150,16 @@ export default async function JobDetailPage({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Timing / profitability warning — shows when the job is over its estimate */}
+            <JobTimingWarning
+              job={{
+                status: job.status,
+                estimated_hours: job.estimated_hours,
+                actual_hours: job.actual_hours,
+                start_date: job.start_date,
+              }}
+            />
+
             {/* Description */}
             <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
               <h2 className="text-lg font-semibold mb-4">{t('description')}</h2>

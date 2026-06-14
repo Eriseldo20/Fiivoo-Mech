@@ -2,6 +2,7 @@ import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
 import { Header } from '@/components/dashboard/header'
 import { JobCardsList } from '@/components/jobs/job-cards-list'
+import { JobOverrunAlert } from '@/components/jobs/job-overrun-alert'
 import { CompletedJobsList } from '@/components/jobs/completed-jobs-list'
 import { JobFilters } from '@/components/jobs/job-filters'
 import { redirect } from 'next/navigation'
@@ -107,7 +108,10 @@ export default async function JobsPage({
           currentPriority={params.priority}
           currentSearch={params.search}
         />
-        
+
+        {/* Alert owner when active jobs are running past their estimates */}
+        <JobOverrunAlert jobs={activeJobs || []} />
+
         {/* Active Jobs */}
         <JobCardsList jobs={activeJobs || []} />
         

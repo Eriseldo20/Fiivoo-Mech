@@ -799,5 +799,18 @@
     "uploading": "Wird hochgeladen...",
     "clickToUpload": "Klicken zum Hochladen oder per Drag & Drop",
     "fileTypes": "PNG, JPG bis zu 5 MB"
+  },
+  "jobTiming": {
+    "overBy": "{time} über",
+    "delayAlertTitle": "Aufträge über dem Zeitplan",
+    "delayAlertOne": "Auftrag {job} liegt {time} über der Schätzung. Dies könnte Ihre anderen aktiven Aufträge verzögern.",
+    "delayAlertMany": "{count} Aufträge liegen über ihrer Schätzung. Dies könnte Ihre anderen aktiven Aufträge verzögern und geplante Arbeiten verschieben.",
+    "runningOverTitle": "Dieser Auftrag dauert länger als erwartet",
+    "runningOverBody": "Er liegt {time} über der geschätzten Zeit. Ihre anderen aktiven Aufträge könnten sich dadurch verzögern.",
+    "revenueTitle": "Rentabilität gefährdet",
+    "revenueBodyActive": "Bei diesem Auftrag verlieren Sie möglicherweise Umsatz – in diesem Tempo ist er eventuell nicht mehr rentabel.",
+    "revenueBodyDone": "Dieser Auftrag dauerte {time} länger als geschätzt. Sie haben möglicherweise Umsatz verloren oder er war nicht rentabel.",
+    "estimatedLabel": "Geschätzt",
+    "spentLabel": "Aufgewendete Zeit"
   }
 }

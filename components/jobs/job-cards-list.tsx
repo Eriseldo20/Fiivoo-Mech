@@ -3,10 +3,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
-import { Car, Clock, User, MoreHorizontal, Plus, Wrench, ChevronRight } from 'lucide-react'
+import { Car, Clock, User, MoreHorizontal, Plus, Wrench, ChevronRight, AlertTriangle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl'
+import { getJobTiming, formatDurationMinutes } from '@/lib/job-timing'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -96,6 +97,26 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
         {jobs.map((job) => {
           const status = statusStyles[job.status]
           const priority = priorityStyles[job.priority]
+          const timing = getJobTiming({
+            status: job.status,
+            estimated_hours: job.estimated_hours,
+            actual_hours: job.actual_hours,
+            start_date: job.start_date,
+          })
+          const isOverrun = timing.isActive && timing.level !== 'none'
+          const overrunBadge = (
+            <span
+              className={cn(
+                'inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border font-medium',
+                timing.level === 'critical'
+                  ? 'bg-red-500/10 text-red-500 border-red-500/20'
+                  : 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+              )}
+            >
+              <AlertTriangle className="h-3 w-3" />
+              {t('jobTiming.overBy', { time: formatDurationMinutes(timing.overMinutes) })}
+            </span>
+          )
 
           return (
             <Link
@@ -119,6 +140,7 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
                           {priority.label}
                         </span>
                       )}
+                      {isOverrun && overrunBadge}
                     </div>
                     <h3 className="font-medium text-sm truncate">{job.title}</h3>
                   </div>
@@ -159,9 +181,10 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
                     </span>
                   </div>
                   <h3 className="font-medium truncate mb-1">{job.title}</h3>
-                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
                     <Clock className="h-3 w-3" />
                     <span>{formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}</span>
+                    {isOverrun && overrunBadge}
                   </div>
                 </div>
 

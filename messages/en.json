@@ -788,5 +788,18 @@
     "uploading": "Uploading...",
     "clickToUpload": "Click to upload or drag and drop",
     "fileTypes": "PNG, JPG up to 5MB"
+  },
+  "jobTiming": {
+    "overBy": "{time} over",
+    "delayAlertTitle": "Jobs running over schedule",
+    "delayAlertOne": "Job {job} is running {time} past its estimate. This may delay your other active jobs.",
+    "delayAlertMany": "{count} jobs are running past their estimates. This may delay your other active jobs and push back scheduled work.",
+    "runningOverTitle": "This job is taking longer than expected",
+    "runningOverBody": "It's {time} past the estimated time. Your other active jobs may be delayed as a result.",
+    "revenueTitle": "Profitability at risk",
+    "revenueBodyActive": "On this job you might be losing revenue — at this pace it may no longer be profitable.",
+    "revenueBodyDone": "This job took {time} longer than estimated. You might have lost revenue, or it wasn't profitable.",
+    "estimatedLabel": "Estimated",
+    "spentLabel": "Time spent"
   }
 }

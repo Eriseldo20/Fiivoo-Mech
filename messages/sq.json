@@ -799,5 +799,18 @@
     "uploading": "Duke ngarkuar...",
     "clickToUpload": "Klikoni për të ngarkuar ose tërhiqni dhe lëshoni",
     "fileTypes": "PNG, JPG deri në 5MB"
+  },
+  "jobTiming": {
+    "overBy": "{time} mbi",
+    "delayAlertTitle": "Punë që po e kalojnë afatin",
+    "delayAlertOne": "Puna {job} e ka kaluar vlerësimin me {time}. Kjo mund të vonojë punët e tjera aktive.",
+    "delayAlertMany": "{count} punë e kanë kaluar kohën e vlerësuar. Kjo mund të vonojë punët e tjera aktive dhe të shtyjë punën e planifikuar.",
+    "runningOverTitle": "Kjo punë po zgjat më shumë se pritej",
+    "runningOverBody": "Ka kaluar kohën e vlerësuar me {time}. Punët e tjera aktive mund të vonohen si pasojë.",
+    "revenueTitle": "Përfitueshmëria në rrezik",
+    "revenueBodyActive": "Në këtë punë mund të jeni duke humbur të ardhura — me këtë ritëm mund të mos jetë më fitimprurëse.",
+    "revenueBodyDone": "Kjo punë zgjati {time} më shumë se vlerësimi. Mund të keni humbur të ardhura, ose nuk ishte fitimprurëse.",
+    "estimatedLabel": "Vlerësuar",
+    "spentLabel": "Koha e shpenzuar"
   }
 }

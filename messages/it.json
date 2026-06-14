@@ -727,5 +727,18 @@
     "uploading": "Caricamento...",
     "clickToUpload": "Clicca per caricare o trascina e rilascia",
     "fileTypes": "PNG, JPG fino a 5MB"
+  },
+  "jobTiming": {
+    "overBy": "{time} in più",
+    "delayAlertTitle": "Lavori oltre i tempi previsti",
+    "delayAlertOne": "Il lavoro {job} supera la stima di {time}. Questo potrebbe ritardare gli altri lavori attivi.",
+    "delayAlertMany": "{count} lavori superano i tempi stimati. Questo potrebbe ritardare gli altri lavori attivi e posticipare il lavoro programmato.",
+    "runningOverTitle": "Questo lavoro sta richiedendo più tempo del previsto",
+    "runningOverBody": "Supera il tempo stimato di {time}. Gli altri lavori attivi potrebbero subire ritardi.",
+    "revenueTitle": "Redditività a rischio",
+    "revenueBodyActive": "Su questo lavoro potresti perdere ricavi: a questo ritmo potrebbe non essere più redditizio.",
+    "revenueBodyDone": "Questo lavoro ha richiesto {time} in più del previsto. Potresti aver perso ricavi o non è stato redditizio.",
+    "estimatedLabel": "Stimato",
+    "spentLabel": "Tempo impiegato"
   }
 }

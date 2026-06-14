@@ -727,5 +727,18 @@
     "uploading": "Téléchargement...",
     "clickToUpload": "Cliquez pour télécharger ou glissez-déposez",
     "fileTypes": "PNG, JPG jusqu'à 5 Mo"
+  },
+  "jobTiming": {
+    "overBy": "{time} de plus",
+    "delayAlertTitle": "Travaux en retard sur le planning",
+    "delayAlertOne": "Le travail {job} dépasse l'estimation de {time}. Cela pourrait retarder vos autres travaux en cours.",
+    "delayAlertMany": "{count} travaux dépassent leur estimation. Cela pourrait retarder vos autres travaux en cours et repousser le travail planifié.",
+    "runningOverTitle": "Ce travail prend plus de temps que prévu",
+    "runningOverBody": "Il dépasse le temps estimé de {time}. Vos autres travaux en cours pourraient être retardés.",
+    "revenueTitle": "Rentabilité menacée",
+    "revenueBodyActive": "Sur ce travail, vous pourriez perdre du chiffre d'affaires — à ce rythme, il pourrait ne plus être rentable.",
+    "revenueBodyDone": "Ce travail a pris {time} de plus que prévu. Vous avez peut-être perdu du chiffre d'affaires, ou il n'était pas rentable.",
+    "estimatedLabel": "Estimé",
+    "spentLabel": "Temps passé"
   }
 }
