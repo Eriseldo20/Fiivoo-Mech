@@ -801,5 +801,18 @@
     "revenueBodyDone": "This job took {time} longer than estimated. You might have lost revenue, or it wasn't profitable.",
     "estimatedLabel": "Estimated",
     "spentLabel": "Time spent"
+  },
+  "globalSearch": {
+    "title": "Search",
+    "description": "Search jobs and estimates",
+    "placeholder": "Search jobs and estimates...",
+    "searching": "Searching...",
+    "hint": "Type to search jobs and estimates",
+    "noResults": "No results found",
+    "jobs": "Jobs",
+    "estimates": "Estimates",
+    "untitledJob": "Untitled job",
+    "untitledEstimate": "Estimate",
+    "footerHint": "Enter to open"
   }
 }

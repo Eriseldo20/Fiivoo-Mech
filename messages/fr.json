@@ -740,5 +740,18 @@
     "revenueBodyDone": "Ce travail a pris {time} de plus que prévu. Vous avez peut-être perdu du chiffre d'affaires, ou il n'était pas rentable.",
     "estimatedLabel": "Estimé",
     "spentLabel": "Temps passé"
+  },
+  "globalSearch": {
+    "title": "Rechercher",
+    "description": "Rechercher des travaux et des devis",
+    "placeholder": "Rechercher des travaux et des devis...",
+    "searching": "Recherche...",
+    "hint": "Tapez pour rechercher des travaux et des devis",
+    "noResults": "Aucun résultat trouvé",
+    "jobs": "Travaux",
+    "estimates": "Devis",
+    "untitledJob": "Travail sans titre",
+    "untitledEstimate": "Devis",
+    "footerHint": "Entrée pour ouvrir"
   }
 }

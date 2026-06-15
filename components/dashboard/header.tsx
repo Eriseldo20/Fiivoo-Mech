@@ -2,13 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Search, Plus, X } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { NotificationBell } from '@/components/notifications/notification-bell'
+import { GlobalSearch, GlobalSearchTrigger } from '@/components/dashboard/global-search'
 import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 
 interface HeaderProps {
   title?: string
@@ -23,7 +22,6 @@ interface HeaderProps {
 export function Header({ title, description, action }: HeaderProps) {
   const t = useTranslations()
   const pathname = usePathname()
-  const [showMobileSearch, setShowMobileSearch] = useState(false)
 
   // Get translated title based on current path
   const getTitle = () => {
@@ -50,28 +48,20 @@ export function Header({ title, description, action }: HeaderProps) {
           )}
         </div>
 
-        {/* Center: Search - Desktop */}
+        {/* Center: Global Search - Desktop */}
         <div className="hidden md:flex items-center flex-1 max-w-md">
-          <div className="relative w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={t('common.search')}
-              className="pl-10 h-10 bg-muted/50 border-border/50 focus:bg-background transition-colors"
-            />
-          </div>
+          <GlobalSearchTrigger variant="desktop" />
         </div>
+
+        {/* Single search dialog instance (shared by both triggers) */}
+        <GlobalSearch />
 
         {/* Right: Actions */}
         <div className="flex items-center gap-1 md:gap-2">
-          {/* Mobile Search Toggle */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-9 w-9 md:hidden"
-            onClick={() => setShowMobileSearch(!showMobileSearch)}
-          >
-            {showMobileSearch ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
-          </Button>
+          {/* Global Search - Mobile (icon trigger) */}
+          <div className="md:hidden">
+            <GlobalSearchTrigger variant="mobile" />
+          </div>
 
           {/* Theme Toggle */}
           <ThemeToggle />
@@ -99,19 +89,6 @@ export function Header({ title, description, action }: HeaderProps) {
         </div>
       </div>
 
-      {/* Mobile Search Dropdown */}
-      {showMobileSearch && (
-        <div className="md:hidden px-4 pb-3 bg-background/95 border-b border-border/50">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder={t('common.search')}
-              className="pl-10 h-10 bg-muted/50 border-border/50"
-              autoFocus
-            />
-          </div>
-        </div>
-      )}
     </header>
   )
 }

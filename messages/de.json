@@ -812,5 +812,18 @@
     "revenueBodyDone": "Dieser Auftrag dauerte {time} länger als geschätzt. Sie haben möglicherweise Umsatz verloren oder er war nicht rentabel.",
     "estimatedLabel": "Geschätzt",
     "spentLabel": "Aufgewendete Zeit"
+  },
+  "globalSearch": {
+    "title": "Suche",
+    "description": "Aufträge und Kostenvoranschläge suchen",
+    "placeholder": "Aufträge und Kostenvoranschläge suchen...",
+    "searching": "Suche läuft...",
+    "hint": "Tippen, um Aufträge und Kostenvoranschläge zu suchen",
+    "noResults": "Keine Ergebnisse gefunden",
+    "jobs": "Aufträge",
+    "estimates": "Kostenvoranschläge",
+    "untitledJob": "Auftrag ohne Titel",
+    "untitledEstimate": "Kostenvoranschlag",
+    "footerHint": "Enter zum Öffnen"
   }
 }

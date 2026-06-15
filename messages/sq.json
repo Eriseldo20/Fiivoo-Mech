@@ -812,5 +812,18 @@
     "revenueBodyDone": "Kjo punë zgjati {time} më shumë se vlerësimi. Mund të keni humbur të ardhura, ose nuk ishte fitimprurëse.",
     "estimatedLabel": "Vlerësuar",
     "spentLabel": "Koha e shpenzuar"
+  },
+  "globalSearch": {
+    "title": "Kërko",
+    "description": "Kërko punë dhe oferta",
+    "placeholder": "Kërko punë dhe oferta...",
+    "searching": "Duke kërkuar...",
+    "hint": "Shkruani për të kërkuar punë dhe oferta",
+    "noResults": "Nuk u gjet asnjë rezultat",
+    "jobs": "Punët",
+    "estimates": "Ofertat",
+    "untitledJob": "Punë pa titull",
+    "untitledEstimate": "Ofertë",
+    "footerHint": "Enter për të hapur"
   }
 }

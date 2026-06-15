@@ -740,5 +740,18 @@
     "revenueBodyDone": "Questo lavoro ha richiesto {time} in più del previsto. Potresti aver perso ricavi o non è stato redditizio.",
     "estimatedLabel": "Stimato",
     "spentLabel": "Tempo impiegato"
+  },
+  "globalSearch": {
+    "title": "Cerca",
+    "description": "Cerca lavori e preventivi",
+    "placeholder": "Cerca lavori e preventivi...",
+    "searching": "Ricerca in corso...",
+    "hint": "Digita per cercare lavori e preventivi",
+    "noResults": "Nessun risultato trovato",
+    "jobs": "Lavori",
+    "estimates": "Preventivi",
+    "untitledJob": "Lavoro senza titolo",
+    "untitledEstimate": "Preventivo",
+    "footerHint": "Invio per aprire"
   }
 }

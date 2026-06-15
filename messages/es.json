@@ -812,5 +812,18 @@
     "revenueBodyDone": "Este trabajo tardó {time} más de lo estimado. Es posible que hayas perdido ingresos o que no fuera rentable.",
     "estimatedLabel": "Estimado",
     "spentLabel": "Tiempo empleado"
+  },
+  "globalSearch": {
+    "title": "Buscar",
+    "description": "Buscar trabajos y presupuestos",
+    "placeholder": "Buscar trabajos y presupuestos...",
+    "searching": "Buscando...",
+    "hint": "Escribe para buscar trabajos y presupuestos",
+    "noResults": "No se encontraron resultados",
+    "jobs": "Trabajos",
+    "estimates": "Presupuestos",
+    "untitledJob": "Trabajo sin título",
+    "untitledEstimate": "Presupuesto",
+    "footerHint": "Enter para abrir"
   }
 }
