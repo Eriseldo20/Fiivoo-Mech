@@ -825,5 +825,19 @@
     "untitledJob": "Trabajo sin título",
     "untitledEstimate": "Presupuesto",
     "footerHint": "Enter para abrir"
+  },
+  "payment": {
+    "paid": "Pagado",
+    "unpaid": "No pagado",
+    "markPaid": "Marcar como pagado",
+    "markUnpaid": "Marcar como no pagado",
+    "paymentStatus": "Pago",
+    "paidOn": "Pagado el {date}",
+    "awaitingPayment": "Pendiente de pago",
+    "paymentLabel": "Pago del cliente",
+    "paidRevenue": "Cobrado",
+    "outstandingRevenue": "Pendiente",
+    "outstandingHint": "{count} sin pagar",
+    "collectedHint": "Recibido de clientes"
   }
 }

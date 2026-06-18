@@ -825,5 +825,19 @@
     "untitledJob": "Punë pa titull",
     "untitledEstimate": "Ofertë",
     "footerHint": "Enter për të hapur"
+  },
+  "payment": {
+    "paid": "Paguar",
+    "unpaid": "Papaguar",
+    "markPaid": "Shëno si të paguar",
+    "markUnpaid": "Shëno si të papaguar",
+    "paymentStatus": "Pagesa",
+    "paidOn": "Paguar më {date}",
+    "awaitingPayment": "Në pritje të pagesës",
+    "paymentLabel": "Pagesa e klientit",
+    "paidRevenue": "Arkëtuar",
+    "outstandingRevenue": "Pa arkëtuar",
+    "outstandingHint": "{count} të papaguara",
+    "collectedHint": "Marrë nga klientët"
   }
 }

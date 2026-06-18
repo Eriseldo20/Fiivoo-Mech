@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrency, CURRENCY } from '@/lib/currency'
 import { EstimateStatusActions } from '@/components/estimates/estimate-status-actions'
 import { EstimatePDFButton } from '@/components/estimates/estimate-pdf-button'
+import { PaymentStatusControl } from '@/components/estimates/payment-status-control'
 
 const statusStyles = {
   draft: { key: 'draft', class: 'bg-slate-500/10 text-slate-400 border-slate-500/20' },
@@ -99,6 +100,7 @@ export default async function EstimateDetailPage({
   const status = statusStyles[estimate.status as keyof typeof statusStyles]
 
   const t = await getTranslations('estimateDetail')
+  const tp = await getTranslations('payment')
 
   return (
     <div className="min-h-screen">
@@ -294,6 +296,25 @@ export default async function EstimateDetailPage({
                 <h2 className="font-semibold">{t('totalAmount')}</h2>
               </div>
               <p className="text-3xl font-bold text-primary">{formatCurrency(estimate.total)}</p>
+
+              {/* Payment status — only relevant once the client has approved */}
+              {estimate.status === 'approved' && (
+                <div className="mt-4 pt-4 border-t border-border/50 flex items-center justify-between gap-2">
+                  <div>
+                    <p className="text-xs text-muted-foreground">{tp('paymentLabel')}</p>
+                    {estimate.payment_status === 'paid' && estimate.paid_at && (
+                      <p className="text-xs text-muted-foreground mt-0.5">
+                        {tp('paidOn', { date: format(new Date(estimate.paid_at), 'MMM d, yyyy') })}
+                      </p>
+                    )}
+                  </div>
+                  <PaymentStatusControl
+                    estimateId={estimate.id}
+                    status={estimate.payment_status}
+                    variant="toggle"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Linked Job */}

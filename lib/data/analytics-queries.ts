@@ -43,6 +43,12 @@ export interface MonthlyAnalytics {
   month: number
   revenue: number
   approvedCount: number
+  /** Revenue from approved estimates the client has already paid */
+  paidRevenue: number
+  /** Revenue from approved estimates still awaiting payment */
+  outstandingRevenue: number
+  /** Number of approved estimates still unpaid */
+  unpaidCount: number
   inventoryProfit: number
   inventoryCost: number
   expenses: ExpenseBreakdown
@@ -121,7 +127,7 @@ export async function getMonthlyAnalytics(
     // Approved estimates count as earned revenue, bucketed by created_at
     supabase
       .from('estimates')
-      .select('id, total, job_card_id, created_at')
+      .select('id, total, job_card_id, created_at, payment_status')
       .eq('shop_id', shopId)
       .eq('status', 'approved')
       .gte('created_at', start)
@@ -139,6 +145,13 @@ export async function getMonthlyAnalytics(
   const estimates = estimatesResult.data || []
   const revenue = estimates.reduce((sum, e) => sum + Number(e.total || 0), 0)
   const approvedCount = estimates.length
+
+  // Split approved revenue into what the client has paid vs. still owes
+  const paidRevenue = estimates
+    .filter((e) => e.payment_status === 'paid')
+    .reduce((sum, e) => sum + Number(e.total || 0), 0)
+  const outstandingRevenue = revenue - paidRevenue
+  const unpaidCount = estimates.filter((e) => e.payment_status !== 'paid').length
 
   // Inventory profit aggregation. RLS already scopes inventory to the shop,
   // so transactions whose inventory join is null belong to another shop and are skipped.
@@ -187,6 +200,9 @@ export async function getMonthlyAnalytics(
     month,
     revenue,
     approvedCount,
+    paidRevenue,
+    outstandingRevenue,
+    unpaidCount,
     inventoryProfit,
     inventoryCost,
     expenses,

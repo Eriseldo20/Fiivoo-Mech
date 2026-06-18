@@ -753,5 +753,19 @@
     "untitledJob": "Lavoro senza titolo",
     "untitledEstimate": "Preventivo",
     "footerHint": "Invio per aprire"
+  },
+  "payment": {
+    "paid": "Pagato",
+    "unpaid": "Non pagato",
+    "markPaid": "Segna come pagato",
+    "markUnpaid": "Segna come non pagato",
+    "paymentStatus": "Pagamento",
+    "paidOn": "Pagato il {date}",
+    "awaitingPayment": "In attesa di pagamento",
+    "paymentLabel": "Pagamento del cliente",
+    "paidRevenue": "Incassato",
+    "outstandingRevenue": "In sospeso",
+    "outstandingHint": "{count} non pagati",
+    "collectedHint": "Ricevuto dai clienti"
   }
 }

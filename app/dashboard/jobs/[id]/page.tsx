@@ -23,6 +23,7 @@ import { JobStatusActions } from '@/components/jobs/job-status-actions'
 import { JobTimingWarning } from '@/components/jobs/job-timing-warning'
 import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
+import { PaymentStatusControl } from '@/components/estimates/payment-status-control'
 
 const statusStyles = {
   pending: { key: 'pending', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
@@ -72,10 +73,10 @@ export default async function JobDetailPage({
   const status = statusStyles[job.status as keyof typeof statusStyles]
   const priority = priorityStyles[job.priority as keyof typeof priorityStyles]
 
-  // Get related estimates
+  // Get related estimates (payment status lives on the estimate)
   const { data: estimates } = await supabase
     .from('estimates')
-    .select('id, estimate_number, status, total')
+    .select('id, estimate_number, status, total, payment_status')
     .eq('job_card_id', id)
 
   // Get job photos (before/after) and the user's shop for uploads
@@ -193,7 +194,16 @@ export default async function JobDetailPage({
                           {estimate.status.replace('_', ' ')}
                         </p>
                       </div>
-                      <p className="font-semibold">{formatCurrency(estimate.total)}</p>
+                      <div className="flex items-center gap-3">
+                        {estimate.status === 'approved' && (
+                          <PaymentStatusControl
+                            estimateId={estimate.id}
+                            status={estimate.payment_status}
+                            variant="toggle"
+                          />
+                        )}
+                        <p className="font-semibold">{formatCurrency(estimate.total)}</p>
+                      </div>
                     </Link>
                   ))}
                 </div>

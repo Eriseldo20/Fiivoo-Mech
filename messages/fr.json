@@ -753,5 +753,19 @@
     "untitledJob": "Travail sans titre",
     "untitledEstimate": "Devis",
     "footerHint": "Entrée pour ouvrir"
+  },
+  "payment": {
+    "paid": "Payé",
+    "unpaid": "Non payé",
+    "markPaid": "Marquer comme payé",
+    "markUnpaid": "Marquer comme non payé",
+    "paymentStatus": "Paiement",
+    "paidOn": "Payé le {date}",
+    "awaitingPayment": "En attente de paiement",
+    "paymentLabel": "Paiement du client",
+    "paidRevenue": "Encaissé",
+    "outstandingRevenue": "En attente",
+    "outstandingHint": "{count} impayé(s)",
+    "collectedHint": "Reçu des clients"
   }
 }

@@ -81,6 +81,8 @@ export interface Estimate {
   job_card_id: string | null
   estimate_number: string
   status: 'draft' | 'sent' | 'approved' | 'rejected' | 'expired'
+  payment_status: 'paid' | 'unpaid'
+  paid_at: string | null
   valid_until: string | null
   notes: string | null
   subtotal: number

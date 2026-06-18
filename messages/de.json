@@ -825,5 +825,19 @@
     "untitledJob": "Auftrag ohne Titel",
     "untitledEstimate": "Kostenvoranschlag",
     "footerHint": "Enter zum Öffnen"
+  },
+  "payment": {
+    "paid": "Bezahlt",
+    "unpaid": "Unbezahlt",
+    "markPaid": "Als bezahlt markieren",
+    "markUnpaid": "Als unbezahlt markieren",
+    "paymentStatus": "Zahlung",
+    "paidOn": "Bezahlt am {date}",
+    "awaitingPayment": "Zahlung ausstehend",
+    "paymentLabel": "Kundenzahlung",
+    "paidRevenue": "Eingenommen",
+    "outstandingRevenue": "Ausstehend",
+    "outstandingHint": "{count} unbezahlt",
+    "collectedHint": "Von Kunden erhalten"
   }
 }

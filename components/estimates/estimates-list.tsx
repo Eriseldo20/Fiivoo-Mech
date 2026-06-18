@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { createClient } from '@/lib/supabase/client'
+import { PaymentStatusControl } from '@/components/estimates/payment-status-control'
 import type { Estimate, Vehicle, Customer } from '@/lib/types'
 
 interface EstimatesListProps {
@@ -184,6 +185,16 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                   <Euro className="h-4 w-4 text-muted-foreground" />
                   <span className="text-lg font-semibold">{formatCurrency(estimate.total)}</span>
                 </div>
+                {/* Payment status only matters once the client has approved the estimate */}
+                {estimate.status === 'approved' && (
+                  <div className="mt-1.5">
+                    <PaymentStatusControl
+                      estimateId={estimate.id}
+                      status={estimate.payment_status}
+                      variant="toggle"
+                    />
+                  </div>
+                )}
               </div>
 
               {/* Actions */}

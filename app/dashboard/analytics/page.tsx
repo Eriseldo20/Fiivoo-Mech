@@ -64,6 +64,7 @@ export default async function AnalyticsPage({
   const month = params.month ? parseInt(params.month, 10) : now.getMonth() + 1
 
   const t = await getTranslations('analytics')
+  const tPay = await getTranslations('payment')
 
   const [analytics, trend] = await Promise.all([
     getMonthlyAnalytics(shopId, year, month),
@@ -101,7 +102,13 @@ export default async function AnalyticsPage({
             title={t('revenue')}
             value={formatCurrency(analytics.revenue)}
             icon={<TrendingUp className="h-5 w-5" />}
-            hint={t('approvedEstimates', { count: analytics.approvedCount })}
+            hint={
+              analytics.outstandingRevenue > 0
+                ? tPay('outstandingHint', { count: analytics.unpaidCount }) +
+                  ' · ' +
+                  formatCurrency(analytics.outstandingRevenue)
+                : t('approvedEstimates', { count: analytics.approvedCount })
+            }
             tone="primary"
           />
           <KpiCard
@@ -139,6 +146,8 @@ export default async function AnalyticsPage({
             </CardHeader>
             <CardContent className="space-y-2">
               <PnlRow label={t('approvedRevenue')} value={analytics.revenue} positive />
+              <PnlSubRow label={tPay('paidRevenue')} value={analytics.paidRevenue} tone="success" />
+              <PnlSubRow label={tPay('outstandingRevenue')} value={analytics.outstandingRevenue} tone="warning" />
               <PnlRow label={t('partsCostCogs')} value={-analytics.inventoryCost} />
               <Divider />
               <PnlRow label={t('rent')} value={-analytics.expenses.rent} muted />
@@ -317,6 +326,27 @@ function PnlRow({
       <span className={positive ? 'font-medium text-[var(--chart-3)]' : value < 0 ? 'text-destructive' : ''}>
         {formatCurrency(value)}
       </span>
+    </div>
+  )
+}
+
+function PnlSubRow({
+  label,
+  value,
+  tone,
+}: {
+  label: string
+  value: number
+  tone: 'success' | 'warning'
+}) {
+  const toneClass = tone === 'success' ? 'text-[var(--chart-3)]' : 'text-amber-500'
+  return (
+    <div className="flex items-center justify-between text-xs pl-4">
+      <span className="flex items-center gap-1.5 text-muted-foreground">
+        <span className={`h-1.5 w-1.5 rounded-full ${tone === 'success' ? 'bg-[var(--chart-3)]' : 'bg-amber-500'}`} />
+        {label}
+      </span>
+      <span className={toneClass}>{formatCurrency(value)}</span>
     </div>
   )
 }

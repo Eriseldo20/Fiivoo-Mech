@@ -814,5 +814,19 @@
     "untitledJob": "Untitled job",
     "untitledEstimate": "Estimate",
     "footerHint": "Enter to open"
+  },
+  "payment": {
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "markPaid": "Mark as paid",
+    "markUnpaid": "Mark as unpaid",
+    "paymentStatus": "Payment",
+    "paidOn": "Paid {date}",
+    "awaitingPayment": "Awaiting payment",
+    "paymentLabel": "Client payment",
+    "paidRevenue": "Collected",
+    "outstandingRevenue": "Outstanding",
+    "outstandingHint": "{count} unpaid",
+    "collectedHint": "Received from clients"
   }
 }
