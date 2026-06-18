@@ -219,13 +219,15 @@ async function getEmployeePerformance(
 ): Promise<EmployeePerformanceRow[]> {
   const supabase = await createClient()
 
-  // Jobs completed this month, with their assigned employee and any linked approved estimate revenue.
+  // Finished jobs this month (completed or invoiced), with their assigned
+  // employee and any linked approved estimate revenue. Invoiced jobs are also
+  // credited to the technician since the work is done.
   const [jobsResult, employeesResult] = await Promise.all([
     supabase
       .from('job_cards')
       .select('id, assigned_employee_id, completed_date, status')
       .eq('shop_id', shopId)
-      .eq('status', 'completed')
+      .in('status', ['completed', 'invoiced'])
       .gte('completed_date', start)
       .lte('completed_date', end),
     supabase
