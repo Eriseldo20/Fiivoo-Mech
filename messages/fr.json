@@ -119,7 +119,13 @@
     "jobTitle": "Titre du travail",
     "estimatedHours": "Heures estimées",
     "dueDate": "Date d'échéance",
-    "vehicle": "Véhicule"
+    "vehicle": "Véhicule",
+    "activeJobs": "Travaux actifs",
+    "showCompleted": "Afficher les terminés",
+    "hideCompleted": "Masquer les terminés",
+    "viewJob": "Ouvrir la fiche",
+    "noVehicleShort": "Aucun véhicule",
+    "noCustomerShort": "Aucun client"
   },
   "estimates": {
     "title": "Devis",

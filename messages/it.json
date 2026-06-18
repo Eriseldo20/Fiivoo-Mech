@@ -119,7 +119,13 @@
     "jobTitle": "Titolo del lavoro",
     "estimatedHours": "Ore stimate",
     "dueDate": "Data di scadenza",
-    "vehicle": "Veicolo"
+    "vehicle": "Veicolo",
+    "activeJobs": "Lavori attivi",
+    "showCompleted": "Mostra completati",
+    "hideCompleted": "Nascondi completati",
+    "viewJob": "Apri scheda lavoro",
+    "noVehicleShort": "Nessun veicolo",
+    "noCustomerShort": "Nessun cliente"
   },
   "estimates": {
     "title": "Preventivi",

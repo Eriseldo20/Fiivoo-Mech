@@ -158,7 +158,13 @@
     "vinLookupFailed": "FIN konnte nicht gefunden werden. Bitte versuchen Sie es erneut.",
     "vinNotInSystem": "FIN {vin} ist noch nicht im System",
     "vinSearchPlaceholder": "FIN eingeben, um die Fahrzeughistorie zu suchen...",
-    "status": "Status"
+    "status": "Status",
+    "activeJobs": "Aktive Aufträge",
+    "showCompleted": "Abgeschlossene anzeigen",
+    "hideCompleted": "Abgeschlossene ausblenden",
+    "viewJob": "Auftragskarte öffnen",
+    "noVehicleShort": "Kein Fahrzeug",
+    "noCustomerShort": "Kein Kunde"
   },
   "estimates": {
     "title": "Kostenvoranschläge",

@@ -158,7 +158,13 @@
     "vinLookupFailed": "Failed to look up VIN. Please try again.",
     "vinNotInSystem": "VIN {vin} is not in the system yet",
     "vinSearchPlaceholder": "Enter VIN to search vehicle history...",
-    "status": "Status"
+    "status": "Status",
+    "activeJobs": "Active Jobs",
+    "showCompleted": "Show completed",
+    "hideCompleted": "Hide completed",
+    "viewJob": "Open job card",
+    "noVehicleShort": "No vehicle",
+    "noCustomerShort": "No customer"
   },
   "estimates": {
     "title": "Estimates",

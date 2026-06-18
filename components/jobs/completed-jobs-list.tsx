@@ -23,9 +23,10 @@ const statusStyles = {
 }
 
 export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
-  const [isExpanded, setIsExpanded] = useState(false)
+  // Collapsed by default — the owner opts in to seeing the completed history
+  const [isOpen, setIsOpen] = useState(false)
   const t = useTranslations('jobs')
-  
+
   if (jobs.length === 0) return null
 
   const statusLabels: Record<string, string> = {
@@ -33,12 +34,15 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
     invoiced: t('invoiced'),
   }
 
-  const displayedJobs = isExpanded ? jobs : jobs.slice(0, 5)
-
   return (
     <div className="space-y-3">
-      {/* Section Header */}
-      <div className="flex items-center justify-between">
+      {/* Collapsible Section Header (acts as the toggle) */}
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        className="w-full flex items-center justify-between gap-3 rounded-xl border border-border/50 bg-card/40 px-4 py-3 text-left transition-colors hover:bg-card/70"
+      >
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
@@ -46,30 +50,17 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
           <h2 className="text-lg font-semibold">{t('completedJobs')}</h2>
           <span className="text-sm text-muted-foreground">({jobs.length})</span>
         </div>
-        {jobs.length > 5 && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            {isExpanded ? (
-              <>
-                {t('showLess')} <ChevronUp className="h-4 w-4 ml-1" />
-              </>
-            ) : (
-              <>
-                {t('showAll')} ({jobs.length}) <ChevronDown className="h-4 w-4 ml-1" />
-              </>
-            )}
-          </Button>
-        )}
-      </div>
+        <span className="flex items-center gap-1 text-sm text-muted-foreground">
+          {isOpen ? t('hideCompleted') : t('showCompleted')}
+          {isOpen ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+        </span>
+      </button>
 
-      {/* Compact List */}
+      {/* Compact List — only rendered when the owner expands the section */}
+      {isOpen && (
       <div className="bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl overflow-hidden">
         <div className="divide-y divide-border/30">
-          {displayedJobs.map((job) => {
+          {jobs.map((job) => {
             const status = statusStyles[job.status as keyof typeof statusStyles] || statusStyles.completed
             const StatusIcon = status.icon
 
@@ -127,6 +118,7 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
           })}
         </div>
       </div>
+      )}
     </div>
   )
 }

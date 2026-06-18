@@ -158,7 +158,13 @@
     "vinLookupFailed": "No se pudo buscar el VIN. Inténtelo de nuevo.",
     "vinNotInSystem": "El VIN {vin} aún no está en el sistema",
     "vinSearchPlaceholder": "Ingrese el VIN para buscar el historial del vehículo...",
-    "status": "Estado"
+    "status": "Estado",
+    "activeJobs": "Trabajos activos",
+    "showCompleted": "Mostrar completados",
+    "hideCompleted": "Ocultar completados",
+    "viewJob": "Abrir trabajo",
+    "noVehicleShort": "Sin vehículo",
+    "noCustomerShort": "Sin cliente"
   },
   "estimates": {
     "title": "Presupuestos",

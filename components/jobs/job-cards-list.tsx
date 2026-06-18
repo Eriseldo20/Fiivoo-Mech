@@ -81,19 +81,18 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
-      {/* Desktop Header */}
-      <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-3 border-b border-border/50 bg-muted/30 text-sm font-medium text-muted-foreground">
-        <div className="col-span-4">{t('jobs.jobDetails')}</div>
-        <div className="col-span-2">{t('common.vehicle')}</div>
-        <div className="col-span-2">{t('common.customer')}</div>
-        <div className="col-span-2">{t('common.status')}</div>
-        <div className="col-span-1">{t('jobs.priority')}</div>
-        <div className="col-span-1"></div>
+    <div className="space-y-3">
+      {/* Section header */}
+      <div className="flex items-center gap-2">
+        <div className="p-1.5 rounded-lg bg-primary/10 border border-primary/20">
+          <Wrench className="h-4 w-4 text-primary" />
+        </div>
+        <h2 className="text-lg font-semibold">{t('jobs.activeJobs')}</h2>
+        <span className="text-sm text-muted-foreground">({jobs.length})</span>
       </div>
 
-      {/* List */}
-      <div className="divide-y divide-border/50">
+      {/* Bay-style card grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-4">
         {jobs.map((job) => {
           const status = statusStyles[job.status]
           const priority = priorityStyles[job.priority]
@@ -104,157 +103,41 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
             start_date: job.start_date,
           })
           const isOverrun = timing.isActive && timing.level !== 'none'
-          const overrunBadge = (
-            <span
-              className={cn(
-                'inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border font-medium',
-                timing.level === 'critical'
-                  ? 'bg-red-500/10 text-red-500 border-red-500/20'
-                  : 'bg-amber-500/10 text-amber-500 border-amber-500/20',
-              )}
-            >
-              <AlertTriangle className="h-3 w-3" />
-              {t('jobTiming.overBy', { time: formatDurationMinutes(timing.overMinutes) })}
-            </span>
-          )
+          const accent =
+            timing.level === 'critical'
+              ? 'before:bg-red-500'
+              : timing.level === 'warning'
+                ? 'before:bg-amber-500'
+                : statusAccent[job.status]
 
           return (
             <Link
               key={job.id}
               href={`/dashboard/jobs/${job.id}`}
-              className="block lg:grid lg:grid-cols-12 gap-4 px-4 md:px-6 py-3 md:py-4 hover:bg-muted/30 transition-colors active:bg-muted/50"
+              className={cn(
+                'group relative flex flex-col rounded-xl border border-border/50 bg-card/60 p-4 pl-5 transition-all',
+                'hover:border-primary/40 hover:bg-card hover:shadow-md active:scale-[0.99]',
+                'before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-l-xl',
+                accent,
+              )}
             >
-              {/* Mobile Layout */}
-              <div className="lg:hidden">
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs font-mono text-muted-foreground">
-                        {job.job_number}
-                      </span>
-                      {job.priority !== 'normal' && (
-                        <span className={cn(
-                          'text-xs px-1.5 py-0.5 rounded border font-medium',
-                          priority.class
-                        )}>
-                          {priority.label}
-                        </span>
-                      )}
-                      {isOverrun && overrunBadge}
-                    </div>
-                    <h3 className="font-medium text-sm truncate">{job.title}</h3>
-                  </div>
-                  <span className={cn(
-                    'text-xs px-2 py-1 rounded-full border font-medium flex-shrink-0',
-                    status.class
-                  )}>
+              {/* Top row: job number + status */}
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-xs font-mono text-muted-foreground tracking-tight">
+                  {job.job_number}
+                </span>
+                <div className="flex items-center gap-1.5">
+                  <span
+                    className={cn(
+                      'inline-flex text-xs px-2.5 py-1 rounded-full border font-medium whitespace-nowrap',
+                      status.class,
+                    )}
+                  >
                     {status.label}
                   </span>
-                </div>
-                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                  {job.vehicle && (
-                    <div className="flex items-center gap-1">
-                      <Car className="h-3 w-3" />
-                      <span>{job.vehicle.make} {job.vehicle.model}</span>
-                    </div>
-                  )}
-                  {job.customer && (
-                    <div className="flex items-center gap-1">
-                      <User className="h-3 w-3" />
-                      <span>{job.customer.name}</span>
-                    </div>
-                  )}
-                  <div className="flex items-center gap-1 ml-auto">
-                    <Clock className="h-3 w-3" />
-                    <span>{formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Desktop Layout */}
-              <div className="hidden lg:contents">
-                {/* Job Details */}
-                <div className="col-span-4">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-xs font-mono text-muted-foreground">
-                      {job.job_number}
-                    </span>
-                  </div>
-                  <h3 className="font-medium truncate mb-1">{job.title}</h3>
-                  <div className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
-                    <Clock className="h-3 w-3" />
-                    <span>{formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}</span>
-                    {isOverrun && overrunBadge}
-                  </div>
-                </div>
-
-                {/* Vehicle */}
-                <div className="col-span-2 flex items-center">
-                  {job.vehicle ? (
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded bg-muted/50">
-                        <Car className="h-3.5 w-3.5 text-muted-foreground" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium truncate">
-                          {job.vehicle.make} {job.vehicle.model}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {job.vehicle.license_plate || job.vehicle.year}
-                        </p>
-                      </div>
-                    </div>
-                  ) : (
-                    <span className="text-sm text-muted-foreground">{t('common.noVehicle')}</span>
-                  )}
-                </div>
-
-                {/* Customer */}
-                <div className="col-span-2 flex items-center">
-                  {job.customer ? (
-                    <div className="flex items-center gap-2">
-                      <div className="p-1.5 rounded bg-muted/50">
-                        <User className="h-3.5 w-3.5 text-muted-foreground" />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium truncate">{job.customer.name}</p>
-                        {job.customer.phone && (
-                          <p className="text-xs text-muted-foreground">{job.customer.phone}</p>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <span className="text-sm text-muted-foreground">{t('common.noCustomer')}</span>
-                  )}
-                </div>
-
-                {/* Status */}
-                <div className="col-span-2 flex items-center">
-                  <span className={cn(
-                    'inline-flex text-xs px-2.5 py-1 rounded-full border font-medium',
-                    status.class
-                  )}>
-                    {status.label}
-                  </span>
-                </div>
-
-                {/* Priority */}
-                <div className="col-span-1 flex items-center">
-                  {job.priority !== 'normal' && (
-                    <span className={cn(
-                      'inline-flex text-xs px-2 py-0.5 rounded border font-medium',
-                      priority.class
-                    )}>
-                      {priority.label}
-                    </span>
-                  )}
-                </div>
-
-                {/* Actions */}
-                <div className="col-span-1 flex justify-end items-center">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                      <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <Button variant="ghost" size="icon" className="h-7 w-7 -mr-1">
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
@@ -275,10 +158,93 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
                   </DropdownMenu>
                 </div>
               </div>
+
+              {/* Title */}
+              <h3 className="font-semibold text-base leading-snug line-clamp-2 mb-3 group-hover:text-primary transition-colors">
+                {job.title}
+              </h3>
+
+              {/* Badges */}
+              {(job.priority !== 'normal' || isOverrun) && (
+                <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                  {job.priority !== 'normal' && (
+                    <span
+                      className={cn(
+                        'inline-flex text-xs px-2 py-0.5 rounded border font-medium',
+                        priority.class,
+                      )}
+                    >
+                      {priority.label}
+                    </span>
+                  )}
+                  {isOverrun && (
+                    <span
+                      className={cn(
+                        'inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded border font-medium',
+                        timing.level === 'critical'
+                          ? 'bg-red-500/10 text-red-500 border-red-500/20'
+                          : 'bg-amber-500/10 text-amber-500 border-amber-500/20',
+                      )}
+                    >
+                      <AlertTriangle className="h-3 w-3" />
+                      {t('jobTiming.overBy', { time: formatDurationMinutes(timing.overMinutes) })}
+                    </span>
+                  )}
+                </div>
+              )}
+
+              {/* Vehicle + customer */}
+              <div className="mt-auto space-y-2 pt-3 border-t border-border/50">
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="p-1.5 rounded bg-muted/50 shrink-0">
+                    <Car className="h-3.5 w-3.5 text-muted-foreground" />
+                  </div>
+                  {job.vehicle ? (
+                    <span className="truncate">
+                      <span className="font-medium">
+                        {job.vehicle.make} {job.vehicle.model}
+                      </span>
+                      {(job.vehicle.license_plate || job.vehicle.year) && (
+                        <span className="text-muted-foreground">
+                          {' · '}
+                          {job.vehicle.license_plate || job.vehicle.year}
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="text-muted-foreground">{t('jobs.noVehicleShort')}</span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-sm">
+                  <div className="p-1.5 rounded bg-muted/50 shrink-0">
+                    <User className="h-3.5 w-3.5 text-muted-foreground" />
+                  </div>
+                  {job.customer ? (
+                    <span className="truncate font-medium">{job.customer.name}</span>
+                  ) : (
+                    <span className="text-muted-foreground">{t('jobs.noCustomerShort')}</span>
+                  )}
+                </div>
+              </div>
+
+              {/* Footer timestamp */}
+              <div className="flex items-center gap-1 text-xs text-muted-foreground mt-3">
+                <Clock className="h-3 w-3" />
+                <span>{formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}</span>
+                <ChevronRight className="h-4 w-4 ml-auto text-muted-foreground/50 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+              </div>
             </Link>
           )
         })}
       </div>
     </div>
   )
+}
+
+const statusAccent: Record<string, string> = {
+  pending: 'before:bg-amber-500',
+  in_progress: 'before:bg-primary',
+  awaiting_parts: 'before:bg-orange-500',
+  completed: 'before:bg-emerald-500',
+  invoiced: 'before:bg-blue-500',
 }

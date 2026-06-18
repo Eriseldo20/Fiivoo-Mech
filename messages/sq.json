@@ -158,7 +158,13 @@
     "vinLookupFailed": "Kërkimi i VIN dështoi. Ju lutemi provoni përsëri.",
     "vinNotInSystem": "VIN {vin} nuk është ende në sistem",
     "vinSearchPlaceholder": "Vendosni VIN për të kërkuar historikun e automjetit...",
-    "status": "Statusi"
+    "status": "Statusi",
+    "activeJobs": "Punët aktive",
+    "showCompleted": "Shfaq të përfunduarat",
+    "hideCompleted": "Fshih të përfunduarat",
+    "viewJob": "Hap kartën e punës",
+    "noVehicleShort": "Pa automjet",
+    "noCustomerShort": "Pa klient"
   },
   "estimates": {
     "title": "Ofertat",
