@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
+import { sanitizeSearchTerm } from '@/lib/search'
 
 // Cache tags for invalidation (used with revalidateTag)
 export const CACHE_TAGS = {
@@ -129,7 +130,10 @@ export async function getJobs(shopId: string, filters?: { status?: string; prior
     query = query.eq('priority', filters.priority)
   }
   if (filters?.search) {
-    query = query.or(`title.ilike.%${filters.search}%,job_number.ilike.%${filters.search}%`)
+    const term = sanitizeSearchTerm(filters.search)
+    if (term) {
+      query = query.or(`title.ilike.%${term}%,job_number.ilike.%${term}%`)
+    }
   }
 
   const { data } = await query
@@ -154,7 +158,10 @@ export async function getEstimates(shopId: string, filters?: { status?: string; 
     query = query.eq('status', filters.status)
   }
   if (filters?.search) {
-    query = query.or(`estimate_number.ilike.%${filters.search}%`)
+    const term = sanitizeSearchTerm(filters.search)
+    if (term) {
+      query = query.or(`estimate_number.ilike.%${term}%`)
+    }
   }
 
   const { data } = await query

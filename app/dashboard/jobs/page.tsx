@@ -5,6 +5,7 @@ import { JobCardsList } from '@/components/jobs/job-cards-list'
 import { JobOverrunAlert } from '@/components/jobs/job-overrun-alert'
 import { CompletedJobsList } from '@/components/jobs/completed-jobs-list'
 import { JobFilters } from '@/components/jobs/job-filters'
+import { sanitizeSearchTerm } from '@/lib/search'
 import { redirect } from 'next/navigation'
 
 export default async function JobsPage({
@@ -78,7 +79,10 @@ export default async function JobsPage({
   }
 
   if (params.search) {
-    activeQuery = activeQuery.or(`title.ilike.%${params.search}%,job_number.ilike.%${params.search}%`)
+    const term = sanitizeSearchTerm(params.search)
+    if (term) {
+      activeQuery = activeQuery.or(`title.ilike.%${term}%,job_number.ilike.%${term}%`)
+    }
   }
 
   const [{ data: activeJobs }, { data: completedJobs }] = await Promise.all([
