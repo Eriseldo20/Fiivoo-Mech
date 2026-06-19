@@ -56,14 +56,16 @@ export function PaymentStatusControl({
     }
   }
 
-  const paidClass = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20'
-  const unpaidClass = 'bg-amber-500/10 text-amber-500 border-amber-500/20'
+  // Paid = solid navy blue, Unpaid = solid red. Both use bold white text and
+  // squared corners for a clear, professional status button.
+  const paidClass = 'bg-[#1e2a52] text-white border-[#1e2a52]'
+  const unpaidClass = 'bg-red-600 text-white border-red-600'
 
   if (variant === 'badge') {
     return (
       <span
         className={cn(
-          'inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-full border font-medium',
+          'inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded-md border font-bold',
           isPaid ? paidClass : unpaidClass,
           className,
         )}
@@ -85,7 +87,7 @@ export function PaymentStatusControl({
       disabled={isUpdating}
       aria-label={isPaid ? t('markUnpaid') : t('markPaid')}
       className={cn(
-        'inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium transition-colors hover:opacity-80 disabled:opacity-50',
+        'inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-md border font-bold transition-opacity hover:opacity-90 disabled:opacity-50',
         isPaid ? paidClass : unpaidClass,
         className,
       )}
