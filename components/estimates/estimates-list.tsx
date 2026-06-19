@@ -101,8 +101,8 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
 
   return (
     <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
-      {/* Header */}
-      <div className="grid grid-cols-12 gap-4 px-6 py-3 border-b border-border/50 bg-muted/30 text-sm font-medium text-muted-foreground">
+      {/* Header (desktop only) */}
+      <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-3 border-b border-border/50 bg-muted/30 text-sm font-medium text-muted-foreground">
         <div className="col-span-3">{t('estimate')}</div>
         <div className="col-span-2">{t('customer')}</div>
         <div className="col-span-2">{t('vehicle')}</div>
@@ -116,117 +116,176 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
         {estimates.map((estimate) => {
           const status = statusStyles[estimate.status]
 
+          const actionsMenu = (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
+                <Button variant="ghost" size="icon" className="h-8 w-8">
+                  <MoreHorizontal className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href={`/dashboard/estimates/${estimate.id}`}>{t('viewDetails')}</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href={`/dashboard/estimates/${estimate.id}/edit`}>{t('editEstimate')}</Link>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>{t('duplicate')}</DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  className="text-red-500 focus:text-red-500"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    setDeleteId(estimate.id)
+                  }}
+                >
+                  <Trash2 className="h-4 w-4 mr-2" />
+                  {t('delete')}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )
+
+          const statusBadge = (
+            <span className={cn(
+              'inline-flex text-xs px-2.5 py-1 rounded-full border font-medium',
+              status.class
+            )}>
+              {t(status.key)}
+            </span>
+          )
+
           return (
             <Link
               key={estimate.id}
               href={`/dashboard/estimates/${estimate.id}`}
-              className="grid grid-cols-12 gap-4 px-6 py-4 hover:bg-muted/30 transition-colors items-center"
+              className="block hover:bg-muted/30 transition-colors"
             >
-              {/* Estimate Details */}
-              <div className="col-span-3">
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-xs font-mono text-muted-foreground">
-                    {estimate.estimate_number}
-                  </span>
-                </div>
-                <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
-                  <Clock className="h-3 w-3" />
-                  <span>{formatDistanceToNow(new Date(estimate.created_at), { addSuffix: true })}</span>
-                </div>
-              </div>
-
-              {/* Customer */}
-              <div className="col-span-2">
-                {estimate.customer ? (
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded bg-muted/50">
-                      <User className="h-3.5 w-3.5 text-muted-foreground" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">{estimate.customer.name}</p>
-                    </div>
+              {/* Mobile card layout */}
+              <div className="flex flex-col gap-3 p-4 lg:hidden">
+                {/* Top: number + status + actions */}
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-sm font-mono font-medium truncate">
+                      {estimate.estimate_number}
+                    </span>
+                    {statusBadge}
                   </div>
-                ) : (
-                  <span className="text-sm text-muted-foreground">{t('noCustomer')}</span>
-                )}
-              </div>
-
-              {/* Vehicle */}
-              <div className="col-span-2">
-                {estimate.vehicle ? (
-                  <div className="flex items-center gap-2">
-                    <div className="p-1.5 rounded bg-muted/50">
-                      <Car className="h-3.5 w-3.5 text-muted-foreground" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium truncate">
-                        {estimate.vehicle.make} {estimate.vehicle.model}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <span className="text-sm text-muted-foreground">{t('noVehicle')}</span>
-                )}
-              </div>
-
-              {/* Status */}
-              <div className="col-span-2">
-                <span className={cn(
-                  'inline-flex text-xs px-2.5 py-1 rounded-full border font-medium',
-                  status.class
-                )}>
-                  {t(status.key)}
-                </span>
-              </div>
-
-              {/* Total */}
-              <div className="col-span-2">
-                <div className="flex items-center gap-1.5">
-                  <Euro className="h-4 w-4 text-muted-foreground" />
-                  <span className="text-lg font-semibold">{formatCurrency(estimate.total)}</span>
+                  {actionsMenu}
                 </div>
-                {/* Payment status only matters once the client has approved the estimate */}
-                {estimate.status === 'approved' && (
-                  <div className="mt-1.5">
+
+                {/* Middle: customer + vehicle */}
+                <div className="flex flex-col gap-1.5 text-sm">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <User className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate text-foreground">
+                      {estimate.customer ? estimate.customer.name : t('noCustomer')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Car className="h-3.5 w-3.5 shrink-0" />
+                    <span className="truncate text-foreground">
+                      {estimate.vehicle
+                        ? `${estimate.vehicle.make} ${estimate.vehicle.model}`
+                        : t('noVehicle')}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Bottom: total + payment + date */}
+                <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/50">
+                  <div className="flex items-center gap-1.5">
+                    <Euro className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-lg font-semibold">{formatCurrency(estimate.total)}</span>
+                  </div>
+                  {estimate.status === 'approved' ? (
                     <PaymentStatusControl
                       estimateId={estimate.id}
                       status={estimate.payment_status}
                       variant="toggle"
                     />
-                  </div>
-                )}
+                  ) : (
+                    <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Clock className="h-3 w-3" />
+                      <span>{formatDistanceToNow(new Date(estimate.created_at), { addSuffix: true })}</span>
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Actions */}
-              <div className="col-span-1 flex justify-end">
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild onClick={(e) => e.preventDefault()}>
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
-                      <MoreHorizontal className="h-4 w-4" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem asChild>
-                      <Link href={`/dashboard/estimates/${estimate.id}`}>{t('viewDetails')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href={`/dashboard/estimates/${estimate.id}/edit`}>{t('editEstimate')}</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>{t('duplicate')}</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem 
-                      className="text-red-500 focus:text-red-500"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        setDeleteId(estimate.id)
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4 mr-2" />
-                      {t('delete')}
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+              {/* Desktop grid layout */}
+              <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-4 items-center">
+                {/* Estimate Details */}
+                <div className="col-span-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="text-xs font-mono text-muted-foreground">
+                      {estimate.estimate_number}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-1">
+                    <Clock className="h-3 w-3" />
+                    <span>{formatDistanceToNow(new Date(estimate.created_at), { addSuffix: true })}</span>
+                  </div>
+                </div>
+
+                {/* Customer */}
+                <div className="col-span-2">
+                  {estimate.customer ? (
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded bg-muted/50">
+                        <User className="h-3.5 w-3.5 text-muted-foreground" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">{estimate.customer.name}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">{t('noCustomer')}</span>
+                  )}
+                </div>
+
+                {/* Vehicle */}
+                <div className="col-span-2">
+                  {estimate.vehicle ? (
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded bg-muted/50">
+                        <Car className="h-3.5 w-3.5 text-muted-foreground" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-medium truncate">
+                          {estimate.vehicle.make} {estimate.vehicle.model}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <span className="text-sm text-muted-foreground">{t('noVehicle')}</span>
+                  )}
+                </div>
+
+                {/* Status */}
+                <div className="col-span-2">{statusBadge}</div>
+
+                {/* Total */}
+                <div className="col-span-2">
+                  <div className="flex items-center gap-1.5">
+                    <Euro className="h-4 w-4 text-muted-foreground" />
+                    <span className="text-lg font-semibold">{formatCurrency(estimate.total)}</span>
+                  </div>
+                  {/* Payment status only matters once the client has approved the estimate */}
+                  {estimate.status === 'approved' && (
+                    <div className="mt-1.5">
+                      <PaymentStatusControl
+                        estimateId={estimate.id}
+                        status={estimate.payment_status}
+                        variant="toggle"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                {/* Actions */}
+                <div className="col-span-1 flex justify-end">{actionsMenu}</div>
               </div>
             </Link>
           )
