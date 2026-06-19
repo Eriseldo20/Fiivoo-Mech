@@ -64,55 +64,63 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
             const status = statusStyles[job.status as keyof typeof statusStyles] || statusStyles.completed
             const StatusIcon = status.icon
 
+            const completedLabel = job.completed_date
+              ? format(new Date(job.completed_date), 'MMM d, yyyy')
+              : formatDistanceToNow(new Date(job.created_at), { addSuffix: true })
+
+            const statusBadge = (
+              <span className={cn(
+                'text-xs px-2 py-0.5 rounded-full border font-medium whitespace-nowrap',
+                status.class
+              )}>
+                {statusLabels[job.status] || statusLabels.completed}
+              </span>
+            )
+
             return (
               <Link
                 key={job.id}
                 href={`/dashboard/jobs/${job.id}`}
-                className="flex items-center gap-4 px-4 py-3 hover:bg-muted/20 transition-colors"
+                className="block px-4 py-3 hover:bg-muted/20 transition-colors"
               >
-                {/* Status Icon */}
-                <div className={cn('p-1.5 rounded-lg border', status.class)}>
-                  <StatusIcon className="h-3.5 w-3.5" />
-                </div>
-
-                {/* Job Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-mono text-muted-foreground">{job.job_number}</span>
-                    <span className="text-sm font-medium truncate">{job.title}</span>
+                {/* Top row: icon + job number/title, badge on the right */}
+                <div className="flex items-start gap-3">
+                  <div className={cn('p-1.5 rounded-lg border shrink-0', status.class)}>
+                    <StatusIcon className="h-3.5 w-3.5" />
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground mt-0.5">
-                    {job.vehicle && (
-                      <span className="flex items-center gap-1">
-                        <Car className="h-3 w-3" />
-                        {job.vehicle.make} {job.vehicle.model}
-                      </span>
-                    )}
-                    {job.customer && (
-                      <span className="flex items-center gap-1">
-                        <User className="h-3 w-3" />
-                        {job.customer.name}
-                      </span>
-                    )}
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-mono text-muted-foreground shrink-0">{job.job_number}</span>
+                      <span className="text-sm font-medium truncate">{job.title}</span>
+                    </div>
+                    {/* Vehicle + customer: wrap cleanly on mobile */}
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground mt-1">
+                      {job.vehicle && (
+                        <span className="flex items-center gap-1 min-w-0">
+                          <Car className="h-3 w-3 shrink-0" />
+                          <span className="truncate">{job.vehicle.make} {job.vehicle.model}</span>
+                        </span>
+                      )}
+                      {job.customer && (
+                        <span className="flex items-center gap-1 min-w-0">
+                          <User className="h-3 w-3 shrink-0" />
+                          <span className="truncate">{job.customer.name}</span>
+                        </span>
+                      )}
+                    </div>
                   </div>
+                  {/* Badge: visible on desktop in the top row */}
+                  <div className="hidden sm:block shrink-0">{statusBadge}</div>
                 </div>
 
-                {/* Completed Date */}
-                <div className="text-right text-xs text-muted-foreground">
-                  {job.completed_date ? (
-                    <span>{format(new Date(job.completed_date), 'MMM d, yyyy')}</span>
-                  ) : (
-                    <span>{formatDistanceToNow(new Date(job.created_at), { addSuffix: true })}</span>
-                  )}
+                {/* Footer: date + badge (badge moves here on mobile) */}
+                <div className="flex items-center justify-between gap-2 mt-2 pl-9 sm:pl-9">
+                  <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3" />
+                    {completedLabel}
+                  </span>
+                  <div className="sm:hidden">{statusBadge}</div>
                 </div>
-
-                {/* Status Badge */}
-                <span className={cn(
-                  'text-xs px-2 py-0.5 rounded-full border font-medium whitespace-nowrap',
-                  status.class
-                )}>
-                  {statusLabels[job.status] || statusLabels.completed}
-                </span>
               </Link>
             )
           })}
