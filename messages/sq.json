@@ -164,7 +164,9 @@
     "hideCompleted": "Fshih të përfunduarat",
     "viewJob": "Hap kartën e punës",
     "noVehicleShort": "Pa automjet",
-    "noCustomerShort": "Pa klient"
+    "noCustomerShort": "Pa klient",
+    "allStatuses": "Statusi",
+    "allPriorities": "Përparësia"
   },
   "estimates": {
     "title": "Ofertat",

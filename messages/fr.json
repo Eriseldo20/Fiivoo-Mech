@@ -125,7 +125,9 @@
     "hideCompleted": "Masquer les terminés",
     "viewJob": "Ouvrir la fiche",
     "noVehicleShort": "Aucun véhicule",
-    "noCustomerShort": "Aucun client"
+    "noCustomerShort": "Aucun client",
+    "allStatuses": "Statut",
+    "allPriorities": "Priorité"
   },
   "estimates": {
     "title": "Devis",

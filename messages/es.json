@@ -164,7 +164,9 @@
     "hideCompleted": "Ocultar completados",
     "viewJob": "Abrir trabajo",
     "noVehicleShort": "Sin vehículo",
-    "noCustomerShort": "Sin cliente"
+    "noCustomerShort": "Sin cliente",
+    "allStatuses": "Estado",
+    "allPriorities": "Prioridad"
   },
   "estimates": {
     "title": "Presupuestos",

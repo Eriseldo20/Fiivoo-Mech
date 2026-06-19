@@ -164,7 +164,9 @@
     "hideCompleted": "Hide completed",
     "viewJob": "Open job card",
     "noVehicleShort": "No vehicle",
-    "noCustomerShort": "No customer"
+    "noCustomerShort": "No customer",
+    "allStatuses": "Status",
+    "allPriorities": "Priority"
   },
   "estimates": {
     "title": "Estimates",

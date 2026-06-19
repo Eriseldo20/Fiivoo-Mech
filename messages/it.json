@@ -125,7 +125,9 @@
     "hideCompleted": "Nascondi completati",
     "viewJob": "Apri scheda lavoro",
     "noVehicleShort": "Nessun veicolo",
-    "noCustomerShort": "Nessun cliente"
+    "noCustomerShort": "Nessun cliente",
+    "allStatuses": "Stato",
+    "allPriorities": "Priorità"
   },
   "estimates": {
     "title": "Preventivi",

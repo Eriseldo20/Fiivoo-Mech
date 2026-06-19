@@ -164,7 +164,9 @@
     "hideCompleted": "Abgeschlossene ausblenden",
     "viewJob": "Auftragskarte öffnen",
     "noVehicleShort": "Kein Fahrzeug",
-    "noCustomerShort": "Kein Kunde"
+    "noCustomerShort": "Kein Kunde",
+    "allStatuses": "Status",
+    "allPriorities": "Priorität"
   },
   "estimates": {
     "title": "Kostenvoranschläge",
