@@ -90,10 +90,10 @@ export default async function JobDetailPage({
   const shopId = job.shop_id as string
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       {/* Header */}
       <div className="border-b border-border/50 bg-card/30 backdrop-blur-xl">
-        <div className="px-6 py-4">
+        <div className="px-4 sm:px-6 py-4">
           <Link
             href="/dashboard/jobs"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
@@ -102,9 +102,9 @@ export default async function JobDetailPage({
             {ts('backToJobs')}
           </Link>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="text-sm font-mono text-muted-foreground">
                   {job.job_number}
                 </span>
@@ -123,22 +123,22 @@ export default async function JobDetailPage({
                   </span>
                 )}
               </div>
-              <h1 className="text-2xl font-semibold mb-1">{job.title}</h1>
+              <h1 className="text-xl sm:text-2xl font-semibold mb-1 text-balance break-words">{job.title}</h1>
               <p className="text-sm text-muted-foreground">
                 {t('createdAgo', { time: formatDistanceToNow(new Date(job.created_at), { addSuffix: true }) })}
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Link href={`/dashboard/estimates/new?job=${job.id}`}>
-                <Button variant="outline">
-                  <FileText className="h-4 w-4 mr-2" />
-                  {t('createEstimate')}
+            <div className="flex items-center gap-2 shrink-0">
+              <Link href={`/dashboard/estimates/new?job=${job.id}`} className="flex-1 sm:flex-none">
+                <Button variant="outline" size="sm" className="w-full">
+                  <FileText className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">{t('createEstimate')}</span>
                 </Button>
               </Link>
-              <Link href={`/dashboard/jobs/${job.id}/edit`}>
-                <Button variant="outline">
-                  <Edit className="h-4 w-4 mr-2" />
+              <Link href={`/dashboard/jobs/${job.id}/edit`} className="flex-1 sm:flex-none">
+                <Button variant="outline" size="sm" className="w-full">
+                  <Edit className="h-4 w-4 sm:mr-2" />
                   {t('edit')}
                 </Button>
               </Link>
@@ -147,8 +147,8 @@ export default async function JobDetailPage({
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="p-4 sm:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Timing / profitability warning — shows when the job is over its estimate */}
