@@ -103,10 +103,10 @@ export default async function EstimateDetailPage({
   const tp = await getTranslations('payment')
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overflow-x-hidden">
       {/* Header */}
       <div className="border-b border-border/50 bg-card/30 backdrop-blur-xl">
-        <div className="px-6 py-4">
+        <div className="px-4 sm:px-6 py-4">
           <Link
             href="/dashboard/estimates"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-4"
@@ -115,9 +115,9 @@ export default async function EstimateDetailPage({
             {t('backToEstimates')}
           </Link>
 
-          <div className="flex items-start justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2 mb-2">
                 <span className="text-sm font-mono text-muted-foreground">
                   {estimate.estimate_number}
                 </span>
@@ -128,7 +128,7 @@ export default async function EstimateDetailPage({
                   {t(status.key)}
                 </span>
               </div>
-              <h1 className="text-2xl font-semibold mb-1">
+              <h1 className="text-xl sm:text-2xl font-semibold mb-1 text-balance break-words">
                 {t('estimateFor', { name: estimate.customer?.name || t('customer') })}
               </h1>
               <p className="text-sm text-muted-foreground">
@@ -136,7 +136,8 @@ export default async function EstimateDetailPage({
               </p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 shrink-0">
+              <div className="flex-1 sm:flex-none">
               <EstimatePDFButton 
                 estimate={{
                   estimate_number: estimate.estimate_number,
@@ -176,9 +177,10 @@ export default async function EstimateDetailPage({
                   } : undefined,
                 }}
               />
-              <Link href={`/dashboard/estimates/${estimate.id}/edit`}>
-                <Button variant="outline">
-                  <Edit className="h-4 w-4 mr-2" />
+              </div>
+              <Link href={`/dashboard/estimates/${estimate.id}/edit`} className="flex-1 sm:flex-none">
+                <Button variant="outline" size="sm" className="w-full">
+                  <Edit className="h-4 w-4 sm:mr-2" />
                   {t('edit')}
                 </Button>
               </Link>
@@ -187,10 +189,10 @@ export default async function EstimateDetailPage({
         </div>
       </div>
 
-      <div className="p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="p-4 sm:p-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Main Content */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Line Items */}
             <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
               <div className="px-6 py-4 border-b border-border/50">
@@ -199,47 +201,63 @@ export default async function EstimateDetailPage({
 
               {items && items.length > 0 ? (
                 <>
+                  {/* Column header (desktop only) */}
+                  <div className="hidden sm:grid grid-cols-12 gap-4 px-6 py-2 bg-muted/20 border-b border-border/50 text-xs font-medium text-muted-foreground uppercase tracking-wide">
+                    <div className="col-span-6">{t('lineItems')}</div>
+                    <div className="col-span-2 text-center">{t('qty')}</div>
+                    <div className="col-span-2 text-right">{t('price')}</div>
+                    <div className="col-span-2 text-right">{t('total')}</div>
+                  </div>
+
                   <div className="divide-y divide-border/50">
                     {items.map((item) => (
-                      <div key={item.id} className="px-6 py-4 grid grid-cols-12 gap-4 items-center">
-                        <div className="col-span-6">
-                          <p className="font-medium">{item.description}</p>
-                          <p className="text-sm text-muted-foreground">
-                            {t(typeKeys[item.type as keyof typeof typeKeys])}
+                      <div key={item.id} className="px-4 sm:px-6 py-3">
+                        {/* Desktop row */}
+                        <div className="hidden sm:grid grid-cols-12 gap-4 items-center">
+                          <div className="col-span-6 min-w-0">
+                            <p className="font-medium truncate">{item.description}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {t(typeKeys[item.type as keyof typeof typeKeys])}
+                            </p>
+                          </div>
+                          <div className="col-span-2 text-center tabular-nums">{item.quantity}</div>
+                          <div className="col-span-2 text-right tabular-nums">{formatCurrency(item.unit_price)}</div>
+                          <div className="col-span-2 text-right font-medium tabular-nums">{formatCurrency(item.total)}</div>
+                        </div>
+
+                        {/* Mobile stacked row */}
+                        <div className="sm:hidden">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="min-w-0">
+                              <p className="font-medium leading-snug">{item.description}</p>
+                              <p className="text-xs text-muted-foreground">
+                                {t(typeKeys[item.type as keyof typeof typeKeys])}
+                              </p>
+                            </div>
+                            <p className="font-semibold tabular-nums shrink-0">{formatCurrency(item.total)}</p>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-1 tabular-nums">
+                            {item.quantity} × {formatCurrency(item.unit_price)}
                           </p>
-                        </div>
-                        <div className="col-span-2 text-center">
-                          <p className="text-sm text-muted-foreground">{t('qty')}</p>
-                          <p className="font-medium">{item.quantity}</p>
-                        </div>
-                        <div className="col-span-2 text-center">
-                          <p className="text-sm text-muted-foreground">{t('price')}</p>
-                          <p className="font-medium">{formatCurrency(item.unit_price)}</p>
-                        </div>
-                        <div className="col-span-2 text-right">
-                          <p className="text-sm text-muted-foreground">{t('total')}</p>
-                          <p className="font-medium">{formatCurrency(item.total)}</p>
                         </div>
                       </div>
                     ))}
                   </div>
 
                   {/* Totals */}
-                  <div className="px-6 py-4 bg-muted/30 border-t border-border/50">
-                    <div className="flex justify-end">
-                      <div className="w-64 space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">{t('subtotal')}</span>
-                          <span className="font-medium">{formatCurrency(estimate.subtotal)}</span>
-                        </div>
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">{t('tax', { rate: estimate.tax_rate })}</span>
-                          <span className="font-medium">{formatCurrency(estimate.tax_amount)}</span>
-                        </div>
-                        <div className="flex justify-between text-lg font-semibold pt-2 border-t border-border/50">
-                          <span>{t('total')}</span>
-                          <span className="text-primary">{formatCurrency(estimate.total)}</span>
-                        </div>
+                  <div className="px-4 sm:px-6 py-4 bg-muted/30 border-t border-border/50">
+                    <div className="ml-auto w-full sm:w-64 space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t('subtotal')}</span>
+                        <span className="font-medium tabular-nums">{formatCurrency(estimate.subtotal)}</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">{t('tax', { rate: estimate.tax_rate })}</span>
+                        <span className="font-medium tabular-nums">{formatCurrency(estimate.tax_amount)}</span>
+                      </div>
+                      <div className="flex justify-between text-lg font-semibold pt-2 border-t border-border/50">
+                        <span>{t('total')}</span>
+                        <span className="text-primary tabular-nums">{formatCurrency(estimate.total)}</span>
                       </div>
                     </div>
                   </div>

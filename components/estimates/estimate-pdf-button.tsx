@@ -66,17 +66,19 @@ export function EstimatePDFButton({ estimate }: EstimatePDFButtonProps) {
   }
 
   return (
-    <Button 
-      variant="outline" 
+    <Button
+      variant="outline"
+      size="sm"
       onClick={handleDownload}
       disabled={isGenerating}
+      className="w-full"
     >
       {isGenerating ? (
-        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+        <Loader2 className="h-4 w-4 sm:mr-2 animate-spin" />
       ) : (
-        <Download className="h-4 w-4 mr-2" />
+        <Download className="h-4 w-4 sm:mr-2" />
       )}
-      {t('downloadPdf')}
+      <span className="hidden sm:inline">{t('downloadPdf')}</span>
     </Button>
   )
 }
