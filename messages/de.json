@@ -441,7 +441,11 @@
     "privacyConfirmButton": "Daten löschen",
     "privacyErasedToast": "Die Kundendaten wurden gelöscht.",
     "privacyError": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "privacyExportTitle": "Meine Daten exportieren",
+    "privacyExportBody": "Laden Sie eine vollständige Kopie der Daten Ihrer Werkstatt (Profil, Kunden, Fahrzeuge, Aufträge, Kostenvoranschläge und mehr) als JSON-Datei herunter.",
+    "privacyExportButton": "Meine Daten exportieren",
+    "privacyExportToast": "Der Download Ihres Datenexports wurde gestartet."
   },
   "analytics": {
     "pageTitle": "Analysen & Umsatz",
@@ -553,7 +557,10 @@
     "loginHeroSubtitle": "Aufträge, Lager und Kostenvoranschläge – vereint in einer Premium-Plattform für Profis.",
     "featureInventory": "Lager",
     "featureJobs": "Auftragsverfolgung",
-    "featureEstimates": "Kostenvoranschläge"
+    "featureEstimates": "Kostenvoranschläge",
+    "dpaAgreePrefix": "Ich habe die",
+    "dpaLinkText": "Auftragsverarbeitungsvereinbarung",
+    "dpaRequired": "Sie müssen die Auftragsverarbeitungsvereinbarung akzeptieren, um fortzufahren."
   },
   "customers": {
     "title": "Kunden",
@@ -863,5 +870,45 @@
     "outstandingRevenue": "Ausstehend",
     "outstandingHint": "{count} unbezahlt",
     "collectedHint": "Von Kunden erhalten"
+  },
+  "dpa": {
+    "title": "Auftragsverarbeitungsvereinbarung",
+    "intro": "Diese Auftragsverarbeitungsvereinbarung (\"AVV\") ist Bestandteil des Vertrags zwischen Ihnen (dem \"Verantwortlichen\") und Fiivoo Mech (dem \"Auftragsverarbeiter\") und regelt die Verarbeitung personenbezogener Daten gemäß der EU-Datenschutz-Grundverordnung (DSGVO).",
+    "back": "Zurück",
+    "lastUpdated": "Zuletzt aktualisiert: Diese Vereinbarung gilt ab dem Datum, an dem Sie sie bei der Registrierung akzeptieren.",
+    "sections": {
+      "parties": {
+        "title": "Parteien",
+        "body": "Diese AVV wird zwischen Ihnen, dem Werkstattinhaber als Verantwortlichem, und Fiivoo Mech als Auftragsverarbeiter in Ihrem Auftrag geschlossen."
+      },
+      "subject": {
+        "title": "Gegenstand & Dauer",
+        "body": "Der Auftragsverarbeiter verarbeitet personenbezogene Daten (wie Kundennamen, Kontaktdaten und Fahrzeuginformationen) ausschließlich zur Bereitstellung des Werkstattverwaltungsdienstes für die Dauer Ihrer Nutzung des Dienstes."
+      },
+      "responsibilities": {
+        "title": "Pflichten des Auftragsverarbeiters",
+        "body": "Der Auftragsverarbeiter verarbeitet personenbezogene Daten nur auf dokumentierte Weisung des Verantwortlichen, stellt sicher, dass zur Verarbeitung befugte Personen zur Vertraulichkeit verpflichtet sind, und unterstützt den Verantwortlichen bei der Erfüllung seiner DSGVO-Pflichten."
+      },
+      "subProcessors": {
+        "title": "Unterauftragsverarbeiter",
+        "body": "Der Auftragsverarbeiter setzt geprüfte Unterauftragsverarbeiter (wie Cloud-Hosting- und Datenbankanbieter) ein, die gleichwertigen Datenschutzpflichten unterliegen. Eine aktuelle Liste ist auf Anfrage erhältlich."
+      },
+      "security": {
+        "title": "Sicherheitsmaßnahmen",
+        "body": "Der Auftragsverarbeiter setzt geeignete technische und organisatorische Maßnahmen um, einschließlich Verschlüsselung bei der Übertragung, Zugriffskontrollen und regelmäßiger Backups, um personenbezogene Daten zu schützen."
+      },
+      "dataSubjectRights": {
+        "title": "Rechte der betroffenen Personen",
+        "body": "Der Auftragsverarbeiter unterstützt den Verantwortlichen bei der Erfüllung von Anfragen betroffener Personen, einschließlich des Rechts auf Auskunft, Berichtigung, Löschung (\"Recht auf Vergessenwerden\") und Datenübertragbarkeit."
+      },
+      "retention": {
+        "title": "Datenspeicherung & Löschung",
+        "body": "Personenbezogene Daten werden nur so lange gespeichert, wie es zur Bereitstellung des Dienstes oder zur Erfüllung gesetzlicher Aufbewahrungspflichten erforderlich ist. Bei einer gültigen Löschanfrage werden Daten anonymisiert, während gesetzlich erforderliche Finanzunterlagen aufbewahrt werden."
+      },
+      "breach": {
+        "title": "Meldung von Verletzungen",
+        "body": "Im Falle einer Verletzung des Schutzes personenbezogener Daten benachrichtigt der Auftragsverarbeiter den Verantwortlichen unverzüglich nach Bekanntwerden und stellt die notwendigen Informationen bereit."
+      }
+    }
   }
 }

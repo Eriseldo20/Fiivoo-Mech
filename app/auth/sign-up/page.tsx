@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -17,6 +18,7 @@ export default function SignUpPage() {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
+  const [dpaAccepted, setDpaAccepted] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
@@ -39,6 +41,12 @@ export default function SignUpPage() {
       return
     }
 
+    if (!dpaAccepted) {
+      setError(t("dpaRequired"))
+      setIsLoading(false)
+      return
+    }
+
     try {
       const { error } = await supabase.auth.signUp({
         email,
@@ -50,6 +58,8 @@ export default function SignUpPage() {
           data: {
             first_name: firstName,
             last_name: lastName,
+            dpa_accepted: true,
+            dpa_accepted_at: new Date().toISOString(),
           },
         },
       })
@@ -165,6 +175,25 @@ export default function SignUpPage() {
                 />
               </div>
 
+              <div className="flex items-start gap-3">
+                <Checkbox
+                  id="dpa"
+                  checked={dpaAccepted}
+                  onCheckedChange={(checked) => setDpaAccepted(checked === true)}
+                  className="mt-0.5"
+                />
+                <Label htmlFor="dpa" className="text-sm font-normal leading-relaxed text-muted-foreground">
+                  {t("dpaAgreePrefix") + " "}
+                  <Link
+                    href="/legal/dpa"
+                    target="_blank"
+                    className="font-medium text-primary hover:underline underline-offset-4"
+                  >
+                    {t("dpaLinkText")}
+                  </Link>
+                </Label>
+              </div>
+
               {error && (
                 <div className="rounded-lg bg-destructive/10 border border-destructive/20 p-3">
                   <p className="text-sm text-destructive">{error}</p>
@@ -174,7 +203,7 @@ export default function SignUpPage() {
               <Button
                 type="submit"
                 className="h-11 w-full font-medium"
-                disabled={isLoading}
+                disabled={isLoading || !dpaAccepted}
               >
                 {isLoading ? t("creatingAccount") : t("createAccount")}
               </Button>

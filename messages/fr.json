@@ -383,7 +383,11 @@
     "privacyConfirmButton": "Effacer les données",
     "privacyErasedToast": "Les données du client ont été effacées.",
     "privacyError": "Une erreur s'est produite. Veuillez réessayer.",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "privacyExportTitle": "Exporter mes données",
+    "privacyExportBody": "Téléchargez une copie complète des données de votre atelier (profil, clients, véhicules, travaux, devis et plus) au format JSON.",
+    "privacyExportButton": "Exporter mes données",
+    "privacyExportToast": "Le téléchargement de votre export de données a commencé."
   },
   "analytics": {
     "pageTitle": "Analyses et Revenus",
@@ -636,7 +640,10 @@
     "loginHeroSubtitle": "Travaux, inventaire et devis réunis dans une plateforme premium pour les professionnels.",
     "featureInventory": "Inventaire",
     "featureJobs": "Suivi des travaux",
-    "featureEstimates": "Devis"
+    "featureEstimates": "Devis",
+    "dpaAgreePrefix": "J'ai lu et j'accepte l'",
+    "dpaLinkText": "Accord de Traitement des Données",
+    "dpaRequired": "Vous devez accepter l'Accord de Traitement des Données pour continuer."
   },
   "onboarding": {
     "title": "Configurez votre garage",
@@ -791,5 +798,45 @@
     "outstandingRevenue": "En attente",
     "outstandingHint": "{count} impayé(s)",
     "collectedHint": "Reçu des clients"
+  },
+  "dpa": {
+    "title": "Accord de Traitement des Données",
+    "intro": "Cet Accord de Traitement des Données (\"DPA\") fait partie de l'accord entre vous (le \"Responsable du traitement\") et Fiivoo Mech (le \"Sous-traitant\") et régit le traitement des données personnelles conformément au Règlement Général sur la Protection des Données de l'UE (RGPD).",
+    "back": "Retour",
+    "lastUpdated": "Dernière mise à jour : cet accord s'applique à partir de la date à laquelle vous l'acceptez lors de l'inscription.",
+    "sections": {
+      "parties": {
+        "title": "Parties",
+        "body": "Ce DPA est conclu entre vous, le propriétaire de l'atelier agissant en tant que responsable du traitement, et Fiivoo Mech agissant en tant que sous-traitant pour votre compte."
+      },
+      "subject": {
+        "title": "Objet et Durée",
+        "body": "Le Sous-traitant traite les données personnelles (telles que les noms des clients, les coordonnées et les informations sur les véhicules) uniquement pour fournir le service de gestion d'atelier, pendant la durée de votre utilisation du service."
+      },
+      "responsibilities": {
+        "title": "Responsabilités du Sous-traitant",
+        "body": "Le Sous-traitant ne traitera les données personnelles que sur instructions documentées du Responsable, garantira que les personnes autorisées sont tenues à la confidentialité et aidera le Responsable à respecter ses obligations RGPD."
+      },
+      "subProcessors": {
+        "title": "Sous-traitants ultérieurs",
+        "body": "Le Sous-traitant fait appel à des sous-traitants ultérieurs vérifiés (tels que des fournisseurs d'hébergement cloud et de bases de données) soumis à des obligations équivalentes de protection des données. Une liste à jour est disponible sur demande."
+      },
+      "security": {
+        "title": "Mesures de Sécurité",
+        "body": "Le Sous-traitant met en œuvre des mesures techniques et organisationnelles appropriées, notamment le chiffrement en transit, des contrôles d'accès et des sauvegardes régulières, pour protéger les données personnelles."
+      },
+      "dataSubjectRights": {
+        "title": "Droits des Personnes Concernées",
+        "body": "Le Sous-traitant aide le Responsable à répondre aux demandes des personnes concernées, y compris le droit d'accès, de rectification, d'effacement (\"droit à l'oubli\") et de portabilité des données."
+      },
+      "retention": {
+        "title": "Conservation et Suppression",
+        "body": "Les données personnelles ne sont conservées que le temps nécessaire pour fournir le service ou respecter les obligations légales de conservation. En cas de demande d'effacement valide, les données sont anonymisées tandis que les registres financiers légalement requis sont conservés."
+      },
+      "breach": {
+        "title": "Notification des Violations",
+        "body": "En cas de violation de données personnelles, le Sous-traitant notifiera le Responsable sans retard injustifié après en avoir pris connaissance et fournira les informations nécessaires."
+      }
+    }
   }
 }

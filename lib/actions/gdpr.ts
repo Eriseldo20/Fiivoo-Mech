@@ -128,3 +128,57 @@ export async function anonymizeCustomer(customerId: string): Promise<{
   revalidatePath('/dashboard/customers')
   return { success: true }
 }
+
+// Tables that belong to a shop and are scoped by a shop_id column.
+const SHOP_SCOPED_TABLES = [
+  'customers',
+  'vehicles',
+  'job_cards',
+  'job_photos',
+  'estimates',
+  'estimate_items',
+  'employees',
+  'inventory',
+  'monthly_expenses',
+  'service_reminders',
+  'shop_expense_defaults',
+  'profiles',
+] as const
+
+/**
+ * Export all data belonging to the signed-in owner's shop as a structured
+ * object (GDPR right to data portability). The caller serializes it to a
+ * downloadable JSON file.
+ */
+export async function exportShopData(): Promise<{
+  success: boolean
+  error?: string
+  data?: Record<string, unknown>
+}> {
+  const { error, shopId, supabase } = await resolveShopId()
+  if (error || !shopId) return { success: false, error: error ?? 'Unknown error' }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  const exported: Record<string, unknown> = {
+    exportedAt: new Date().toISOString(),
+    account: user ? { id: user.id, email: user.email, created_at: user.created_at } : null,
+  }
+
+  // The shop record itself is keyed by id, not shop_id.
+  const { data: shop } = await supabase.from('shops').select('*').eq('id', shopId).single()
+  exported.shop = shop ?? null
+
+  for (const table of SHOP_SCOPED_TABLES) {
+    const { data, error: tableError } = await supabase
+      .from(table)
+      .select('*')
+      .eq('shop_id', shopId)
+    if (tableError) return { success: false, error: tableError.message }
+    exported[table] = data ?? []
+  }
+
+  return { success: true, data: exported }
+}

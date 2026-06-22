@@ -16,11 +16,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { Search, Loader2, ShieldOff, UserX, Car, Wrench, FileText, CheckCircle2 } from 'lucide-react'
+import { Search, Loader2, ShieldOff, UserX, Car, Wrench, FileText, CheckCircle2, Download } from 'lucide-react'
 import { toast } from 'sonner'
 import {
   searchCustomersForErasure,
   anonymizeCustomer,
+  exportShopData,
   type GdprCustomer,
 } from '@/lib/actions/gdpr'
 
@@ -33,6 +34,28 @@ export function PrivacySettings() {
   const [results, setResults] = useState<GdprCustomer[]>([])
   const [target, setTarget] = useState<GdprCustomer | null>(null)
   const [isErasing, setIsErasing] = useState(false)
+  const [isExporting, setIsExporting] = useState(false)
+
+  const runExport = async () => {
+    setIsExporting(true)
+    const res = await exportShopData()
+    setIsExporting(false)
+    if (!res.success || !res.data) {
+      toast.error(res.error ?? t('privacyError'))
+      return
+    }
+    // Trigger a client-side JSON download
+    const blob = new Blob([JSON.stringify(res.data, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `data-export-${new Date().toISOString().slice(0, 10)}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+    toast.success(t('privacyExportToast'))
+  }
 
   const runSearch = async () => {
     setIsSearching(true)
@@ -74,6 +97,32 @@ export function PrivacySettings() {
         <h2 className="text-lg font-semibold">{t('privacy')}</h2>
         <p className="text-sm text-muted-foreground">{t('privacyDescription')}</p>
       </div>
+
+      {/* Export my data */}
+      <div className="flex flex-col gap-3 rounded-lg border border-border/50 bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex gap-3">
+          <Download className="h-5 w-5 text-muted-foreground shrink-0 mt-0.5" />
+          <div className="text-sm space-y-1">
+            <p className="font-medium text-foreground">{t('privacyExportTitle')}</p>
+            <p className="text-muted-foreground">{t('privacyExportBody')}</p>
+          </div>
+        </div>
+        <Button
+          variant="outline"
+          onClick={runExport}
+          disabled={isExporting}
+          className="shrink-0 self-start sm:self-auto"
+        >
+          {isExporting ? (
+            <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+          ) : (
+            <Download className="h-4 w-4 mr-2" />
+          )}
+          {t('privacyExportButton')}
+        </Button>
+      </div>
+
+      <div className="border-t border-border/50" />
 
       {/* What happens notice */}
       <div className="flex gap-3 rounded-lg border border-border/50 bg-muted/30 p-4">

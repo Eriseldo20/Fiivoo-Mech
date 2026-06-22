@@ -441,7 +441,11 @@
     "privacyConfirmButton": "Fshi të dhënat",
     "privacyErasedToast": "Të dhënat e klientit u fshinë.",
     "privacyError": "Diçka shkoi keq. Ju lutemi provoni përsëri.",
-    "cancel": "Anulo"
+    "cancel": "Anulo",
+    "privacyExportTitle": "Eksporto të dhënat e mia",
+    "privacyExportBody": "Shkarkoni një kopje të plotë të të dhënave të punishtes suaj (profili, klientët, automjetet, punët, vlerësimet dhe më shumë) si skedar JSON.",
+    "privacyExportButton": "Eksporto të dhënat e mia",
+    "privacyExportToast": "Shkarkimi i eksportit të të dhënave tuaja filloi."
   },
   "analytics": {
     "pageTitle": "Analitika & Të Ardhurat",
@@ -553,7 +557,10 @@
     "loginHeroSubtitle": "Punët, inventari dhe ofertat — të bashkuara në një platformë premium për profesionistët.",
     "featureInventory": "Inventari",
     "featureJobs": "Ndjekja e punëve",
-    "featureEstimates": "Ofertat"
+    "featureEstimates": "Ofertat",
+    "dpaAgreePrefix": "Kam lexuar dhe pranoj",
+    "dpaLinkText": "Marrëveshjen e Përpunimit të të Dhënave",
+    "dpaRequired": "Duhet të pranoni Marrëveshjen e Përpunimit të të Dhënave për të vazhduar."
   },
   "customers": {
     "title": "Klientët",
@@ -863,5 +870,45 @@
     "outstandingRevenue": "Pa arkëtuar",
     "outstandingHint": "{count} të papaguara",
     "collectedHint": "Marrë nga klientët"
+  },
+  "dpa": {
+    "title": "Marrëveshja e Përpunimit të të Dhënave",
+    "intro": "Kjo Marrëveshje e Përpunimit të të Dhënave (\"DPA\") është pjesë e marrëveshjes mes jush (\"Kontrolluesi\") dhe Fiivoo Mech (\"Përpunuesi\") dhe rregullon përpunimin e të dhënave personale në përputhje me Rregulloren e Përgjithshme të Mbrojtjes së të Dhënave të BE-së (GDPR).",
+    "back": "Kthehu",
+    "lastUpdated": "Përditësuar së fundmi: kjo marrëveshje zbatohet nga data kur ju e pranoni gjatë regjistrimit.",
+    "sections": {
+      "parties": {
+        "title": "Palët",
+        "body": "Kjo DPA lidhet mes jush, pronarit të punishtes që vepron si kontrollues i të dhënave, dhe Fiivoo Mech që vepron si përpunues në emrin tuaj."
+      },
+      "subject": {
+        "title": "Objekti dhe Kohëzgjatja",
+        "body": "Përpunuesi përpunon të dhënat personale (si emrat e klientëve, kontaktet dhe informacionin e automjeteve) vetëm për të ofruar shërbimin e menaxhimit të punishtes, gjatë kohëzgjatjes së përdorimit tuaj të shërbimit."
+      },
+      "responsibilities": {
+        "title": "Përgjegjësitë e Përpunuesit",
+        "body": "Përpunuesi do t'i përpunojë të dhënat personale vetëm sipas udhëzimeve të dokumentuara të Kontrolluesit, do të sigurojë që personat e autorizuar janë të detyruar nga konfidencialiteti dhe do ta ndihmojë Kontrolluesin të përmbushë detyrimet e GDPR."
+      },
+      "subProcessors": {
+        "title": "Nën-përpunuesit",
+        "body": "Përpunuesi përdor nën-përpunues të verifikuar (si ofrues të hostimit në renë kompjuterike dhe bazave të të dhënave) që janë të detyruar nga detyrime ekuivalente të mbrojtjes së të dhënave. Një listë e përditësuar ofrohet sipas kërkesës."
+      },
+      "security": {
+        "title": "Masat e Sigurisë",
+        "body": "Përpunuesi zbaton masa të përshtatshme teknike dhe organizative, përfshirë enkriptimin gjatë transmetimit, kontrollet e aksesit dhe rezervimet e rregullta, për të mbrojtur të dhënat personale."
+      },
+      "dataSubjectRights": {
+        "title": "Të Drejtat e Subjektit",
+        "body": "Përpunuesi e ndihmon Kontrolluesin në përmbushjen e kërkesave të subjekteve të të dhënave, përfshirë të drejtën e aksesit, korrigjimit, fshirjes (\"e drejta për t'u harruar\") dhe transportueshmërisë së të dhënave."
+      },
+      "retention": {
+        "title": "Ruajtja dhe Fshirja",
+        "body": "Të dhënat personale ruhen vetëm aq sa është e nevojshme për të ofruar shërbimin ose për të përmbushur detyrimet ligjore të ruajtjes. Pas një kërkese të vlefshme fshirjeje, të dhënat anonimizohen ndërsa të dhënat financiare të kërkuara me ligj ruhen."
+      },
+      "breach": {
+        "title": "Njoftimi i Shkeljeve",
+        "body": "Në rast të një shkeljeje të të dhënave personale, Përpunuesi do ta njoftojë Kontrolluesin pa vonesë të panevojshme pasi të jetë vënë në dijeni dhe do të ofrojë informacionin e nevojshëm."
+      }
+    }
   }
 }

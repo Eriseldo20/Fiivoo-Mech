@@ -383,7 +383,11 @@
     "privacyConfirmButton": "Cancella dati",
     "privacyErasedToast": "I dati del cliente sono stati cancellati.",
     "privacyError": "Qualcosa è andato storto. Riprova.",
-    "cancel": "Annulla"
+    "cancel": "Annulla",
+    "privacyExportTitle": "Esporta i miei dati",
+    "privacyExportBody": "Scarica una copia completa dei dati della tua officina (profilo, clienti, veicoli, lavori, preventivi e altro) come file JSON.",
+    "privacyExportButton": "Esporta i miei dati",
+    "privacyExportToast": "Il download dell'esportazione dei dati è iniziato."
   },
   "analytics": {
     "pageTitle": "Analisi e Ricavi",
@@ -636,7 +640,10 @@
     "loginHeroSubtitle": "Lavori, magazzino e preventivi uniti in un'unica piattaforma premium per professionisti.",
     "featureInventory": "Magazzino",
     "featureJobs": "Monitoraggio lavori",
-    "featureEstimates": "Preventivi"
+    "featureEstimates": "Preventivi",
+    "dpaAgreePrefix": "Ho letto e accetto l'",
+    "dpaLinkText": "Accordo sul Trattamento dei Dati",
+    "dpaRequired": "Devi accettare l'Accordo sul Trattamento dei Dati per continuare."
   },
   "onboarding": {
     "title": "Configura la tua officina",
@@ -791,5 +798,45 @@
     "outstandingRevenue": "In sospeso",
     "outstandingHint": "{count} non pagati",
     "collectedHint": "Ricevuto dai clienti"
+  },
+  "dpa": {
+    "title": "Accordo sul Trattamento dei Dati",
+    "intro": "Il presente Accordo sul Trattamento dei Dati (\"DPA\") fa parte dell'accordo tra te (il \"Titolare\") e Fiivoo Mech (il \"Responsabile\") e disciplina il trattamento dei dati personali in conformità al Regolamento Generale sulla Protezione dei Dati dell'UE (GDPR).",
+    "back": "Indietro",
+    "lastUpdated": "Ultimo aggiornamento: il presente accordo si applica dalla data in cui lo accetti durante la registrazione.",
+    "sections": {
+      "parties": {
+        "title": "Parti",
+        "body": "Il presente DPA è stipulato tra te, il titolare dell'officina che agisce come titolare del trattamento, e Fiivoo Mech che agisce come responsabile del trattamento per tuo conto."
+      },
+      "subject": {
+        "title": "Oggetto e Durata",
+        "body": "Il Responsabile tratta i dati personali (come nomi dei clienti, recapiti e informazioni sui veicoli) esclusivamente per fornire il servizio di gestione dell'officina, per la durata del tuo utilizzo del servizio."
+      },
+      "responsibilities": {
+        "title": "Responsabilità del Responsabile",
+        "body": "Il Responsabile tratterà i dati personali solo su istruzioni documentate del Titolare, garantirà che le persone autorizzate siano vincolate alla riservatezza e assisterà il Titolare nell'adempimento dei suoi obblighi GDPR."
+      },
+      "subProcessors": {
+        "title": "Sub-responsabili",
+        "body": "Il Responsabile utilizza sub-responsabili verificati (come fornitori di hosting cloud e database) vincolati a obblighi equivalenti di protezione dei dati. Un elenco aggiornato è disponibile su richiesta."
+      },
+      "security": {
+        "title": "Misure di Sicurezza",
+        "body": "Il Responsabile implementa misure tecniche e organizzative adeguate, inclusa la crittografia in transito, controlli di accesso e backup regolari, per proteggere i dati personali."
+      },
+      "dataSubjectRights": {
+        "title": "Diritti dell'Interessato",
+        "body": "Il Responsabile assiste il Titolare nell'evasione delle richieste degli interessati, inclusi il diritto di accesso, rettifica, cancellazione (\"diritto all'oblio\") e portabilità dei dati."
+      },
+      "retention": {
+        "title": "Conservazione ed Eliminazione",
+        "body": "I dati personali sono conservati solo per il tempo necessario a fornire il servizio o ad adempiere agli obblighi legali di conservazione. A fronte di una richiesta di cancellazione valida, i dati vengono anonimizzati mentre i registri finanziari richiesti per legge vengono conservati."
+      },
+      "breach": {
+        "title": "Notifica delle Violazioni",
+        "body": "In caso di violazione dei dati personali, il Responsabile notificherà il Titolare senza indebito ritardo dopo esserne venuto a conoscenza e fornirà le informazioni necessarie."
+      }
+    }
   }
 }

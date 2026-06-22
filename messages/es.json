@@ -441,7 +441,11 @@
     "privacyConfirmButton": "Borrar datos",
     "privacyErasedToast": "Los datos del cliente se han borrado.",
     "privacyError": "Algo salió mal. Inténtelo de nuevo.",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "privacyExportTitle": "Exportar mis datos",
+    "privacyExportBody": "Descargue una copia completa de los datos de su taller (perfil, clientes, vehículos, trabajos, presupuestos y más) en un archivo JSON.",
+    "privacyExportButton": "Exportar mis datos",
+    "privacyExportToast": "La descarga de su exportación de datos ha comenzado."
   },
   "analytics": {
     "pageTitle": "Analíticas e Ingresos",
@@ -553,7 +557,10 @@
     "loginHeroSubtitle": "Trabajos, inventario y presupuestos, unificados en una plataforma premium para profesionales.",
     "featureInventory": "Inventario",
     "featureJobs": "Seguimiento de trabajos",
-    "featureEstimates": "Presupuestos"
+    "featureEstimates": "Presupuestos",
+    "dpaAgreePrefix": "He leído y acepto el",
+    "dpaLinkText": "Acuerdo de Procesamiento de Datos",
+    "dpaRequired": "Debe aceptar el Acuerdo de Procesamiento de Datos para continuar."
   },
   "customers": {
     "title": "Clientes",
@@ -863,5 +870,45 @@
     "outstandingRevenue": "Pendiente",
     "outstandingHint": "{count} sin pagar",
     "collectedHint": "Recibido de clientes"
+  },
+  "dpa": {
+    "title": "Acuerdo de Procesamiento de Datos",
+    "intro": "Este Acuerdo de Procesamiento de Datos (\"DPA\") forma parte del acuerdo entre usted (el \"Responsable\") y Fiivoo Mech (el \"Encargado\") y rige el tratamiento de datos personales de conformidad con el Reglamento General de Protección de Datos de la UE (RGPD).",
+    "back": "Atrás",
+    "lastUpdated": "Última actualización: este acuerdo se aplica desde la fecha en que lo acepta durante el registro.",
+    "sections": {
+      "parties": {
+        "title": "Partes",
+        "body": "Este DPA se celebra entre usted, el propietario del taller como responsable del tratamiento, y Fiivoo Mech como encargado del tratamiento en su nombre."
+      },
+      "subject": {
+        "title": "Objeto y Duración",
+        "body": "El Encargado trata los datos personales (como nombres de clientes, datos de contacto e información del vehículo) únicamente para prestar el servicio de gestión del taller, durante el período de uso del servicio."
+      },
+      "responsibilities": {
+        "title": "Responsabilidades del Encargado",
+        "body": "El Encargado tratará los datos personales solo según las instrucciones documentadas del Responsable, garantizará que las personas autorizadas estén sujetas a confidencialidad y ayudará al Responsable a cumplir sus obligaciones del RGPD."
+      },
+      "subProcessors": {
+        "title": "Subencargados",
+        "body": "El Encargado utiliza subencargados verificados (como proveedores de alojamiento en la nube y bases de datos) sujetos a obligaciones equivalentes de protección de datos. Hay una lista actualizada disponible a petición."
+      },
+      "security": {
+        "title": "Medidas de Seguridad",
+        "body": "El Encargado implementa medidas técnicas y organizativas adecuadas, incluido el cifrado en tránsito, controles de acceso y copias de seguridad periódicas, para proteger los datos personales."
+      },
+      "dataSubjectRights": {
+        "title": "Derechos del Interesado",
+        "body": "El Encargado ayuda al Responsable a atender las solicitudes de los interesados, incluido el derecho de acceso, rectificación, supresión (\"derecho al olvido\") y portabilidad de datos."
+      },
+      "retention": {
+        "title": "Conservación y Eliminación",
+        "body": "Los datos personales se conservan solo durante el tiempo necesario para prestar el servicio o cumplir con las obligaciones legales de conservación. Ante una solicitud de supresión válida, los datos se anonimizan mientras se conservan los registros financieros exigidos por ley."
+      },
+      "breach": {
+        "title": "Notificación de Brechas",
+        "body": "En caso de una violación de datos personales, el Encargado notificará al Responsable sin demora indebida tras tener conocimiento de ella y proporcionará la información necesaria."
+      }
+    }
   }
 }
