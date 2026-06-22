@@ -25,6 +25,7 @@ import {
 import { cn } from '@/lib/utils'
 import { LanguageSwitcher } from './language-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { PrivacySettings } from './privacy-settings'
 import { saveExpenseDefaults } from '@/lib/actions/expenses'
 
 interface SettingsContentProps {
@@ -57,6 +58,7 @@ const tabs = [
   { id: 'language', icon: Globe, labelKey: 'language' },
   { id: 'appearance', icon: Palette, labelKey: 'appearance' },
   { id: 'notifications', icon: Bell, labelKey: 'notifications' },
+  { id: 'privacy', icon: Shield, labelKey: 'privacy' },
 ]
 
 export function SettingsContent({ profile, expenseDefaults }: SettingsContentProps) {
@@ -407,6 +409,9 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
                 <p className="text-sm text-muted-foreground italic">{t('comingSoon')}</p>
               </div>
             )}
+
+            {/* Privacy & GDPR Settings */}
+            {activeTab === 'privacy' && <PrivacySettings />}
           </div>
         </div>
       </div>
