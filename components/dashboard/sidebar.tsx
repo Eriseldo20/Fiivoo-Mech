@@ -68,18 +68,18 @@ function NavItem({
           : 'text-sidebar-muted hover:text-white/90 hover:bg-white/[0.06]'
       )}
       style={isActive ? {
-        background: 'linear-gradient(90deg, oklch(0.65 0.15 195 / 0.30) 0%, oklch(0.65 0.15 195 / 0.12) 100%)',
-        boxShadow: '0 0 16px oklch(0.65 0.15 195 / 0.20), inset 0 1px 0 oklch(1 0 0 / 0.08)',
+        background: 'linear-gradient(90deg, oklch(0.55 0.20 264 / 0.40) 0%, oklch(0.55 0.20 264 / 0.10) 100%)',
+        boxShadow: '0 0 18px oklch(0.55 0.20 264 / 0.30), inset 0 1px 0 oklch(1 0 0 / 0.08)',
       } : undefined}
     >
       {/* Active indicator bar */}
       {isActive && (
         <span
           className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-none"
-          style={{ background: 'linear-gradient(180deg, oklch(0.80 0.12 195) 0%, oklch(0.60 0.18 195) 100%)' }}
+          style={{ background: 'linear-gradient(180deg, oklch(0.72 0.17 264) 0%, oklch(0.52 0.22 266) 100%)' }}
         />
       )}
-      <item.icon className={cn('h-4 w-4 flex-shrink-0', isActive && 'drop-shadow-[0_0_6px_oklch(0.75_0.15_195/0.8)]')} />
+      <item.icon className={cn('h-4 w-4 flex-shrink-0', isActive && 'drop-shadow-[0_0_6px_oklch(0.65_0.20_264/0.85)]')} />
       {!collapsed && <span className="truncate">{label}</span>}
     </Link>
   )
@@ -121,8 +121,8 @@ export function Sidebar({ shopName }: SidebarProps) {
         collapsed ? 'w-[68px]' : 'w-64'
       )}
       style={{
-        background: 'linear-gradient(160deg, oklch(0.17 0.02 255) 0%, oklch(0.12 0.015 250) 50%, oklch(0.10 0.01 245) 100%)',
-        boxShadow: '4px 0 32px oklch(0 0 0 / 0.45), 2px 0 8px oklch(0 0 0 / 0.25), inset -1px 0 0 oklch(0.30 0.02 250 / 0.25)',
+        background: 'linear-gradient(165deg, oklch(0.13 0.03 260) 0%, oklch(0.09 0.025 258) 45%, oklch(0.06 0.015 255) 100%)',
+        boxShadow: '4px 0 36px oklch(0 0 0 / 0.55), 2px 0 8px oklch(0 0 0 / 0.30), inset -1px 0 0 oklch(0.30 0.04 260 / 0.20)',
       }}
     >
       {/* ── Logo / Brand ── */}
@@ -130,7 +130,7 @@ export function Sidebar({ shopName }: SidebarProps) {
         'h-16 flex items-center border-b border-white/[0.07] flex-shrink-0',
         collapsed ? 'justify-center px-0' : 'justify-between px-4'
       )}
-        style={{ background: 'linear-gradient(180deg, oklch(0.19 0.02 255 / 0.6) 0%, transparent 100%)' }}
+        style={{ background: 'linear-gradient(180deg, oklch(0.16 0.035 262 / 0.7) 0%, transparent 100%)' }}
       >
         <Link href="/dashboard" className="flex items-center gap-3 min-w-0">
           {collapsed ? (
@@ -144,19 +144,14 @@ export function Sidebar({ shopName }: SidebarProps) {
             />
           ) : (
             <div className="flex flex-col min-w-0 gap-0.5">
-              <div className="flex items-center gap-2 min-w-0">
-                <Image
-                  src="/brand/fiivoo-logo-white.png"
-                  alt="Fiivoo"
-                  width={160}
-                  height={48}
-                  className="h-10 w-auto object-contain"
-                  priority
-                />
-                <span className="text-xl font-extrabold tracking-tight text-orange-500 leading-none">
-                  MECH
-                </span>
-              </div>
+              <Image
+                src="/brand/fiivoo-logo-white.png"
+                alt="Fiivoo"
+                width={160}
+                height={48}
+                className="h-10 w-auto object-contain"
+                priority
+              />
               <span className="text-[11px] text-sidebar-muted truncate max-w-[150px] leading-tight pl-0.5">
                 {shopName}
               </span>
