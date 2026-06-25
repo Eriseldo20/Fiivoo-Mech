@@ -10,39 +10,39 @@ import {
 const features = [
   {
     icon: ClipboardList,
-    title: "Job cards",
+    title: "Kartelat e punës",
     description:
-      "Create, assign, and track every repair from check-in to handover with statuses, photos, and priorities.",
+      "Krijo, cakto dhe ndiq çdo riparim nga pranimi te dorëzimi, me statuse, foto dhe prioritete.",
   },
   {
     icon: FileText,
-    title: "Estimates & invoices",
+    title: "Preventivat & faturat",
     description:
-      "Build professional estimates in seconds, convert them to jobs, and export branded PDFs your customers trust.",
+      "Ndërto preventiva profesionale në sekonda, kthei në punë dhe eksporto PDF me markën tënde.",
   },
   {
     icon: Boxes,
-    title: "Inventory",
+    title: "Inventari",
     description:
-      "Keep parts and stock levels accurate, with low-stock alerts so you never run dry mid-repair.",
+      "Mbaj pjesët dhe nivelet e stokut të sakta, me njoftime për stok të ulët që të mos mbetesh pa pjesë.",
   },
   {
     icon: Users,
-    title: "Customers & vehicles",
+    title: "Klientët & automjetet",
     description:
-      "A complete history for every customer and vehicle — service records, contact details, and reminders.",
+      "Një histori e plotë për çdo klient dhe automjet — të dhënat e shërbimit, kontaktet dhe kujtesat.",
   },
   {
     icon: BarChart3,
-    title: "Analytics",
+    title: "Analitika",
     description:
-      "See revenue, expenses, and shop performance at a glance with clean, real-time dashboards.",
+      "Shiko të ardhurat, shpenzimet dhe performancën e servisit me një vështrim, në kohë reale.",
   },
   {
     icon: Bell,
-    title: "Service reminders",
+    title: "Kujtesat e shërbimit",
     description:
-      "Automatically remind customers when their next service is due and keep your bays booked.",
+      "Kujto automatikisht klientët kur u afrohet shërbimi i radhës dhe mbaj boksat të zëna.",
   },
 ]
 
@@ -51,29 +51,29 @@ export function LandingFeatures() {
     <section id="features" className="scroll-mt-20 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-wider text-[oklch(0.70_0.18_264)]">
-            Everything in one place
+          <span className="text-sm font-semibold uppercase tracking-wider text-[oklch(0.55_0.20_264)]">
+            Gjithçka në një vend
           </span>
-          <h2 className="mt-3 text-balance text-3xl font-extrabold tracking-tight text-[oklch(0.97_0_0)] sm:text-4xl">
-            Built for the way your shop actually works
+          <h2 className="mt-3 text-balance text-3xl font-extrabold tracking-tight text-[oklch(0.22_0.03_262)] sm:text-4xl">
+            Ndërtuar për mënyrën si punon servisi yt
           </h2>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-[oklch(0.72_0.02_260)]">
-            Replace the spreadsheets, paper job cards, and scattered notes with one system your whole
-            team can rely on.
+          <p className="mt-4 text-pretty text-base leading-relaxed text-[oklch(0.48_0.02_260)]">
+            Zëvendëso tabelat, kartelat e punës në letër dhe shënimet e shpërndara me një sistem të
+            vetëm të cilit i besohet i gjithë ekipi.
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[oklch(0.22_0.025_260)] bg-[oklch(0.22_0.025_260)] sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[oklch(0.92_0.006_260)] bg-[oklch(0.92_0.006_260)] sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="group bg-[oklch(0.10_0.02_259)] p-7 transition-colors hover:bg-[oklch(0.13_0.022_260)]"
+              className="group bg-white p-7 transition-colors hover:bg-[oklch(0.98_0.003_260)]"
             >
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[oklch(0.62_0.20_264)/0.12] text-[oklch(0.74_0.16_264)] ring-1 ring-inset ring-[oklch(0.62_0.20_264)/0.25] transition-colors group-hover:bg-[oklch(0.62_0.20_264)/0.18]">
+              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[oklch(0.55_0.20_264)/0.10] text-[oklch(0.55_0.20_264)] ring-1 ring-inset ring-[oklch(0.55_0.20_264)/0.18] transition-colors group-hover:bg-[oklch(0.55_0.20_264)/0.16]">
                 <feature.icon className="h-5 w-5" />
               </div>
-              <h3 className="mt-5 text-lg font-semibold text-[oklch(0.96_0_0)]">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-[oklch(0.70_0.02_260)]">
+              <h3 className="mt-5 text-lg font-semibold text-[oklch(0.24_0.03_262)]">{feature.title}</h3>
+              <p className="mt-2 text-sm leading-relaxed text-[oklch(0.50_0.02_260)]">
                 {feature.description}
               </p>
             </div>

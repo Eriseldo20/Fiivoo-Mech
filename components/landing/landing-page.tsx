@@ -10,7 +10,7 @@ import { LandingFooter } from "./landing-footer"
 
 export function LandingPage() {
   return (
-    <div className="min-h-screen overflow-x-hidden bg-[oklch(0.08_0.02_258)] font-sans text-[oklch(0.97_0_0)]">
+    <div className="min-h-screen overflow-x-hidden bg-white font-sans text-[oklch(0.22_0.03_262)]">
       <LandingNav />
       <main>
         <LandingHero />
