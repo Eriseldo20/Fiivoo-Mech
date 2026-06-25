@@ -38,9 +38,9 @@ export function LandingNav() {
           <Image
             src="/brand/fiivoo-logo-black.png"
             alt="Fiivoo"
-            width={140}
-            height={40}
-            className="h-8 w-auto object-contain"
+            width={180}
+            height={52}
+            className="h-11 w-auto object-contain"
             priority
           />
         </Link>

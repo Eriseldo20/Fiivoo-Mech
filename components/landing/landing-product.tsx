@@ -45,8 +45,8 @@ export function LandingProduct() {
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.80_0.06_150)]" />
             </div>
             <Image
-              src="/landing/dashboard-screenshot.png"
-              alt="Paneli analitik i Fiivoo"
+              src="/landing/vehicles-screenshot.png"
+              alt="Kërkimi dhe historiku i automjeteve në Fiivoo"
               width={2560}
               height={1440}
               className="h-auto w-full"
