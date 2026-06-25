@@ -3,6 +3,7 @@ import { LandingHero } from "./landing-hero"
 import { LandingStats } from "./landing-stats"
 import { LandingFeatures } from "./landing-features"
 import { LandingProduct } from "./landing-product"
+import { LandingRecords } from "./landing-records"
 import { LandingPricing } from "./landing-pricing"
 import { LandingFaq } from "./landing-faq"
 import { LandingCta } from "./landing-cta"
@@ -17,6 +18,7 @@ export function LandingPage() {
         <LandingStats />
         <LandingFeatures />
         <LandingProduct />
+        <LandingRecords />
         <LandingPricing />
         <LandingFaq />
         <LandingCta />

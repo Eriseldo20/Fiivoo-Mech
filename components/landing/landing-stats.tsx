@@ -1,5 +1,5 @@
 const stats = [
-  { value: "12k+", label: "Kartela pune të procesuara" },
+  { value: "1k+", label: "Kartela pune të procesuara" },
   { value: "98%", label: "Më pak kohë me letra" },
   { value: "4.9/5", label: "Kënaqësia e pronarëve" },
   { value: "24/7", label: "Qasje në cloud" },

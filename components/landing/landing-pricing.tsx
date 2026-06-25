@@ -45,7 +45,7 @@ export function LandingPricing() {
               </span>
               <div className="flex items-baseline gap-2">
                 <span className="text-5xl font-extrabold tracking-tight text-white">30</span>
-                <span className="text-lg font-medium text-[oklch(0.78_0.02_260)]">ditë</span>
+                <span className="text-2xl font-medium text-[#96beff]">ditë</span>
               </div>
               <p className="text-sm leading-relaxed text-[oklch(0.75_0.02_260)]">
                 Provoje Fiivoo plotësisht falas për 30 ditë. Pa kartë krediti, pa angazhim.
