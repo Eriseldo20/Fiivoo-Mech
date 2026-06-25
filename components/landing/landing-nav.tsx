@@ -9,7 +9,7 @@ import { cn } from "@/lib/utils"
 const navLinks = [
   { label: "Veçoritë", href: "#features" },
   { label: "Produkti", href: "#product" },
-  { label: "Çmimet", href: "#pricing" },
+  { label: "Kontakti", href: "#pricing" },
   { label: "Pyetjet", href: "#faq" },
 ]
 
