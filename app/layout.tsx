@@ -19,14 +19,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Fiivoo Mech",
-  },
-  icons: {
-    icon: [
-      { url: "/brand/fiivoo-icon.png", type: "image/png" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: "/brand/fiivoo-icon.png",
+    title: "Fiivoo",
   },
 }
 
