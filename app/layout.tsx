@@ -11,9 +11,9 @@ const _geist = Geist({ subsets: ["latin"] })
 const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Fiivoo Mech - Premium Auto Shop Management",
+  title: "Fiivoo — Modern Auto Shop Management",
   description:
-    "Professional mechanic maintenance and shop management software. Manage job cards, estimates, inventory, and analytics.",
+    "Fiivoo brings job cards, estimates, inventory, customers, and analytics into one fast, beautiful dashboard built for modern auto repair shops.",
   generator: "v0.app",
   manifest: "/manifest.json",
   appleWebApp: {
