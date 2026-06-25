@@ -1,35 +1,39 @@
 import type { SVGProps } from 'react'
 
 /**
- * Automotive two-post lift with a raised vehicle.
+ * Modern automotive two-post lift with a raised vehicle.
  * Used as an at-a-glance marker that a job is currently up on the lift.
  */
 export function CarLift({ ...props }: SVGProps<SVGSVGElement>) {
   return (
     <svg
-      viewBox="0 0 24 24"
+      viewBox="0 0 48 48"
       fill="none"
       stroke="currentColor"
-      strokeWidth={1.6}
+      strokeWidth={2.4}
       strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       {...props}
     >
-      {/* Lift posts */}
-      <path d="M4 21V4" />
-      <path d="M20 21V4" />
-      {/* Top cross beam */}
-      <path d="M3 4h18" />
-      {/* Lift arms holding the car */}
-      <path d="M4 12h3" />
-      <path d="M17 12h3" />
-      {/* Raised vehicle body */}
-      <path d="M7 12.5h10l-1.2-2.2a1.5 1.5 0 0 0-1.3-.8H9.5a1.5 1.5 0 0 0-1.3.8L7 12.5Z" />
-      <path d="M6.5 12.5h11v1.6a.9.9 0 0 1-.9.9H7.4a.9.9 0 0 1-.9-.9V12.5Z" />
+      {/* Ground line */}
+      <path d="M5 42h38" />
+      {/* Two-post columns */}
+      <path d="M9 42V7" />
+      <path d="M39 42V7" />
+      {/* Top overhead beam */}
+      <path d="M7 7h34" />
+      {/* Lift arms reaching under the car */}
+      <path d="M9 24h7" />
+      <path d="M32 24h7" />
+      {/* Raised vehicle cabin + hood (modern car silhouette) */}
+      <path d="M13 24l3.2-5.6a3 3 0 0 1 2.6-1.5h10.4a3 3 0 0 1 2.6 1.5L35 24" />
+      <path d="M13 24h22v4.5a2 2 0 0 1-2 2H15a2 2 0 0 1-2-2V24Z" />
+      {/* Windshield split */}
+      <path d="M24 17v7" />
       {/* Wheels */}
-      <circle cx="9" cy="15.4" r="0.9" />
-      <circle cx="15" cy="15.4" r="0.9" />
+      <circle cx="18" cy="30.5" r="2" />
+      <circle cx="30" cy="30.5" r="2" />
     </svg>
   )
 }

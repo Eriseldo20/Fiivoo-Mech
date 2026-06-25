@@ -125,7 +125,7 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
               {/* Automotive lift marker: shows when the car is actively up on the lift */}
               {job.status === 'in_progress' && (
                 <CarLift
-                  className="pointer-events-none absolute bottom-2 right-2 h-12 w-12 text-primary/20 group-hover:text-primary/35 transition-colors"
+                  className="pointer-events-none absolute bottom-1.5 right-2 h-20 w-20 text-primary/20 group-hover:text-primary/40 transition-colors"
                   aria-label={t('jobs.inProgress')}
                 />
               )}
