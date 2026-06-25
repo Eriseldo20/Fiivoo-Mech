@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { Car, Clock, User, MoreHorizontal, Plus, Wrench, ChevronRight, AlertTriangle } from 'lucide-react'
+import { CarLift } from '@/components/icons/car-lift'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl'
@@ -121,6 +122,14 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
                 accent,
               )}
             >
+              {/* Automotive lift marker: shows when the car is actively up on the lift */}
+              {job.status === 'in_progress' && (
+                <CarLift
+                  className="pointer-events-none absolute bottom-2 right-2 h-12 w-12 text-primary/20 group-hover:text-primary/35 transition-colors"
+                  aria-label={t('jobs.inProgress')}
+                />
+              )}
+
               {/* Top row: job number + status */}
               <div className="flex items-center justify-between gap-2 mb-2">
                 <span className="text-xs font-mono text-muted-foreground tracking-tight">
