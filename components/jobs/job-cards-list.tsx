@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { Car, Clock, User, MoreHorizontal, Plus, Wrench, ChevronRight, AlertTriangle } from 'lucide-react'
+import { ParkedSign } from '@/components/icons/parked-sign'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { useTranslations } from 'next-intl'
@@ -129,6 +130,14 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
                   width={96}
                   height={96}
                   className="pointer-events-none absolute bottom-2 right-2 h-20 w-20 object-contain opacity-25 group-hover:opacity-50 transition-opacity"
+                />
+              )}
+
+              {/* Parked marker: shows when the car is pending / waiting, not yet on the lift */}
+              {job.status === 'pending' && (
+                <ParkedSign
+                  title={t('jobs.pending')}
+                  className="pointer-events-none absolute bottom-3 right-3 h-11 w-11 opacity-30 group-hover:opacity-60 transition-opacity"
                 />
               )}
 
