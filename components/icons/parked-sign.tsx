@@ -1,9 +1,10 @@
 import type { SVGProps } from 'react'
 
 /**
- * Simple "parked" sign: a rounded square with a bold red accent and a white "P".
- * Used to flag pending job cards so a mechanic can see at a glance that the
- * vehicle is parked / waiting, not yet on the lift.
+ * "Parked" badge: a rounded-square outline enclosing a solid "P". Drawn as a
+ * monochrome icon that tints with `currentColor` so it matches the Fiivoo
+ * brand-blue status system alongside the lift marker. Flags pending job cards
+ * whose vehicle is parked / waiting, not yet on the lift.
  */
 export function ParkedSign({ title, ...props }: SVGProps<SVGSVGElement> & { title?: string }) {
   return (
@@ -16,12 +17,23 @@ export function ParkedSign({ title, ...props }: SVGProps<SVGSVGElement> & { titl
       {...props}
     >
       {title ? <title>{title}</title> : null}
-      {/* Sign plate */}
-      <rect x="6" y="6" width="36" height="36" rx="8" className="fill-red-600" />
+      {/* Badge plate */}
+      <rect
+        x="7"
+        y="7"
+        width="34"
+        height="34"
+        rx="9"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth={2.4}
+      />
       {/* Letter P */}
       <path
-        d="M19 15h7.5a6.5 6.5 0 0 1 0 13H22v5h-3V15Zm3 3v7h4.5a3.5 3.5 0 0 0 0-7H22Z"
-        className="fill-white"
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M18 15.5h7.2a6.3 6.3 0 0 1 0 12.6H21V33h-3V15.5Zm3 3v6.6h4.2a3.3 3.3 0 0 0 0-6.6H21Z"
+        fill="currentColor"
       />
     </svg>
   )

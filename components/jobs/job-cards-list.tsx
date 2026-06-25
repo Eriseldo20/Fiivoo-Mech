@@ -4,6 +4,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { formatDistanceToNow } from 'date-fns'
 import { Car, Clock, User, MoreHorizontal, Plus, Wrench, ChevronRight, AlertTriangle } from 'lucide-react'
+import { CarLift } from '@/components/icons/car-lift'
 import { ParkedSign } from '@/components/icons/parked-sign'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
@@ -124,12 +125,9 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
             >
               {/* Automotive lift marker: shows when the car is actively up on the lift */}
               {job.status === 'in_progress' && (
-                <Image
-                  src="/icons/car-lift.png"
-                  alt={t('jobs.inProgress')}
-                  width={96}
-                  height={96}
-                  className="pointer-events-none absolute bottom-2 right-2 h-20 w-20 object-contain opacity-25 group-hover:opacity-50 transition-opacity"
+                <CarLift
+                  title={t('jobs.inProgress')}
+                  className="pointer-events-none absolute bottom-2.5 right-2.5 h-14 w-14 text-primary/30 group-hover:text-primary/55 transition-colors"
                 />
               )}
 
@@ -137,7 +135,7 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
               {job.status === 'pending' && (
                 <ParkedSign
                   title={t('jobs.pending')}
-                  className="pointer-events-none absolute bottom-3 right-3 h-11 w-11 opacity-30 group-hover:opacity-60 transition-opacity"
+                  className="pointer-events-none absolute bottom-3 right-3 h-11 w-11 text-primary/30 group-hover:text-primary/55 transition-colors"
                 />
               )}
 
