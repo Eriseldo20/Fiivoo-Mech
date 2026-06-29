@@ -910,5 +910,42 @@
         "body": "Në rast të një shkeljeje të të dhënave personale, Përpunuesi do ta njoftojë Kontrolluesin pa vonesë të panevojshme pasi të jetë vënë në dijeni dhe do të ofrojë informacionin e nevojshëm."
       }
     }
+  },
+  "tracking": {
+    "headerTag": "Gjurmimi i shërbimit",
+    "poweredBy": "Mundësuar nga Fiivoo",
+    "title": "Gjurmoni shërbimin tuaj",
+    "subtitle": "Vendosni të dhënat tuaja për të parë ecurinë e mjetit në kohë reale.",
+    "lastNameLabel": "Mbiemri",
+    "lastNamePlaceholder": "p.sh. Hoxha",
+    "tokenLabel": "Kodi i gjurmimit",
+    "tokenPlaceholder": "p.sh. 7K4P2QXB",
+    "trackButton": "Gjurmo shërbimin",
+    "realtimeHint": "Përditësohet automatikisht në kohë reale",
+    "notFound": "Nuk gjetëm një përputhje. Kontrolloni mbiemrin dhe kodin.",
+    "genericError": "Diçka shkoi keq. Ju lutemi provoni përsëri.",
+    "live": "Drejtpërdrejt",
+    "jobLabel": "Shërbimi",
+    "yourVehicle": "Mjeti juaj",
+    "lastUpdated": "Përditësuar së fundi {time}",
+    "trackAnother": "Gjurmo një mjet tjetër",
+    "panelTitle": "Gjurmimi i klientit",
+    "panelSubtitle": "Lejoni klientin të ndjekë ecurinë online",
+    "disabledHint": "Aktivizoni gjurmimin për të krijuar një kod dhe link të ndashëm për klientin.",
+    "codeLabel": "Kodi i gjurmimit",
+    "copyLink": "Kopjo linkun",
+    "copied": "U kopjua",
+    "shareHint": "Ndani kodin ose linkun me klientin. Atyre u duhet edhe mbiemri i klientit.",
+    "stageSelectorLabel": "Faza aktuale",
+    "enabledToast": "Gjurmimi u aktivizua",
+    "disabledToast": "Gjurmimi u çaktivizua",
+    "stageUpdatedToast": "Faza u përditësua",
+    "errorToast": "Veprimi dështoi",
+    "copyError": "Nuk u kopjua",
+    "stageWaiting": "Në pritje",
+    "stageNotStarted": "Nuk ka filluar",
+    "stageInProcess": "Në proces",
+    "stageAlmostDone": "Gati përfundoi",
+    "stageFinished": "Përfunduar"
   }
 }

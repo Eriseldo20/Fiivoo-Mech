@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils'
 import { formatCurrency } from '@/lib/currency'
 import { getBlobUrl } from '@/lib/blob'
 import { JobStatusActions } from '@/components/jobs/job-status-actions'
+import { JobTrackingPanel } from '@/components/jobs/job-tracking-panel'
 import { JobTimingWarning } from '@/components/jobs/job-timing-warning'
 import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
@@ -173,6 +174,14 @@ export default async function JobDetailPage({
 
             {/* Status Actions */}
             <JobStatusActions jobId={job.id} currentStatus={job.status} />
+
+            {/* Client Tracking Portal control */}
+            <JobTrackingPanel
+              jobId={job.id}
+              enabled={Boolean(job.tracking_enabled)}
+              token={job.tracking_token ?? null}
+              stage={job.tracking_stage ?? 'waiting'}
+            />
 
             {/* Job Photos (Before / After) */}
             <JobPhotos jobId={job.id} shopId={shopId} photos={photos} />

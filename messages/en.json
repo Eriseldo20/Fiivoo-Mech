@@ -899,5 +899,42 @@
         "body": "In the event of a personal data breach, the Processor will notify the Controller without undue delay after becoming aware of it, and provide the information necessary for the Controller to meet its notification obligations."
       }
     }
+  },
+  "tracking": {
+    "headerTag": "Service tracking",
+    "poweredBy": "Powered by Fiivoo",
+    "title": "Track your service",
+    "subtitle": "Enter your details to see live progress on your vehicle.",
+    "lastNameLabel": "Last name",
+    "lastNamePlaceholder": "e.g. Smith",
+    "tokenLabel": "Tracking code",
+    "tokenPlaceholder": "e.g. 7K4P2QXB",
+    "trackButton": "Track service",
+    "realtimeHint": "Updates automatically in real time",
+    "notFound": "We couldn't find a match. Check your last name and code.",
+    "genericError": "Something went wrong. Please try again.",
+    "live": "Live",
+    "jobLabel": "Service",
+    "yourVehicle": "Your vehicle",
+    "lastUpdated": "Last updated {time}",
+    "trackAnother": "Track another vehicle",
+    "panelTitle": "Client tracking",
+    "panelSubtitle": "Let the customer follow progress online",
+    "disabledHint": "Turn on tracking to generate a shareable code and link for the customer.",
+    "codeLabel": "Tracking code",
+    "copyLink": "Copy link",
+    "copied": "Copied",
+    "shareHint": "Share the code or link with the customer. They'll also need the customer's last name.",
+    "stageSelectorLabel": "Current stage",
+    "enabledToast": "Tracking enabled",
+    "disabledToast": "Tracking disabled",
+    "stageUpdatedToast": "Stage updated",
+    "errorToast": "Action failed",
+    "copyError": "Couldn't copy",
+    "stageWaiting": "Waiting",
+    "stageNotStarted": "Hasn't started",
+    "stageInProcess": "In process",
+    "stageAlmostDone": "Almost done",
+    "stageFinished": "Finished"
   }
 }

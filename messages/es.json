@@ -910,5 +910,42 @@
         "body": "En caso de una violación de datos personales, el Encargado notificará al Responsable sin demora indebida tras tener conocimiento de ella y proporcionará la información necesaria."
       }
     }
+  },
+  "tracking": {
+    "headerTag": "Seguimiento del servicio",
+    "poweredBy": "Con tecnología de Fiivoo",
+    "title": "Sigue tu servicio",
+    "subtitle": "Introduce tus datos para ver el progreso de tu vehículo en tiempo real.",
+    "lastNameLabel": "Apellido",
+    "lastNamePlaceholder": "p. ej. García",
+    "tokenLabel": "Código de seguimiento",
+    "tokenPlaceholder": "p. ej. 7K4P2QXB",
+    "trackButton": "Seguir servicio",
+    "realtimeHint": "Se actualiza automáticamente en tiempo real",
+    "notFound": "No encontramos coincidencias. Revisa tu apellido y código.",
+    "genericError": "Algo salió mal. Inténtalo de nuevo.",
+    "live": "En vivo",
+    "jobLabel": "Servicio",
+    "yourVehicle": "Tu vehículo",
+    "lastUpdated": "Última actualización {time}",
+    "trackAnother": "Seguir otro vehículo",
+    "panelTitle": "Seguimiento del cliente",
+    "panelSubtitle": "Permite que el cliente siga el progreso en línea",
+    "disabledHint": "Activa el seguimiento para generar un código y enlace para compartir con el cliente.",
+    "codeLabel": "Código de seguimiento",
+    "copyLink": "Copiar enlace",
+    "copied": "Copiado",
+    "shareHint": "Comparte el código o enlace con el cliente. También necesitará el apellido del cliente.",
+    "stageSelectorLabel": "Etapa actual",
+    "enabledToast": "Seguimiento activado",
+    "disabledToast": "Seguimiento desactivado",
+    "stageUpdatedToast": "Etapa actualizada",
+    "errorToast": "La acción falló",
+    "copyError": "No se pudo copiar",
+    "stageWaiting": "En espera",
+    "stageNotStarted": "No ha comenzado",
+    "stageInProcess": "En proceso",
+    "stageAlmostDone": "Casi listo",
+    "stageFinished": "Terminado"
   }
 }
