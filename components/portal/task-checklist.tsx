@@ -35,43 +35,57 @@ export function TaskChecklist({ tasks: initialTasks }: { tasks: JobTask[] }) {
 
   if (tasks.length === 0) return null
 
+  const allDone = doneCount === tasks.length
+
   return (
-    <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+    <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="flex items-center gap-2 font-semibold text-foreground">
-          <ListChecks className="h-5 w-5 text-primary" />
+        <h2 className="flex items-center gap-2.5 font-bold text-foreground">
+          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/15 text-primary">
+            <ListChecks className="h-4 w-4" />
+          </span>
           {t('tasks')}
         </h2>
-        <span className="text-sm font-medium text-muted-foreground">
+        <span
+          className={cn(
+            'rounded-full px-3 py-1 text-sm font-bold tabular-nums',
+            allDone ? 'bg-emerald-600 text-white' : 'bg-muted text-foreground',
+          )}
+        >
           {doneCount}/{tasks.length}
         </span>
       </div>
 
-      <div className="mb-4 h-2 w-full overflow-hidden rounded-full bg-muted">
+      <div className="mb-5 h-2.5 w-full overflow-hidden rounded-full bg-muted">
         <div
-          className="h-full rounded-full bg-primary transition-all"
+          className={cn(
+            'h-full rounded-full transition-all duration-500',
+            allDone ? 'bg-emerald-600' : 'bg-gradient-to-r from-primary to-sky-500',
+          )}
           style={{ width: `${progress}%` }}
         />
       </div>
 
-      <ul className="space-y-1">
+      <ul className="space-y-2">
         {tasks.map((task) => (
           <li key={task.id}>
             <label
               className={cn(
-                'flex cursor-pointer items-start gap-3 rounded-xl px-3 py-2.5 transition-colors hover:bg-muted/50',
-                task.is_done && 'opacity-60',
+                'flex cursor-pointer items-center gap-3 rounded-2xl border px-3.5 py-3 transition-all',
+                task.is_done
+                  ? 'border-emerald-500/30 bg-emerald-500/10'
+                  : 'border-border bg-background hover:border-primary/40 hover:bg-muted/50',
               )}
             >
               <Checkbox
                 checked={task.is_done}
                 onCheckedChange={(checked) => handleToggle(task.id, checked === true)}
-                className="mt-0.5"
+                className="h-5 w-5 data-[state=checked]:border-emerald-600 data-[state=checked]:bg-emerald-600"
               />
               <span
                 className={cn(
-                  'text-sm leading-relaxed text-foreground',
-                  task.is_done && 'line-through',
+                  'text-sm font-medium leading-relaxed',
+                  task.is_done ? 'text-muted-foreground line-through' : 'text-foreground',
                 )}
               >
                 {task.title}

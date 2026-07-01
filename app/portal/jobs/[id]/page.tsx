@@ -8,14 +8,7 @@ import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 import { TaskChecklist, type JobTask } from '@/components/portal/task-checklist'
 import { ArrowLeft, Car, ClipboardList, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
-
-const statusStyles: Record<string, { key: string; class: string }> = {
-  pending: { key: 'pending', class: 'bg-amber-500/10 text-amber-600 border-amber-500/20' },
-  in_progress: { key: 'inProgress', class: 'bg-primary/10 text-primary border-primary/20' },
-  awaiting_parts: { key: 'awaitingParts', class: 'bg-orange-500/10 text-orange-600 border-orange-500/20' },
-  completed: { key: 'completed', class: 'bg-emerald-500/10 text-emerald-600 border-emerald-500/20' },
-  invoiced: { key: 'invoiced', class: 'bg-blue-500/10 text-blue-600 border-blue-500/20' },
-}
+import { getPortalStatus } from '@/lib/portal-status'
 
 export default async function PortalJobDetailPage({
   params,
@@ -66,58 +59,70 @@ export default async function PortalJobDetailPage({
   const vehicleName = vehicle
     ? [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(' ')
     : null
-  const style = statusStyles[job.status as string] ?? statusStyles.pending
+  const style = getPortalStatus(job.status as string)
+  const StatusIcon = style.icon
 
   return (
     <div className="space-y-5">
       <Link
         href="/portal"
-        className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4" />
         {t('backToJobs')}
       </Link>
 
       {/* Job header */}
-      <div className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-        <div className="flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            {job.job_number && (
-              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                #{job.job_number}
-              </p>
-            )}
-            <h1 className="mt-0.5 text-xl font-bold text-foreground text-balance">
-              {job.title || vehicleName || 'Job'}
-            </h1>
-          </div>
-          <span className={cn('shrink-0 rounded-full border px-2.5 py-1 text-xs font-medium', style.class)}>
-            {ts(style.key)}
-          </span>
-        </div>
-
-        {vehicleName && (
-          <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-xl bg-muted/40 px-4 py-3 text-sm">
-            <span className="flex items-center gap-1.5 font-medium text-foreground">
-              <Car className="h-4 w-4 text-primary" />
-              {vehicleName}
+      <div className={cn('overflow-hidden rounded-3xl border border-border border-l-4 bg-card shadow-sm', style.accent)}>
+        <div className="p-5">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              {job.job_number && (
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
+                  #{job.job_number}
+                </p>
+              )}
+              <h1 className="mt-1 text-2xl font-bold text-foreground text-balance">
+                {job.title || vehicleName || 'Job'}
+              </h1>
+            </div>
+            <span
+              className={cn(
+                'inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold uppercase tracking-wide',
+                style.badge,
+              )}
+            >
+              <StatusIcon className="h-3.5 w-3.5" />
+              {ts(style.key)}
             </span>
-            {vehicle?.license_plate && (
-              <span className="text-muted-foreground">{vehicle.license_plate}</span>
-            )}
-            {vehicle?.color && <span className="text-muted-foreground">{vehicle.color}</span>}
           </div>
-        )}
+
+          {vehicleName && (
+            <div className="mt-4 flex items-center gap-3 rounded-2xl bg-muted/60 px-4 py-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+                <Car className="h-5 w-5" />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate font-bold text-foreground">{vehicleName}</p>
+                <p className="truncate text-sm text-muted-foreground">
+                  {[vehicle?.license_plate, vehicle?.color].filter(Boolean).join(' \u00b7 ')}
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Description */}
       {job.description && (
-        <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-          <h2 className="mb-2 flex items-center gap-2 font-semibold text-foreground">
-            <FileText className="h-5 w-5 text-primary" />
+        <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+          <h2 className="mb-3 flex items-center gap-2.5 font-bold text-foreground">
+            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/15 text-primary">
+              <FileText className="h-4 w-4" />
+            </span>
             {t('jobDescription')}
           </h2>
-          <p className="whitespace-pre-wrap text-sm leading-relaxed text-muted-foreground">
+          <p className="whitespace-pre-wrap text-sm leading-relaxed text-foreground/80">
             {job.description}
           </p>
         </section>
@@ -127,8 +132,8 @@ export default async function PortalJobDetailPage({
       {tasks.length > 0 ? (
         <TaskChecklist tasks={tasks} />
       ) : (
-        <section className="flex items-center gap-3 rounded-2xl border border-dashed border-border bg-card/50 px-5 py-4 text-sm text-muted-foreground">
-          <ClipboardList className="h-4 w-4" />
+        <section className="flex items-center gap-3 rounded-3xl border-2 border-dashed border-border bg-card/50 px-5 py-4 text-sm font-medium text-muted-foreground">
+          <ClipboardList className="h-5 w-5" />
           {t('noTasks')}
         </section>
       )}
@@ -137,7 +142,7 @@ export default async function PortalJobDetailPage({
       <JobStatusActions jobId={job.id as string} currentStatus={job.status as string} />
 
       {/* Photos */}
-      <section className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+      <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
         <JobPhotos jobId={job.id as string} shopId={job.shop_id as string} photos={photos} />
       </section>
     </div>
