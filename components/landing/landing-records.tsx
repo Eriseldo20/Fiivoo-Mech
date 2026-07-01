@@ -46,6 +46,8 @@ export function LandingRecords() {
               width={1600}
               height={1000}
               className="h-full w-full object-cover"
+              sizes="(max-width: 1024px) 100vw, 60vw"
+              loading="lazy"
             />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[oklch(0.18_0.04_262/0.85)] to-transparent p-6 pt-16">
               <p className="text-sm font-semibold text-white">Automjete komerciale</p>
@@ -61,6 +63,8 @@ export function LandingRecords() {
               width={1200}
               height={1200}
               className="h-full w-full object-cover"
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              loading="lazy"
             />
             <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-[oklch(0.18_0.04_262/0.85)] to-transparent p-6 pt-16">
               <p className="text-sm font-semibold text-white">Foto direkt nga vendi</p>

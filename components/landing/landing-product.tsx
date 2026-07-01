@@ -50,6 +50,8 @@ export function LandingProduct() {
               width={2560}
               height={1440}
               className="h-auto w-full"
+              sizes="(max-width: 1024px) 100vw, 960px"
+              loading="lazy"
             />
           </div>
         </div>
