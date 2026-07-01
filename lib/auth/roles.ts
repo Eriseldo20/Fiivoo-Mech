@@ -26,13 +26,15 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('id, role, shop_id, full_name, shops(name)')
+    .select('id, role, shop_id, first_name, last_name, shops(name)')
     .eq('id', user.id)
     .single()
 
   if (!profile) return null
 
   const shop = profile.shops as unknown as { name: string } | null
+  const fullName =
+    [profile.first_name, profile.last_name].filter(Boolean).join(' ').trim() || null
 
   return {
     id: profile.id,
@@ -40,7 +42,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     role: (profile.role as UserRole) ?? 'mechanic',
     shopId: profile.shop_id as string,
     shopName: shop?.name ?? 'My Shop',
-    fullName: (profile.full_name as string | null) ?? null,
+    fullName,
   }
 }
 
