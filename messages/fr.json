@@ -127,7 +127,13 @@
     "noVehicleShort": "Aucun véhicule",
     "noCustomerShort": "Aucun client",
     "allStatuses": "Statut",
-    "allPriorities": "Priorité"
+    "allPriorities": "Priorité",
+    "startJob": "Démarrer le travail",
+    "markComplete": "Marquer comme terminé",
+    "resumeWork": "Reprendre le travail",
+    "markInvoiced": "Marquer comme facturé",
+    "updateStatus": "Mettre à jour le statut",
+    "jobCompleted": "Travail terminé"
   },
   "estimates": {
     "title": "Devis",

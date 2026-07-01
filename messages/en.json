@@ -166,7 +166,13 @@
     "noVehicleShort": "No vehicle",
     "noCustomerShort": "No customer",
     "allStatuses": "Status",
-    "allPriorities": "Priority"
+    "allPriorities": "Priority",
+    "startJob": "Start Job",
+    "markComplete": "Mark Complete",
+    "resumeWork": "Resume Work",
+    "markInvoiced": "Mark Invoiced",
+    "updateStatus": "Update Status",
+    "jobCompleted": "Job Completed"
   },
   "estimates": {
     "title": "Estimates",

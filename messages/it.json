@@ -127,7 +127,13 @@
     "noVehicleShort": "Nessun veicolo",
     "noCustomerShort": "Nessun cliente",
     "allStatuses": "Stato",
-    "allPriorities": "Priorità"
+    "allPriorities": "Priorità",
+    "startJob": "Avvia lavoro",
+    "markComplete": "Segna come completato",
+    "resumeWork": "Riprendi lavoro",
+    "markInvoiced": "Segna come fatturato",
+    "updateStatus": "Aggiorna stato",
+    "jobCompleted": "Lavoro completato"
   },
   "estimates": {
     "title": "Preventivi",

@@ -166,7 +166,13 @@
     "noVehicleShort": "Pa automjet",
     "noCustomerShort": "Pa klient",
     "allStatuses": "Statusi",
-    "allPriorities": "Përparësia"
+    "allPriorities": "Përparësia",
+    "startJob": "Fillo punën",
+    "markComplete": "Shëno si përfunduar",
+    "resumeWork": "Vazhdo punën",
+    "markInvoiced": "Shëno si faturuar",
+    "updateStatus": "Përditëso statusin",
+    "jobCompleted": "Puna u përfundua"
   },
   "estimates": {
     "title": "Ofertat",

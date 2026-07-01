@@ -166,7 +166,13 @@
     "noVehicleShort": "Kein Fahrzeug",
     "noCustomerShort": "Kein Kunde",
     "allStatuses": "Status",
-    "allPriorities": "Priorität"
+    "allPriorities": "Priorität",
+    "startJob": "Auftrag starten",
+    "markComplete": "Als erledigt markieren",
+    "resumeWork": "Arbeit fortsetzen",
+    "markInvoiced": "Als abgerechnet markieren",
+    "updateStatus": "Status aktualisieren",
+    "jobCompleted": "Auftrag abgeschlossen"
   },
   "estimates": {
     "title": "Kostenvoranschläge",

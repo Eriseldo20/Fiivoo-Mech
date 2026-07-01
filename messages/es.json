@@ -166,7 +166,13 @@
     "noVehicleShort": "Sin vehículo",
     "noCustomerShort": "Sin cliente",
     "allStatuses": "Estado",
-    "allPriorities": "Prioridad"
+    "allPriorities": "Prioridad",
+    "startJob": "Iniciar trabajo",
+    "markComplete": "Marcar como completado",
+    "resumeWork": "Reanudar trabajo",
+    "markInvoiced": "Marcar como facturado",
+    "updateStatus": "Actualizar estado",
+    "jobCompleted": "Trabajo completado"
   },
   "estimates": {
     "title": "Presupuestos",
