@@ -307,7 +307,18 @@
     "update": "Përditëso",
     "deleteEmployee": "Fshij punonjësin",
     "deleteConfirm": "Jeni i sigurt që dëshironi ta fshini këtë punonjës? Ky veprim nuk mund të zhbëhet.",
-    "delete": "Fshij"
+    "delete": "Fshij",
+    "portalAccess": "Qasja në portal",
+    "accountActiveDesc": "Ky punonjës mund të kyçet në portalin e punonjësit.",
+    "accountCreatedDesc": "Llogaria u krijua. Ndani këto kredenciale me punonjësin.",
+    "createAccountDesc": "Krijoni një kyçje që ky punonjës të ketë qasje në portal.",
+    "portalEmail": "Email",
+    "portalPassword": "Fjalëkalimi",
+    "createLogin": "Krijo kyçjen",
+    "revokeAccess": "Hiq qasjen",
+    "copyCredentials": "Kopjo kredencialet",
+    "copied": "U kopjua",
+    "regenerate": "Rigjenero"
   },
   "inventory": {
     "title": "Inventari",
@@ -947,5 +958,23 @@
     "stageInProcess": "Në proces",
     "stageAlmostDone": "Gati përfundoi",
     "stageFinished": "Përfunduar"
+  },
+  "portal": {
+    "greeting": "Përshëndetje, {name}",
+    "workerPortal": "Portali i punonjësit",
+    "signOut": "Dilni",
+    "myJobs": "Punët e mia",
+    "myJobsSubtitle": "Punët e caktuara për ju",
+    "noJobsTitle": "Nuk ka punë të caktuara",
+    "noJobsSubtitle": "Punët e caktuara për ju do të shfaqen këtu.",
+    "activeJobs": "Aktive",
+    "completedJobs": "Të përfunduara",
+    "backToJobs": "Kthehu te punët",
+    "jobDescription": "Përshkrimi",
+    "tasks": "Detyrat",
+    "noTasks": "Ende nuk ka detyra për këtë punë.",
+    "noTasksYet": "Ende pa detyra.",
+    "deleteTask": "Fshij detyrën",
+    "addTaskPlaceholder": "Shto një detyrë…"
   }
 }

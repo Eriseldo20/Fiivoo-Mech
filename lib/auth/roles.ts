@@ -32,7 +32,7 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   if (!profile) return null
 
-  const shop = profile.shops as { name: string } | null
+  const shop = profile.shops as unknown as { name: string } | null
 
   return {
     id: profile.id,

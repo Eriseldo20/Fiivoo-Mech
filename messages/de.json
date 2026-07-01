@@ -307,7 +307,18 @@
     "update": "Aktualisieren",
     "deleteEmployee": "Mitarbeiter löschen",
     "deleteConfirm": "Möchten Sie diesen Mitarbeiter wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "delete": "Löschen"
+    "delete": "Löschen",
+    "portalAccess": "Portalzugang",
+    "accountActiveDesc": "Dieser Mitarbeiter kann sich im Mitarbeiterportal anmelden.",
+    "accountCreatedDesc": "Konto erstellt. Teile diese Zugangsdaten mit dem Mitarbeiter.",
+    "createAccountDesc": "Erstelle einen Login, damit dieser Mitarbeiter auf das Portal zugreifen kann.",
+    "portalEmail": "E-Mail",
+    "portalPassword": "Passwort",
+    "createLogin": "Login erstellen",
+    "revokeAccess": "Zugang entziehen",
+    "copyCredentials": "Zugangsdaten kopieren",
+    "copied": "Kopiert",
+    "regenerate": "Neu generieren"
   },
   "inventory": {
     "title": "Inventar",
@@ -947,5 +958,23 @@
     "stageInProcess": "In Bearbeitung",
     "stageAlmostDone": "Fast fertig",
     "stageFinished": "Fertig"
+  },
+  "portal": {
+    "greeting": "Hallo, {name}",
+    "workerPortal": "Mitarbeiterportal",
+    "signOut": "Abmelden",
+    "myJobs": "Meine Aufträge",
+    "myJobsSubtitle": "Dir zugewiesene Aufträge",
+    "noJobsTitle": "Keine Aufträge zugewiesen",
+    "noJobsSubtitle": "Deine zugewiesenen Aufträge erscheinen hier.",
+    "activeJobs": "Aktiv",
+    "completedJobs": "Abgeschlossen",
+    "backToJobs": "Zurück zu den Aufträgen",
+    "jobDescription": "Beschreibung",
+    "tasks": "Aufgaben",
+    "noTasks": "Für diesen Auftrag gibt es noch keine Aufgaben.",
+    "noTasksYet": "Noch keine Aufgaben.",
+    "deleteTask": "Aufgabe löschen",
+    "addTaskPlaceholder": "Aufgabe hinzufügen…"
   }
 }

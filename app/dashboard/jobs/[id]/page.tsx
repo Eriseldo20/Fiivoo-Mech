@@ -23,6 +23,7 @@ import { JobStatusActions } from '@/components/jobs/job-status-actions'
 import { JobTrackingPanel } from '@/components/jobs/job-tracking-panel'
 import { JobTimingWarning } from '@/components/jobs/job-timing-warning'
 import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
+import { JobTaskManager, type JobTask } from '@/components/jobs/job-task-manager'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { PaymentStatusControl } from '@/components/estimates/payment-status-control'
 import { getCurrentUser } from '@/lib/auth/roles'
@@ -90,6 +91,15 @@ export default async function JobDetailPage({
 
   const photos = (jobPhotos ?? []) as JobPhoto[]
   const shopId = job.shop_id as string
+
+  // Job checklist tasks (workers tick these off in their portal)
+  const { data: taskRows } = await supabase
+    .from('job_tasks')
+    .select('id, title, is_done')
+    .eq('job_card_id', id)
+    .order('sort_order', { ascending: true })
+    .order('created_at', { ascending: true })
+  const tasks = (taskRows ?? []) as JobTask[]
 
   // Only owners see prices / estimates
   const currentUser = await getCurrentUser()
@@ -181,6 +191,9 @@ export default async function JobDetailPage({
 
             {/* Status Actions */}
             <JobStatusActions jobId={job.id} currentStatus={job.status} />
+
+            {/* Task checklist (shared with the worker portal) */}
+            <JobTaskManager jobId={job.id} tasks={tasks} />
 
             {/* Client Tracking Portal control */}
             <JobTrackingPanel

@@ -268,7 +268,18 @@
     "update": "Aggiorna",
     "deleteEmployee": "Elimina dipendente",
     "deleteConfirm": "Sei sicuro di voler eliminare questo dipendente? Questa azione non può essere annullata.",
-    "delete": "Elimina"
+    "delete": "Elimina",
+    "portalAccess": "Accesso al portale",
+    "accountActiveDesc": "Questo dipendente può accedere al portale operatore.",
+    "accountCreatedDesc": "Account creato. Condividi queste credenziali con l’operatore.",
+    "createAccountDesc": "Crea un accesso affinché questo dipendente possa usare il portale.",
+    "portalEmail": "Email",
+    "portalPassword": "Password",
+    "createLogin": "Crea accesso",
+    "revokeAccess": "Revoca accesso",
+    "copyCredentials": "Copia credenziali",
+    "copied": "Copiato",
+    "regenerate": "Rigenera"
   },
   "inventory": {
     "title": "Inventario",
@@ -875,5 +886,23 @@
     "stageInProcess": "In lavorazione",
     "stageAlmostDone": "Quasi finito",
     "stageFinished": "Completato"
+  },
+  "portal": {
+    "greeting": "Ciao, {name}",
+    "workerPortal": "Portale operatore",
+    "signOut": "Esci",
+    "myJobs": "I miei lavori",
+    "myJobsSubtitle": "Lavori assegnati a te",
+    "noJobsTitle": "Nessun lavoro assegnato",
+    "noJobsSubtitle": "I lavori assegnati appariranno qui.",
+    "activeJobs": "Attivi",
+    "completedJobs": "Completati",
+    "backToJobs": "Torna ai lavori",
+    "jobDescription": "Descrizione",
+    "tasks": "Attività",
+    "noTasks": "Ancora nessuna attività per questo lavoro.",
+    "noTasksYet": "Ancora nessuna attività.",
+    "deleteTask": "Elimina attività",
+    "addTaskPlaceholder": "Aggiungi un’attività…"
   }
 }

@@ -268,7 +268,18 @@
     "update": "Mettre à jour",
     "deleteEmployee": "Supprimer l'employé",
     "deleteConfirm": "Êtes-vous sûr de vouloir supprimer cet employé ? Cette action est irréversible.",
-    "delete": "Supprimer"
+    "delete": "Supprimer",
+    "portalAccess": "Accès au portail",
+    "accountActiveDesc": "Cet employé peut se connecter au portail employé.",
+    "accountCreatedDesc": "Compte créé. Partagez ces identifiants avec l’employé.",
+    "createAccountDesc": "Créez un identifiant pour que cet employé puisse accéder au portail.",
+    "portalEmail": "E-mail",
+    "portalPassword": "Mot de passe",
+    "createLogin": "Créer un identifiant",
+    "revokeAccess": "Révoquer l’accès",
+    "copyCredentials": "Copier les identifiants",
+    "copied": "Copié",
+    "regenerate": "Régénérer"
   },
   "inventory": {
     "title": "Inventaire",
@@ -875,5 +886,23 @@
     "stageInProcess": "En cours",
     "stageAlmostDone": "Presque terminé",
     "stageFinished": "Terminé"
+  },
+  "portal": {
+    "greeting": "Bonjour, {name}",
+    "workerPortal": "Portail employé",
+    "signOut": "Se déconnecter",
+    "myJobs": "Mes travaux",
+    "myJobsSubtitle": "Travaux qui vous sont attribués",
+    "noJobsTitle": "Aucun travail attribué",
+    "noJobsSubtitle": "Vos travaux attribués apparaîtront ici.",
+    "activeJobs": "En cours",
+    "completedJobs": "Terminés",
+    "backToJobs": "Retour aux travaux",
+    "jobDescription": "Description",
+    "tasks": "Tâches",
+    "noTasks": "Aucune tâche pour ce travail pour le moment.",
+    "noTasksYet": "Pas encore de tâches.",
+    "deleteTask": "Supprimer la tâche",
+    "addTaskPlaceholder": "Ajouter une tâche…"
   }
 }
