@@ -7,7 +7,13 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { cn } from '@/lib/utils'
-import { isTrackingStage, type TrackingStage, DEFAULT_TRACKING_STAGE } from '@/lib/tracking'
+import {
+  isTrackingStage,
+  type TrackingStage,
+  DEFAULT_TRACKING_STAGE,
+  stageIndex,
+  TRACKING_STAGES,
+} from '@/lib/tracking'
 import { TrackingStepper } from './tracking-stepper'
 import { Car, Loader2, Search, AlertCircle, RotateCcw, Wifi } from 'lucide-react'
 
@@ -32,6 +38,21 @@ function formatRelative(iso: string, locale: string) {
   const hours = Math.round(mins / 60)
   if (hours < 24) return rtf.format(-hours, 'hour')
   return rtf.format(-Math.round(hours / 24), 'day')
+}
+
+/** European-style license plate badge. */
+function LicensePlate({ value }: { value: string }) {
+  return (
+    <span className="inline-flex select-none items-stretch overflow-hidden rounded-md border-2 border-slate-900/80 bg-white shadow-sm">
+      <span className="flex flex-col items-center justify-center bg-blue-700 px-1.5 py-1 text-[0.5rem] font-bold leading-none text-white">
+        <span className="text-[0.6rem]">★</span>
+        <span className="mt-0.5">EU</span>
+      </span>
+      <span className="flex items-center px-3 py-1 font-mono text-lg font-bold uppercase tracking-widest text-slate-900">
+        {value}
+      </span>
+    </span>
+  )
 }
 
 export function TrackingPortal({ initialToken = '', locale = 'en' }: { initialToken?: string; locale?: string }) {
@@ -112,46 +133,71 @@ export function TrackingPortal({ initialToken = '', locale = 'en' }: { initialTo
     const vehicle = [result.vehicle_year, result.vehicle_make, result.vehicle_model]
       .filter(Boolean)
       .join(' ')
+    const current = stageIndex(stage)
+    const progress = Math.round((current / (TRACKING_STAGES.length - 1)) * 100)
+    const isFinished = stage === 'finished'
+
     return (
       <div className="w-full max-w-2xl">
-        <div className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
-          <div className="mb-6 flex items-start justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                <Car className="h-5 w-5" />
-              </span>
-              <div>
-                <p className="text-lg font-semibold leading-tight text-foreground">
+        <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-primary/5">
+          {/* Colored header panel */}
+          <div
+            className={cn(
+              'relative overflow-hidden px-6 py-7 sm:px-8 sm:py-8',
+              isFinished
+                ? 'bg-gradient-to-br from-emerald-600 to-emerald-500'
+                : 'bg-gradient-to-br from-primary to-primary/80',
+            )}
+          >
+            {/* Decorative subtle grid */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 opacity-10"
+              style={{
+                backgroundImage:
+                  'radial-gradient(circle at 1px 1px, white 1px, transparent 0)',
+                backgroundSize: '22px 22px',
+              }}
+            />
+            <div className="relative flex items-start justify-between gap-4">
+              <div className="min-w-0">
+                <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wider text-white/70">
+                  <Car className="h-3.5 w-3.5" />
                   {vehicle || t('yourVehicle')}
                 </p>
-                {result.vehicle_plate && (
-                  <p className="text-sm text-muted-foreground">{result.vehicle_plate}</p>
-                )}
+                <h2 className="mt-1.5 text-2xl font-bold leading-tight text-white text-balance sm:text-3xl">
+                  {result.job_title || t('jobLabel')}
+                </h2>
               </div>
-            </div>
-            {live && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600">
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+              {live && (
+                <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-white/15 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+                  </span>
+                  {t('live')}
                 </span>
-                {t('live')}
+              )}
+            </div>
+
+            {/* License plate + progress */}
+            <div className="relative mt-5 flex flex-wrap items-center gap-3">
+              {result.vehicle_plate && <LicensePlate value={result.vehicle_plate} />}
+              <span className="ml-auto inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1.5 text-sm font-semibold text-white backdrop-blur-sm">
+                {progress}%
               </span>
-            )}
+            </div>
           </div>
 
-          {result.job_title && (
-            <div className="mb-6 rounded-xl border border-border bg-muted/40 px-4 py-3">
-              <p className="text-xs uppercase tracking-wide text-muted-foreground">{t('jobLabel')}</p>
-              <p className="font-medium text-foreground">{result.job_title}</p>
-            </div>
-          )}
+          {/* Body: stepper */}
+          <div className="px-6 py-7 sm:px-8 sm:py-8">
+            <TrackingStepper stage={stage} />
 
-          <TrackingStepper stage={stage} />
-
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            {t('lastUpdated', { time: formatRelative(result.stage_updated_at, locale) })}
-          </p>
+            <p className="mt-7 flex items-center justify-center gap-1.5 text-center text-sm text-muted-foreground">
+              <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
+              {t('lastUpdated', { time: formatRelative(result.stage_updated_at, locale) })}
+            </p>
+          </div>
         </div>
 
         <button
