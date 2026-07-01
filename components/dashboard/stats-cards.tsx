@@ -9,6 +9,7 @@ interface StatsCardsProps {
   pendingEstimates: number
   totalCustomers: number
   approvedRevenue: number
+  showRevenue?: boolean
   changes?: {
     activeJobs: number
     totalCustomers: number
@@ -38,7 +39,7 @@ function ChangeIndicator({ value }: { value?: number }) {
   )
 }
 
-export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, approvedRevenue, changes }: StatsCardsProps) {
+export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, approvedRevenue, showRevenue = true, changes }: StatsCardsProps) {
   const t = useTranslations('dashboard')
 
   const stats = [
@@ -66,14 +67,18 @@ export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, appro
       gradient: 'from-emerald-500 to-teal-600',
       iconBg: 'bg-white/15',
     },
-    {
-      title: t('approvedRevenue'),
-      value: formatCurrency(approvedRevenue),
-      change: undefined,
-      icon: Euro,
-      gradient: 'from-slate-600 to-slate-700',
-      iconBg: 'bg-white/15',
-    },
+    ...(showRevenue
+      ? [
+          {
+            title: t('approvedRevenue'),
+            value: formatCurrency(approvedRevenue),
+            change: undefined,
+            icon: Euro,
+            gradient: 'from-slate-600 to-slate-700',
+            iconBg: 'bg-white/15',
+          },
+        ]
+      : []),
   ]
 
   return (

@@ -21,12 +21,14 @@ export default async function DashboardPage() {
   // Get profile with shop
   const { data: profile } = await supabase
     .from('profiles')
-    .select('shop_id')
+    .select('shop_id, role')
     .eq('id', user.id)
     .single()
 
   const shopId = profile?.shop_id
   if (!shopId) redirect('/onboarding')
+
+  const canSeePrices = profile?.role === 'owner'
 
   // Fetch data in parallel for performance
   const [stats, recentJobs] = await Promise.all([
@@ -47,6 +49,7 @@ export default async function DashboardPage() {
           pendingEstimates={stats.pendingEstimates}
           totalCustomers={stats.totalCustomers}
           approvedRevenue={stats.approvedRevenue}
+          showRevenue={canSeePrices}
           changes={stats.changes}
         />
 

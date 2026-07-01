@@ -23,26 +23,36 @@ import {
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
 
-const mainNavItems = [
+import type { UserRole } from '@/lib/auth/roles'
+
+type NavItemDef = {
+  key: string
+  href: string
+  icon: React.ElementType
+  ownerOnly?: boolean
+}
+
+const mainNavItems: NavItemDef[] = [
   { key: 'dashboard',  href: '/dashboard',            icon: LayoutDashboard },
   { key: 'jobCards',   href: '/dashboard/jobs',        icon: ClipboardList },
-  { key: 'estimates',  href: '/dashboard/estimates',   icon: FileText },
+  { key: 'estimates',  href: '/dashboard/estimates',   icon: FileText, ownerOnly: true },
   { key: 'calendar',   href: '/dashboard/calendar',    icon: Calendar },
-  { key: 'analytics',  href: '/dashboard/analytics',   icon: BarChart3 },
+  { key: 'analytics',  href: '/dashboard/analytics',   icon: BarChart3, ownerOnly: true },
 ]
 
-const fleetNavItems = [
+const fleetNavItems: NavItemDef[] = [
   { key: 'vehicles',   href: '/dashboard/vehicles',    icon: Car },
   { key: 'employees',  href: '/dashboard/employees',   icon: Users },
-  { key: 'inventory',  href: '/dashboard/inventory',   icon: Package },
+  { key: 'inventory',  href: '/dashboard/inventory',   icon: Package, ownerOnly: true },
 ]
 
-const bottomNavItems = [
-  { key: 'settings',   href: '/dashboard/settings',    icon: Settings },
+const bottomNavItems: NavItemDef[] = [
+  { key: 'settings',   href: '/dashboard/settings',    icon: Settings, ownerOnly: true },
 ]
 
 interface SidebarProps {
   shopName: string
+  role: UserRole
 }
 
 function NavItem({
@@ -96,11 +106,16 @@ function SectionLabel({ label, collapsed }: { label: string; collapsed: boolean 
   )
 }
 
-export function Sidebar({ shopName }: SidebarProps) {
+export function Sidebar({ shopName, role }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const t = useTranslations('nav')
   const [collapsed, setCollapsed] = useState(false)
+
+  const allow = (item: NavItemDef) => role === 'owner' || !item.ownerOnly
+  const mainItems = mainNavItems.filter(allow)
+  const fleetItems = fleetNavItems.filter(allow)
+  const bottomItems = bottomNavItems.filter(allow)
 
   const handleSignOut = async () => {
     const supabase = createClient()
@@ -183,7 +198,7 @@ export function Sidebar({ shopName }: SidebarProps) {
       <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-0.5">
         {/* Main */}
         {!collapsed && <SectionLabel label="Main" collapsed={collapsed} />}
-        {mainNavItems.map((item) => (
+        {mainItems.map((item) => (
           <NavItem
             key={item.href}
             item={item}
@@ -195,7 +210,7 @@ export function Sidebar({ shopName }: SidebarProps) {
 
         {/* Fleet */}
         <SectionLabel label="Fleet & Stock" collapsed={collapsed} />
-        {fleetNavItems.map((item) => (
+        {fleetItems.map((item) => (
           <NavItem
             key={item.href}
             item={item}
@@ -211,7 +226,7 @@ export function Sidebar({ shopName }: SidebarProps) {
         className="flex-shrink-0 border-t border-white/[0.07] px-3 py-3 space-y-0.5"
         style={{ background: 'linear-gradient(0deg, oklch(0.10 0.01 245 / 0.8) 0%, transparent 100%)' }}
       >
-        {bottomNavItems.map((item) => (
+        {bottomItems.map((item) => (
           <NavItem
             key={item.href}
             item={item}

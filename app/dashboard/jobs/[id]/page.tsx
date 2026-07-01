@@ -25,6 +25,7 @@ import { JobTimingWarning } from '@/components/jobs/job-timing-warning'
 import { JobPhotos, type JobPhoto } from '@/components/jobs/job-photos'
 import { ImageLightbox } from '@/components/ui/image-lightbox'
 import { PaymentStatusControl } from '@/components/estimates/payment-status-control'
+import { getCurrentUser } from '@/lib/auth/roles'
 
 const statusStyles = {
   pending: { key: 'pending', class: 'bg-amber-500/10 text-amber-500 border-amber-500/20' },
@@ -90,6 +91,10 @@ export default async function JobDetailPage({
   const photos = (jobPhotos ?? []) as JobPhoto[]
   const shopId = job.shop_id as string
 
+  // Only owners see prices / estimates
+  const currentUser = await getCurrentUser()
+  const canSeePrices = currentUser?.role === 'owner'
+
   return (
     <div className="min-h-screen overflow-x-hidden">
       {/* Header */}
@@ -131,12 +136,14 @@ export default async function JobDetailPage({
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-              <Link href={`/dashboard/estimates/new?job=${job.id}`} className="flex-1 sm:flex-none">
-                <Button variant="outline" size="sm" className="w-full">
-                  <FileText className="h-4 w-4 sm:mr-2" />
-                  <span className="hidden sm:inline">{t('createEstimate')}</span>
-                </Button>
-              </Link>
+              {canSeePrices && (
+                <Link href={`/dashboard/estimates/new?job=${job.id}`} className="flex-1 sm:flex-none">
+                  <Button variant="outline" size="sm" className="w-full">
+                    <FileText className="h-4 w-4 sm:mr-2" />
+                    <span className="hidden sm:inline">{t('createEstimate')}</span>
+                  </Button>
+                </Link>
+              )}
               <Link href={`/dashboard/jobs/${job.id}/edit`} className="flex-1 sm:flex-none">
                 <Button variant="outline" size="sm" className="w-full">
                   <Edit className="h-4 w-4 sm:mr-2" />
@@ -187,7 +194,7 @@ export default async function JobDetailPage({
             <JobPhotos jobId={job.id} shopId={shopId} photos={photos} />
 
             {/* Related Estimates */}
-            {estimates && estimates.length > 0 && (
+            {canSeePrices && estimates && estimates.length > 0 && (
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
                 <h2 className="text-lg font-semibold mb-4">{t('relatedEstimates')}</h2>
                 <div className="space-y-3">

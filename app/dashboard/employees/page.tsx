@@ -45,10 +45,13 @@ import {
   Trash2,
   Briefcase,
   Euro,
-  Calendar
+  Calendar,
+  KeyRound,
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { CURRENCY } from '@/lib/currency'
+import { cn } from '@/lib/utils'
+import { WorkerAccessDialog } from '@/components/employees/worker-access-dialog'
 
 interface Employee {
   id: string
@@ -63,6 +66,7 @@ interface Employee {
   hire_date: string | null
   notes: string | null
   created_at: string
+  user_id: string | null
 }
 
 const roleColors: Record<string, string> = {
@@ -81,6 +85,7 @@ export default function EmployeesPage() {
   const [deleteId, setDeleteId] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   const [shopId, setShopId] = useState<string | null>(null)
+  const [accessEmployee, setAccessEmployee] = useState<Employee | null>(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -339,6 +344,18 @@ export default function EmployeesPage() {
                       <Button
                         variant="ghost"
                         size="icon"
+                        className={cn(
+                          'h-8 w-8',
+                          employee.user_id ? 'text-emerald-500 hover:text-emerald-600' : ''
+                        )}
+                        title={t('portalAccess')}
+                        onClick={() => setAccessEmployee(employee)}
+                      >
+                        <KeyRound className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
                         className="h-8 w-8"
                         onClick={() => handleEdit(employee)}
                       >
@@ -529,6 +546,14 @@ export default function EmployeesPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Worker portal access */}
+      <WorkerAccessDialog
+        open={!!accessEmployee}
+        onOpenChange={(open) => !open && setAccessEmployee(null)}
+        employee={accessEmployee}
+        onChanged={loadEmployees}
+      />
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
