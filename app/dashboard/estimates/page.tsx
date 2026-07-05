@@ -3,6 +3,7 @@ import { getTranslations } from 'next-intl/server'
 import { Header } from '@/components/dashboard/header'
 import { EstimatesList } from '@/components/estimates/estimates-list'
 import { EstimateFilters } from '@/components/estimates/estimate-filters'
+import { getEstimates } from '@/lib/data/cached-queries'
 import { redirect } from 'next/navigation'
 
 export default async function EstimatesPage({
@@ -28,26 +29,11 @@ export default async function EstimatesPage({
     redirect('/onboarding')
   }
 
-  // Build query with filters
-  let query = supabase
-    .from('estimates')
-    .select(`
-      *,
-      vehicle:vehicles(id, make, model, license_plate),
-      customer:customers(id, name, phone)
-    `)
-    .eq('shop_id', shopId)
-    .order('created_at', { ascending: false })
-
-  if (params.status && params.status !== 'all') {
-    query = query.eq('status', params.status)
-  }
-
-  if (params.search) {
-    query = query.or(`estimate_number.ilike.%${params.search}%,notes.ilike.%${params.search}%`)
-  }
-
-  const { data: estimates } = await query
+  // Cached base list (produces cache HITs); status/search filtered in memory.
+  const estimates = await getEstimates(shopId, {
+    status: params.status,
+    search: params.search,
+  })
 
   const t = await getTranslations('estimates')
 

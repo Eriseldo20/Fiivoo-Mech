@@ -6,7 +6,10 @@ import { JobOverrunAlert } from '@/components/jobs/job-overrun-alert'
 import { CompletedJobsList } from '@/components/jobs/completed-jobs-list'
 import { JobFilters } from '@/components/jobs/job-filters'
 import { sanitizeSearchTerm } from '@/lib/search'
+import { getAllJobs } from '@/lib/data/cached-queries'
 import { redirect } from 'next/navigation'
+
+const COMPLETED_STATUSES = ['completed', 'invoiced']
 
 export default async function JobsPage({
   searchParams,
@@ -26,69 +29,42 @@ export default async function JobsPage({
     .single()
 
   const shopId = profile?.shop_id
+  if (!shopId) redirect('/onboarding')
 
-  // Build query for active jobs (not completed or invoiced)
-  let activeQuery = supabase
-    .from('job_cards')
-    .select(`
-      *,
-      vehicle:vehicles(id, make, model, license_plate, year),
-      customer:customers(id, name, phone),
-      assignee:profiles(id, first_name, last_name)
-    `)
-    .eq('shop_id', shopId)
-    .not('status', 'in', '("completed","invoiced")')
-    .order('created_at', { ascending: false })
+  // Cached base list of all jobs for this shop (produces cache HITs across
+  // navigations). Filtering/splitting is done in memory below.
+  const allJobs = (await getAllJobs(shopId)) as Array<Record<string, unknown>>
 
-  // Build query for completed jobs
-  let completedQuery = supabase
-    .from('job_cards')
-    .select(`
-      *,
-      vehicle:vehicles(id, make, model, license_plate, year),
-      customer:customers(id, name, phone),
-      assignee:profiles(id, first_name, last_name)
-    `)
-    .eq('shop_id', shopId)
-    .in('status', ['completed', 'invoiced'])
-    .order('completed_date', { ascending: false })
-    .limit(20)
+  const priority = params.priority
+  const searchTerm = params.search ? sanitizeSearchTerm(params.search)?.toLowerCase() : undefined
 
-  // Apply filters to active query
-  if (params.status && params.status !== 'all') {
-    if (params.status === 'completed' || params.status === 'invoiced') {
-      // If filtering by completed/invoiced, only show those
-      activeQuery = supabase
-        .from('job_cards')
-        .select(`
-          *,
-          vehicle:vehicles(id, make, model, license_plate, year),
-          customer:customers(id, name, phone),
-          assignee:profiles(id, first_name, last_name)
-        `)
-        .eq('shop_id', shopId)
-        .eq('status', params.status)
-        .order('created_at', { ascending: false })
-    } else {
-      activeQuery = activeQuery.eq('status', params.status)
-    }
+  const matchesPriority = (j: Record<string, unknown>) =>
+    !priority || priority === 'all' || j.priority === priority
+  const matchesSearch = (j: Record<string, unknown>) =>
+    !searchTerm ||
+    String(j.title ?? '').toLowerCase().includes(searchTerm) ||
+    String(j.job_number ?? '').toLowerCase().includes(searchTerm)
+
+  const isSpecificStatus = !!params.status && params.status !== 'all'
+
+  let activeJobs: unknown[]
+  if (isSpecificStatus) {
+    // When filtering by a specific status, the "active" list shows exactly that status
+    activeJobs = allJobs.filter(
+      (j) => j.status === params.status && matchesPriority(j) && matchesSearch(j),
+    )
+  } else {
+    activeJobs = allJobs.filter(
+      (j) =>
+        !COMPLETED_STATUSES.includes(String(j.status)) && matchesPriority(j) && matchesSearch(j),
+    )
   }
 
-  if (params.priority && params.priority !== 'all') {
-    activeQuery = activeQuery.eq('priority', params.priority)
-  }
-
-  if (params.search) {
-    const term = sanitizeSearchTerm(params.search)
-    if (term) {
-      activeQuery = activeQuery.or(`title.ilike.%${term}%,job_number.ilike.%${term}%`)
-    }
-  }
-
-  const [{ data: activeJobs }, { data: completedJobs }] = await Promise.all([
-    activeQuery,
-    completedQuery,
-  ])
+  // Completed jobs, most recently completed first, capped at 20
+  const completedJobs = allJobs
+    .filter((j) => COMPLETED_STATUSES.includes(String(j.status)))
+    .sort((a, b) => String(b.completed_date ?? '').localeCompare(String(a.completed_date ?? '')))
+    .slice(0, 20)
 
   // Don't show completed section if filtering by specific status
   const showCompletedSection = !params.status || params.status === 'all'

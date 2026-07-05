@@ -1,7 +1,3 @@
-// Route segment config for dashboard
-export const dynamic = 'force-dynamic'
-export const revalidate = 0 // Don't cache at edge, data is user-specific
-
 import { redirect } from 'next/navigation'
 import { getTranslations } from 'next-intl/server'
 import { createClient } from '@/lib/supabase/server'
