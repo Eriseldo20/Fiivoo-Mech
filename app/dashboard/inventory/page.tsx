@@ -22,5 +22,5 @@ export default async function InventoryPage() {
   // Cached read (produces cache HITs across navigations), scoped by shopId.
   const initialInventory = (await getInventory(shopId)) as never[]
 
-  return <InventoryClient initialInventory={initialInventory} shopId={shopId} />
+  return <InventoryClient initialInventory={initialInventory} />
 }

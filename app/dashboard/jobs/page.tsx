@@ -33,21 +33,23 @@ export default async function JobsPage({
 
   // Cached base list of all jobs for this shop (produces cache HITs across
   // navigations). Filtering/splitting is done in memory below.
-  const allJobs = (await getAllJobs(shopId)) as Array<Record<string, unknown>>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  type JobRow = any
+  const allJobs = (await getAllJobs(shopId)) as JobRow[]
 
   const priority = params.priority
   const searchTerm = params.search ? sanitizeSearchTerm(params.search)?.toLowerCase() : undefined
 
-  const matchesPriority = (j: Record<string, unknown>) =>
+  const matchesPriority = (j: JobRow) =>
     !priority || priority === 'all' || j.priority === priority
-  const matchesSearch = (j: Record<string, unknown>) =>
+  const matchesSearch = (j: JobRow) =>
     !searchTerm ||
     String(j.title ?? '').toLowerCase().includes(searchTerm) ||
     String(j.job_number ?? '').toLowerCase().includes(searchTerm)
 
   const isSpecificStatus = !!params.status && params.status !== 'all'
 
-  let activeJobs: unknown[]
+  let activeJobs: JobRow[]
   if (isSpecificStatus) {
     // When filtering by a specific status, the "active" list shows exactly that status
     activeJobs = allJobs.filter(

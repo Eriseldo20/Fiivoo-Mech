@@ -1,8 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
-import { createClient } from '@/lib/supabase/client'
+import {
+  saveInventoryItem,
+  restockInventoryItem,
+  deleteInventoryItem,
+} from '@/lib/actions/inventory'
 import { Header } from '@/components/dashboard/header'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -105,12 +110,14 @@ const categoryColors: Record<string, string> = {
 
 interface InventoryClientProps {
   initialInventory: InventoryItem[]
-  shopId: string
 }
 
-export function InventoryClient({ initialInventory, shopId }: InventoryClientProps) {
+export function InventoryClient({ initialInventory }: InventoryClientProps) {
   const t = useTranslations('inventory')
-  const [inventory, setInventory] = useState<InventoryItem[]>(initialInventory)
+  const router = useRouter()
+  // Data is server-rendered from the cached read; router.refresh() after a
+  // mutation revalidates the tag and re-renders with fresh props.
+  const inventory = initialInventory
   const [searchQuery, setSearchQuery] = useState('')
   const [categoryFilter, setCategoryFilter] = useState<string>('all')
   const [showAddDialog, setShowAddDialog] = useState(false)
@@ -135,19 +142,6 @@ export function InventoryClient({ initialInventory, shopId }: InventoryClientPro
     supplier: '',
     image_url: null as string | null,
   })
-
-  // Initial data comes from the cached server read (props). This only re-runs
-  // after a mutation to reflect the change locally.
-  const loadInventory = async () => {
-    const supabase = createClient()
-    const { data } = await supabase
-      .from('inventory')
-      .select('*')
-      .eq('shop_id', shopId)
-      .order('name')
-
-    setInventory(data || [])
-  }
 
   const resetForm = () => {
     setFormData({
@@ -184,13 +178,10 @@ export function InventoryClient({ initialInventory, shopId }: InventoryClientPro
   }
 
   const handleSave = async () => {
-    if (!shopId || !formData.name) return
+    if (!formData.name) return
 
     setIsSaving(true)
-    const supabase = createClient()
-
-    const itemData = {
-      shop_id: shopId,
+    const result = await saveInventoryItem(editingItem?.id ?? null, {
       sku: formData.sku || null,
       name: formData.name,
       description: formData.description || null,
@@ -202,64 +193,38 @@ export function InventoryClient({ initialInventory, shopId }: InventoryClientPro
       location: formData.location || null,
       supplier: formData.supplier || null,
       image_url: formData.image_url || null,
-    }
-
-    if (editingItem) {
-      await supabase
-        .from('inventory')
-        .update(itemData)
-        .eq('id', editingItem.id)
-    } else {
-      await supabase
-        .from('inventory')
-        .insert(itemData)
-    }
-
+    })
     setIsSaving(false)
+
+    if (!result.ok) return
+
     setShowAddDialog(false)
     setEditingItem(null)
     resetForm()
-    loadInventory()
+    router.refresh()
   }
 
   const handleRestock = async () => {
     if (!restockItem || !restockQty) return
 
-    const supabase = createClient()
     const qty = parseInt(restockQty)
-    
-    // Update inventory quantity
-    await supabase
-      .from('inventory')
-      .update({ quantity: restockItem.quantity + qty })
-      .eq('id', restockItem.id)
-
-    // Record transaction
-    const { data: { user } } = await supabase.auth.getUser()
-    await supabase
-      .from('inventory_transactions')
-      .insert({
-        inventory_id: restockItem.id,
-        transaction_type: 'in',
-        quantity: qty,
-        notes: 'Manual restock',
-        created_by: user?.id,
-      })
+    const result = await restockInventoryItem(restockItem.id, restockItem.quantity, qty)
+    if (!result.ok) return
 
     setShowRestockDialog(false)
     setRestockItem(null)
     setRestockQty('')
-    loadInventory()
+    router.refresh()
   }
 
   const handleDelete = async () => {
     if (!deleteId) return
 
-    const supabase = createClient()
-    await supabase.from('inventory').delete().eq('id', deleteId)
-    
+    const result = await deleteInventoryItem(deleteId)
+    if (!result.ok) return
+
     setDeleteId(null)
-    loadInventory()
+    router.refresh()
   }
 
   const filteredInventory = inventory.filter(item => {
