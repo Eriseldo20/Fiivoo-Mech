@@ -970,6 +970,8 @@
     "noTasks": "No tasks for this job yet.",
     "noTasksYet": "No tasks yet.",
     "deleteTask": "Delete task",
-    "addTaskPlaceholder": "Add a task…"
+    "addTaskPlaceholder": "Add a task…",
+    "vehiclePhoto": "Vehicle photo",
+    "vehiclePhotoOf": "Photo of {vehicle}"
   }
 }

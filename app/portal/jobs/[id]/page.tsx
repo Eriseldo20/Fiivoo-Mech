@@ -9,6 +9,8 @@ import { TaskChecklist, type JobTask } from '@/components/portal/task-checklist'
 import { ArrowLeft, Car, ClipboardList, FileText } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { getPortalStatus } from '@/lib/portal-status'
+import { getBlobUrl } from '@/lib/blob'
+import { ImageLightbox } from '@/components/ui/image-lightbox'
 
 export default async function PortalJobDetailPage({
   params,
@@ -26,7 +28,7 @@ export default async function PortalJobDetailPage({
     .from('job_cards')
     .select(`
       id, title, description, status, priority, due_date, job_number, shop_id,
-      vehicle:vehicles(make, model, year, license_plate, vin, color)
+      vehicle:vehicles(make, model, year, license_plate, vin, color, primary_photo, secondary_photo)
     `)
     .eq('id', id)
     .single()
@@ -55,10 +57,14 @@ export default async function PortalJobDetailPage({
     license_plate: string | null
     vin: string | null
     color: string | null
+    primary_photo: string | null
+    secondary_photo: string | null
   } | null
   const vehicleName = vehicle
     ? [vehicle.year, vehicle.make, vehicle.model].filter(Boolean).join(' ')
     : null
+  const vehiclePhoto = vehicle?.primary_photo || vehicle?.secondary_photo || null
+  const vehiclePhotoUrl = vehiclePhoto ? getBlobUrl(vehiclePhoto) : null
   const style = getPortalStatus(job.status as string)
   const StatusIcon = style.icon
 
@@ -96,6 +102,17 @@ export default async function PortalJobDetailPage({
               {ts(style.key)}
             </span>
           </div>
+
+          {vehiclePhotoUrl && (
+            <div className="mt-4 aspect-video w-full overflow-hidden rounded-2xl border border-border bg-muted">
+              <ImageLightbox
+                src={vehiclePhotoUrl}
+                alt={vehicleName ? t('vehiclePhotoOf', { vehicle: vehicleName }) : t('vehiclePhoto')}
+                caption={vehicleName ?? undefined}
+                className="h-full w-full object-cover"
+              />
+            </div>
+          )}
 
           {vehicleName && (
             <div className="mt-4 flex items-center gap-3 rounded-2xl bg-muted/60 px-4 py-3">

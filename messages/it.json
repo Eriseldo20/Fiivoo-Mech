@@ -909,6 +909,8 @@
     "noTasks": "Ancora nessuna attività per questo lavoro.",
     "noTasksYet": "Ancora nessuna attività.",
     "deleteTask": "Elimina attività",
-    "addTaskPlaceholder": "Aggiungi un’attività…"
+    "addTaskPlaceholder": "Aggiungi un’attività…",
+    "vehiclePhoto": "Foto del veicolo",
+    "vehiclePhotoOf": "Foto di {vehicle}"
   }
 }

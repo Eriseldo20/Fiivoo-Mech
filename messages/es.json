@@ -981,6 +981,8 @@
     "noTasks": "Aún no hay tareas para este trabajo.",
     "noTasksYet": "Aún no hay tareas.",
     "deleteTask": "Eliminar tarea",
-    "addTaskPlaceholder": "Añadir una tarea…"
+    "addTaskPlaceholder": "Añadir una tarea…",
+    "vehiclePhoto": "Foto del vehículo",
+    "vehiclePhotoOf": "Foto de {vehicle}"
   }
 }

@@ -981,6 +981,8 @@
     "noTasks": "Ende nuk ka detyra për këtë punë.",
     "noTasksYet": "Ende pa detyra.",
     "deleteTask": "Fshij detyrën",
-    "addTaskPlaceholder": "Shto një detyrë…"
+    "addTaskPlaceholder": "Shto një detyrë…",
+    "vehiclePhoto": "Foto e automjetit",
+    "vehiclePhotoOf": "Foto e {vehicle}"
   }
 }

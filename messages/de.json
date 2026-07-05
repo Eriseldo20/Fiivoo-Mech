@@ -981,6 +981,8 @@
     "noTasks": "Für diesen Auftrag gibt es noch keine Aufgaben.",
     "noTasksYet": "Noch keine Aufgaben.",
     "deleteTask": "Aufgabe löschen",
-    "addTaskPlaceholder": "Aufgabe hinzufügen…"
+    "addTaskPlaceholder": "Aufgabe hinzufügen…",
+    "vehiclePhoto": "Fahrzeugfoto",
+    "vehiclePhotoOf": "Foto von {vehicle}"
   }
 }
