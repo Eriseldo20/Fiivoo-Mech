@@ -278,6 +278,29 @@ export function getVehicles(shopId: string) {
   )()
 }
 
+// Full vehicle records (all columns + customer) for the vehicles page.
+export function getVehiclesFull(shopId: string) {
+  return unstable_cache(
+    async () => {
+      const supabase = createAdminClient()
+      const { data } = await supabase
+        .from('vehicles')
+        .select(
+          `
+          *,
+          customer:customers(id, name, phone)
+        `,
+        )
+        .eq('shop_id', shopId)
+        .order('created_at', { ascending: false })
+
+      return data || []
+    },
+    ['vehicles-full', shopId],
+    { tags: [CACHE_TAGS.VEHICLES], revalidate: REVALIDATE_TIMES.MEDIUM },
+  )()
+}
+
 // ---------------------------------------------------------------------------
 // Inventory - cached
 // ---------------------------------------------------------------------------
