@@ -604,7 +604,9 @@
     "convertFailed": "Impossibile creare la scheda di lavoro. Riprova.",
     "deleteFailed": "Impossibile eliminare il preventivo. Riprova.",
     "baseEquivalent": "Equivalente in EUR (tasso {rate})",
-    "downloadPdfInLanguage": "Scarica PDF in lingua"
+    "downloadPdfInLanguage": "Scarica PDF in lingua",
+    "draft": "Bozza",
+    "deleteEstimate": "Elimina preventivo"
   },
   "estimateForm": {
     "backToEstimates": "Torna ai preventivi",

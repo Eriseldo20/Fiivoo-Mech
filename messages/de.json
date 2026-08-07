@@ -705,7 +705,9 @@
     "convertFailed": "Auftragskarte konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
     "deleteFailed": "Kostenvoranschlag konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.",
     "baseEquivalent": "Gegenwert in EUR (Kurs {rate})",
-    "downloadPdfInLanguage": "PDF in Sprache herunterladen"
+    "downloadPdfInLanguage": "PDF in Sprache herunterladen",
+    "draft": "Entwurf",
+    "deleteEstimate": "Kostenvoranschlag löschen"
   },
   "estimateForm": {
     "backToEstimates": "Zurück zu Kostenvoranschlägen",

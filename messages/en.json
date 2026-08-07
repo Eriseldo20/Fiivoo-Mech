@@ -694,7 +694,9 @@
     "convertFailed": "Failed to create job card. Please try again.",
     "deleteFailed": "Failed to delete estimate. Please try again.",
     "baseEquivalent": "Equivalent in EUR (rate {rate})",
-    "downloadPdfInLanguage": "Download PDF in language"
+    "downloadPdfInLanguage": "Download PDF in language",
+    "draft": "Draft",
+    "deleteEstimate": "Delete Estimate"
   },
   "estimateForm": {
     "backToEstimates": "Back to Estimates",

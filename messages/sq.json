@@ -705,7 +705,9 @@
     "convertFailed": "Krijimi i kartelës së punës dështoi. Ju lutemi provoni përsëri.",
     "deleteFailed": "Fshirja e ofertës dështoi. Ju lutemi provoni përsëri.",
     "baseEquivalent": "Ekuivalenti në EUR (kursi {rate})",
-    "downloadPdfInLanguage": "Shkarko PDF në gjuhën"
+    "downloadPdfInLanguage": "Shkarko PDF në gjuhën",
+    "draft": "Draft",
+    "deleteEstimate": "Fshi faturën"
   },
   "estimateForm": {
     "backToEstimates": "Kthehu te ofertat",
