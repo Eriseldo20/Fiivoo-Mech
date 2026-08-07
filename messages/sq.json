@@ -473,7 +473,12 @@
     "currencyAll": "Lek shqiptar (L)",
     "exchangeRate": "Kursi i këmbimit (1 € = ? L)",
     "exchangeRateHint": "Përdoret për fatura të reja dhe për të krahasuar shifrat midis monedhave.",
-    "rateHistoryNote": "Ndryshimi i kursit ndikon vetëm në dokumentet e re. Faturat ekzistuese ruajnë kursin me të cilin u lëshuan."
+    "rateHistoryNote": "Ndryshimi i kursit ndikon vetëm në dokumentet e re. Faturat ekzistuese ruajnë kursin me të cilin u lëshuan.",
+    "profileSaved": "Profili u ruajt",
+    "profileSaveFailed": "Profili nuk u ruajt",
+    "shopSaved": "Të dhënat e servisit u ruajtën",
+    "shopSaveFailed": "Të dhënat e servisit nuk u ruajtën",
+    "currencySaveFailed": "Cilësimet e monedhës nuk u ruajtën"
   },
   "analytics": {
     "pageTitle": "Analitika & Të Ardhurat",

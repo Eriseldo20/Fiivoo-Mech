@@ -473,7 +473,12 @@
     "currencyAll": "Albanischer Lek (L)",
     "exchangeRate": "Wechselkurs (1 € = ? L)",
     "exchangeRateHint": "Wird für neue Rechnungen und zum Vergleich von Beträgen verwendet.",
-    "rateHistoryNote": "Eine Kursänderung betrifft nur neue Dokumente. Bestehende Rechnungen behalten ihren Kurs."
+    "rateHistoryNote": "Eine Kursänderung betrifft nur neue Dokumente. Bestehende Rechnungen behalten ihren Kurs.",
+    "profileSaved": "Profil gespeichert",
+    "profileSaveFailed": "Profil konnte nicht gespeichert werden",
+    "shopSaved": "Werkstattdaten gespeichert",
+    "shopSaveFailed": "Werkstattdaten konnten nicht gespeichert werden",
+    "currencySaveFailed": "Währungseinstellungen konnten nicht gespeichert werden"
   },
   "analytics": {
     "pageTitle": "Analysen & Umsatz",

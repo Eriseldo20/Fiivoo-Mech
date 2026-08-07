@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
+import { toast } from 'sonner'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -123,16 +124,23 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
     setIsSaving(true)
     const supabase = createClient()
     
-    await supabase
+    // `profiles` has no updated_at column either.
+    const { error } = await supabase
       .from('profiles')
       .update({
         first_name: profileData.first_name,
         last_name: profileData.last_name,
-        updated_at: new Date().toISOString(),
       })
       .eq('id', profile?.id)
 
     setIsSaving(false)
+
+    if (error) {
+      toast.error(t('profileSaveFailed'), { description: error.message })
+      return
+    }
+
+    toast.success(t('profileSaved'))
     router.refresh()
   }
 

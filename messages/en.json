@@ -462,7 +462,12 @@
     "currencyAll": "Albanian Lek (L)",
     "exchangeRate": "Exchange rate (1 € = ? L)",
     "exchangeRateHint": "Used for new invoices and to compare figures across currencies.",
-    "rateHistoryNote": "Changing the rate only affects new documents. Existing invoices keep the rate they were issued with."
+    "rateHistoryNote": "Changing the rate only affects new documents. Existing invoices keep the rate they were issued with.",
+    "profileSaved": "Profile saved",
+    "profileSaveFailed": "Couldn't save profile",
+    "shopSaved": "Shop details saved",
+    "shopSaveFailed": "Couldn't save shop details",
+    "currencySaveFailed": "Couldn't save currency settings"
   },
   "analytics": {
     "pageTitle": "Analytics & Revenue",

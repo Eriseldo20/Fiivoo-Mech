@@ -416,7 +416,12 @@
     "currencyAll": "Lek albanais (L)",
     "exchangeRate": "Taux de change (1 € = ? L)",
     "exchangeRateHint": "Utilisé pour les nouvelles factures et pour comparer les montants.",
-    "rateHistoryNote": "Modifier le taux n’affecte que les nouveaux documents. Les factures existantes conservent leur taux."
+    "rateHistoryNote": "Modifier le taux n’affecte que les nouveaux documents. Les factures existantes conservent leur taux.",
+    "profileSaved": "Profil enregistré",
+    "profileSaveFailed": "Impossible d'enregistrer le profil",
+    "shopSaved": "Informations du garage enregistrées",
+    "shopSaveFailed": "Impossible d'enregistrer les informations du garage",
+    "currencySaveFailed": "Impossible d'enregistrer les paramètres de devise"
   },
   "analytics": {
     "pageTitle": "Analyses et Revenus",

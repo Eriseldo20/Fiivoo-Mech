@@ -416,7 +416,12 @@
     "currencyAll": "Lek albanese (L)",
     "exchangeRate": "Tasso di cambio (1 € = ? L)",
     "exchangeRateHint": "Usato per le nuove fatture e per confrontare gli importi tra valute.",
-    "rateHistoryNote": "Modificare il tasso riguarda solo i nuovi documenti. Le fatture esistenti mantengono il loro tasso."
+    "rateHistoryNote": "Modificare il tasso riguarda solo i nuovi documenti. Le fatture esistenti mantengono il loro tasso.",
+    "profileSaved": "Profilo salvato",
+    "profileSaveFailed": "Impossibile salvare il profilo",
+    "shopSaved": "Dati officina salvati",
+    "shopSaveFailed": "Impossibile salvare i dati dell'officina",
+    "currencySaveFailed": "Impossibile salvare le impostazioni valuta"
   },
   "analytics": {
     "pageTitle": "Analisi e Ricavi",

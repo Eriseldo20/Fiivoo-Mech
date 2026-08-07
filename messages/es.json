@@ -473,7 +473,12 @@
     "currencyAll": "Lek albanés (L)",
     "exchangeRate": "Tipo de cambio (1 € = ? L)",
     "exchangeRateHint": "Se usa para nuevas facturas y para comparar importes entre monedas.",
-    "rateHistoryNote": "Cambiar el tipo solo afecta a los documentos nuevos. Las facturas existentes conservan su tipo."
+    "rateHistoryNote": "Cambiar el tipo solo afecta a los documentos nuevos. Las facturas existentes conservan su tipo.",
+    "profileSaved": "Perfil guardado",
+    "profileSaveFailed": "No se pudo guardar el perfil",
+    "shopSaved": "Datos del taller guardados",
+    "shopSaveFailed": "No se pudieron guardar los datos del taller",
+    "currencySaveFailed": "No se pudieron guardar los ajustes de moneda"
   },
   "analytics": {
     "pageTitle": "Analíticas e Ingresos",
