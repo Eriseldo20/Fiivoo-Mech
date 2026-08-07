@@ -141,18 +141,25 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
     setIsSaving(true)
     const supabase = createClient()
     
-    await supabase
+    // Same as above: no updated_at column exists on `shops`.
+    const { error } = await supabase
       .from('shops')
       .update({
         name: shopData.name,
         address: shopData.address,
         phone: shopData.phone,
         email: shopData.email,
-        updated_at: new Date().toISOString(),
       })
       .eq('id', profile.shop_id)
 
     setIsSaving(false)
+
+    if (error) {
+      toast.error(t('shopSaveFailed'), { description: error.message })
+      return
+    }
+
+    toast.success(t('shopSaved'))
     router.refresh()
   }
 
@@ -166,16 +173,25 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
     setIsSaving(true)
     const supabase = createClient()
 
-    await supabase
+    // Note: `shops` has no updated_at column — including one makes Postgres
+    // reject the whole update, so only write real columns here.
+    const { error } = await supabase
       .from('shops')
       .update({
         currency: currencyData.currency,
         eur_to_all_rate: parsedRate,
-        updated_at: new Date().toISOString(),
       })
       .eq('id', profile.shop_id)
 
     setIsSaving(false)
+
+    // Surface failures instead of silently pretending the save worked.
+    if (error) {
+      toast.error(t('currencySaveFailed'), { description: error.message })
+      return
+    }
+
+    toast.success(t('currencySaved'))
     router.refresh()
   }
 
