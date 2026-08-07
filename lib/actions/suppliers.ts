@@ -1,6 +1,8 @@
 'use server'
 
-import { revalidateTag } from 'next/cache'
+// updateTag (not revalidateTag) gives read-your-writes: the very next render
+// after the action sees fresh data instead of a stale-while-revalidate copy.
+import { updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireDashboardUser } from '@/lib/auth/roles'
 import { CACHE_TAGS } from '@/lib/data/cached-queries'
@@ -68,7 +70,7 @@ export async function saveSupplier(
     if (error) return { ok: false, error: error.message }
   }
 
-  revalidateTag(CACHE_TAGS.SUPPLIERS, 'max')
+  updateTag(CACHE_TAGS.SUPPLIERS)
   return { ok: true }
 }
 
@@ -84,8 +86,8 @@ export async function deleteSupplier(supplierId: string): Promise<ActionResult> 
     .eq('shop_id', user.shopId)
   if (error) return { ok: false, error: error.message }
 
-  revalidateTag(CACHE_TAGS.SUPPLIERS, 'max')
-  revalidateTag(CACHE_TAGS.PURCHASES, 'max')
+  updateTag(CACHE_TAGS.SUPPLIERS)
+  updateTag(CACHE_TAGS.PURCHASES)
   return { ok: true }
 }
 
@@ -154,8 +156,8 @@ export async function savePurchase(input: PurchaseInput): Promise<ActionResult> 
     return { ok: false, error: itemsError.message }
   }
 
-  revalidateTag(CACHE_TAGS.PURCHASES, 'max')
-  revalidateTag(CACHE_TAGS.SUPPLIERS, 'max')
+  updateTag(CACHE_TAGS.PURCHASES)
+  updateTag(CACHE_TAGS.SUPPLIERS)
   return { ok: true }
 }
 
@@ -171,6 +173,6 @@ export async function deletePurchase(purchaseId: string): Promise<ActionResult> 
     .eq('shop_id', user.shopId)
   if (error) return { ok: false, error: error.message }
 
-  revalidateTag(CACHE_TAGS.PURCHASES, 'max')
+  updateTag(CACHE_TAGS.PURCHASES)
   return { ok: true }
 }
