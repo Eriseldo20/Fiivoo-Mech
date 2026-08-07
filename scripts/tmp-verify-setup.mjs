@@ -50,7 +50,7 @@ console.log('[v0] user', user.id)
 
 const { data: shop, error: shopErr } = await admin
   .from('shops')
-  .insert({ name: 'Verify Auto Works' })
+  .insert({ name: 'Verify Auto Works', owner_id: user.id })
   .select('id')
   .single()
 if (shopErr) throw shopErr
