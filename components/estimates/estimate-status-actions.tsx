@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { formatMoney, toCurrencyCode, type CurrencyCode } from '@/lib/currency'
 import {
   Dialog,
   DialogContent,
@@ -45,6 +46,10 @@ interface EstimateStatusActionsProps {
     estimate_number: string
     notes: string | null
     total: number
+    /** Currency this estimate's amounts were recorded in. */
+    currency?: CurrencyCode | string
+    /** Rate in force when the estimate was written. */
+    exchange_rate?: number
     job_card_id?: string
     items?: Array<{
       id: string
@@ -357,7 +362,9 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
             <div className="p-4 rounded-lg bg-background/50 border border-border space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-muted-foreground">{t('estimateTotal')}</span>
-                <span className="font-semibold">${estimate.total.toFixed(2)}</span>
+                <span className="font-semibold">
+                  {formatMoney(estimate.total, toCurrencyCode(estimate.currency))}
+                </span>
               </div>
               {estimate.items && (
                 <div className="flex justify-between text-sm">

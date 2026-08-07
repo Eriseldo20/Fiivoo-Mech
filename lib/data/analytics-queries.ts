@@ -1,4 +1,26 @@
 import { createClient } from '@/lib/supabase/server'
+import { toBase, toCurrencyCode } from '@/lib/currency'
+
+/**
+ * Normalise a stored money row to the base currency (EUR).
+ *
+ * Amounts are saved exactly as they were typed, so a 400 lek invoice holds
+ * `400`. Summing that raw alongside euro rows would overstate it 100x, so every
+ * aggregate must pass through here first, using the rate stored on that row
+ * rather than the shop's current rate.
+ */
+function baseAmount(row: {
+  total?: number | string | null
+  currency?: string | null
+  exchange_rate?: number | string | null
+}): number {
+  const amount = Number(row.total) || 0
+  const rate = Number(row.exchange_rate)
+  return toBase(amount, toCurrencyCode(row.currency), Number.isFinite(rate) && rate > 0 ? rate : 1)
+}
+
+/** Columns every money query needs so `baseAmount` can convert correctly. */
+const MONEY_COLUMNS = 'total, currency, exchange_rate'
 
 export interface ExpenseBreakdown {
   rent: number
@@ -177,7 +199,7 @@ export async function getReceivablesAging(shopId: string): Promise<ReceivablesAg
     .from('estimates')
     .select(
       `
-      id, estimate_number, total, created_at, customer_id,
+      id, estimate_number, total, currency, exchange_rate, created_at, customer_id,
       customer:customers(id, name, phone, email),
       vehicle:vehicles(make, model, license_plate)
     `,
@@ -204,7 +226,8 @@ export async function getReceivablesAging(shopId: string): Promise<ReceivablesAg
   let totalOwed = 0
 
   for (const row of rows) {
-    const amount = Number(row.total) || 0
+    // Normalised to base EUR so lek and euro debts can be totalled together.
+    const amount = baseAmount(row)
     const createdAt = String(row.created_at)
 
     // Compare calendar days so an invoice raised yesterday evening is 1 day

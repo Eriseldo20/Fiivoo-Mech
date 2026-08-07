@@ -645,7 +645,9 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                   <h2 className="font-semibold mb-4">{t('status')}</h2>
                   <Select
                     value={formData.status}
-                    onValueChange={(value) => setFormData({ ...formData, status: value })}
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, status: value as typeof formData.status })
+                    }
                   >
                     <SelectTrigger className="h-11 bg-background/50 border-border/50">
                       <SelectValue />
