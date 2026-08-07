@@ -5,6 +5,7 @@
 import { updateTag } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { requireDashboardUser } from '@/lib/auth/roles'
+import { rateFor } from '@/lib/currency'
 import { CACHE_TAGS } from '@/lib/data/cached-queries'
 
 export type SupplierInput = {
@@ -136,6 +137,12 @@ export async function savePurchase(input: PurchaseInput): Promise<ActionResult> 
       invoice_number: input.invoice_number?.trim() || null,
       purchase_date: input.purchase_date || new Date().toISOString().slice(0, 10),
       total,
+      // The form's amounts are typed in the shop's display currency, so stamp
+      // that currency and today's rate onto the record. Reports rely on these
+      // two fields to convert the total back to base EUR correctly, even if
+      // the shop later changes its rate.
+      currency: user.currency,
+      exchange_rate: rateFor(user.currency, user.eurToAllRate),
       notes: input.notes?.trim() || null,
       created_by: user.id,
     })
