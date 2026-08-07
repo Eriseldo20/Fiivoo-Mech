@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next"
-import { Geist, Geist_Mono } from "next/font/google"
+import { IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { NextIntlClientProvider } from 'next-intl'
@@ -7,13 +7,17 @@ import { getLocale, getMessages } from 'next-intl/server'
 import { Toaster } from "@/components/ui/sonner"
 import "./globals.css"
 
-const geistSans = Geist({
-  subsets: ["latin"],
+// IBM Plex needs weights listed explicitly (it isn't a variable font on
+// Google Fonts). latin-ext covers the Albanian ë/ç used across the app.
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   variable: "--font-geist-sans",
 })
-const geistMono = Geist_Mono({
-  subsets: ["latin"],
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin", "latin-ext"],
+  weight: ["400", "500"],
   display: "swap",
   variable: "--font-geist-mono",
 })
@@ -54,7 +58,7 @@ export default async function RootLayout({
     <html
       lang={locale}
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} bg-background`}
+      className={`${plexSans.variable} ${plexMono.variable} bg-background`}
     >
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
