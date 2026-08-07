@@ -39,7 +39,7 @@ export function LandingRecords() {
         {/* Image showcase */}
         <div className="mt-14 grid items-stretch gap-6 lg:grid-cols-5">
           {/* Volvo - large */}
-          <div className="relative overflow-hidden rounded-3xl border border-[oklch(0.92_0.006_260)] bg-white shadow-[0_30px_60px_-30px_oklch(0.20_0.03_262/0.25)] lg:col-span-3">
+          <div className="relative overflow-hidden rounded-lg border border-[oklch(0.92_0.006_260)] bg-white shadow-[0_30px_60px_-30px_oklch(0.20_0.03_262/0.25)] lg:col-span-3">
             <Image
               src="/landing/volvo-truck.avif"
               alt="Kamion Volvo FH Aero i regjistruar në Fiivoo"
@@ -56,7 +56,7 @@ export function LandingRecords() {
           </div>
 
           {/* iPhone photographing wheel */}
-          <div className="relative overflow-hidden rounded-3xl border border-[oklch(0.92_0.006_260)] bg-white shadow-[0_30px_60px_-30px_oklch(0.20_0.03_262/0.25)] lg:col-span-2">
+          <div className="relative overflow-hidden rounded-lg border border-[oklch(0.92_0.006_260)] bg-white shadow-[0_30px_60px_-30px_oklch(0.20_0.03_262/0.25)] lg:col-span-2">
             <Image
               src="/landing/iphone-wheel.png"
               alt="Fotografimi i gomës së automjetit me telefon për dokumentim"
@@ -78,9 +78,9 @@ export function LandingRecords() {
           {points.map((point) => (
             <div
               key={point.title}
-              className="rounded-2xl border border-[oklch(0.92_0.006_260)] bg-white p-6 shadow-[0_10px_30px_-20px_oklch(0.20_0.03_262/0.3)]"
+              className="rounded-lg border border-[oklch(0.92_0.006_260)] bg-white p-6 shadow-[0_10px_30px_-20px_oklch(0.20_0.03_262/0.3)]"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[oklch(0.55_0.20_264)/0.10] text-[oklch(0.50_0.20_264)]">
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[oklch(0.55_0.20_264)/0.10] text-[oklch(0.50_0.20_264)]">
                 <point.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-4 text-base font-bold text-[oklch(0.22_0.03_262)]">{point.title}</h3>

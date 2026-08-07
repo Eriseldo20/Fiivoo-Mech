@@ -64,7 +64,7 @@ export function JobTaskManager({
   }
 
   return (
-    <div className="relative bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+    <div className="relative bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 className="flex items-center gap-2 text-lg font-semibold">
           <ListChecks className="h-5 w-5 text-primary" />

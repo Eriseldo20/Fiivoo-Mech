@@ -366,7 +366,7 @@ export default function CalendarPage() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 md:gap-6">
           {/* Calendar */}
           <div className="lg:col-span-3">
-            <Card className="rounded-xl border border-slate-200 overflow-hidden bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.12)]">
+            <Card className="rounded-lg border border-slate-200 overflow-hidden bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.12)]">
               <CardHeader className="pb-4 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
                 <div className="flex items-center justify-between">
                   <div className="flex flex-col gap-0.5">
@@ -493,7 +493,7 @@ export default function CalendarPage() {
           <div className="space-y-4">
             {/* Selected date info */}
             {selectedDate && (
-              <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
+              <Card className="rounded-lg border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
                 <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
                   <CardTitle className="text-sm font-semibold tracking-tight text-slate-900">
                     {format(selectedDate, 'EEEE, MMMM d')}
@@ -559,7 +559,7 @@ export default function CalendarPage() {
             )}
 
             {/* Upcoming reminders */}
-            <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
+            <Card className="rounded-lg border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
               <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
                 <CardTitle className="text-sm font-semibold tracking-tight flex items-center gap-2 text-slate-900">
                   <Bell className="h-4 w-4 text-slate-500" />
@@ -597,7 +597,7 @@ export default function CalendarPage() {
             </Card>
 
             {/* Legend */}
-            <Card className="rounded-xl border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
+            <Card className="rounded-lg border border-slate-200 bg-white text-slate-900 shadow-[0_1px_3px_rgba(15,23,42,0.04),0_12px_32px_-12px_rgba(15,23,42,0.10)]">
               <CardHeader className="pb-3 border-b border-slate-100 bg-gradient-to-b from-slate-50/80 to-white">
                 <CardTitle className="text-sm font-semibold tracking-tight text-slate-900">{t('legend')}</CardTitle>
               </CardHeader>

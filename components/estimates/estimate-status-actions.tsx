@@ -262,7 +262,7 @@ export function EstimateStatusActions({ estimateId, currentStatus, estimate }: E
 
   return (
     <>
-      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
         <h2 className="text-lg font-semibold mb-4">{t('updateStatus')}</h2>
         
         <div className="flex flex-wrap items-center gap-3">

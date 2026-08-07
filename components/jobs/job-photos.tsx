@@ -31,7 +31,7 @@ export function JobPhotos({ jobId, shopId, photos }: JobPhotosProps) {
   const after = photos.filter((p) => p.category === 'after')
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
       <div className="flex items-center gap-2 mb-1">
         <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
           <Camera className="h-4 w-4 text-primary" />

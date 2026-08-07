@@ -323,7 +323,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
             {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Line Items */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-lg font-semibold">{t('lineItems')}</h2>
                   <Button
@@ -502,7 +502,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               </div>
 
               {/* Notes */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <h2 className="text-lg font-semibold mb-4">{t('notes')}</h2>
                 <Textarea
                   placeholder={t('notesPlaceholder')}
@@ -516,7 +516,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Currency */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Coins className="h-4 w-4 text-primary" />
                   <h2 className="font-semibold">{t('currency')}</h2>
@@ -561,7 +561,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               </div>
 
               {/* Job Card Link */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <ClipboardList className="h-4 w-4 text-primary" />
                   <h2 className="font-semibold">{t('linkToJobCard')}</h2>
@@ -584,7 +584,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               </div>
 
               {/* Customer */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <User className="h-4 w-4 text-emerald-500" />
                   <h2 className="font-semibold">{t('customer')}</h2>
@@ -607,7 +607,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               </div>
 
               {/* Vehicle */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <Car className="h-4 w-4 text-amber-500" />
                   <h2 className="font-semibold">{t('vehicle')}</h2>
@@ -630,7 +630,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               </div>
 
               {/* Valid Until */}
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <h2 className="font-semibold mb-4">{t('validUntil')}</h2>
                 <Input
                   type="date"
@@ -641,7 +641,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
               </div>
 
               {isEditing && (
-                <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+                <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                   <h2 className="font-semibold mb-4">{t('status')}</h2>
                   <Select
                     value={formData.status}

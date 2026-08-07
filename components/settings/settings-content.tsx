@@ -260,7 +260,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
           <div className="flex-1 min-w-0">
             {/* Profile Settings */}
             {activeTab === 'profile' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('profile')}</h2>
                   <p className="text-sm text-muted-foreground">{t('profileDescription')}</p>
@@ -310,7 +310,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
             {/* Shop Settings */}
             {activeTab === 'shop' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('shop')}</h2>
                   <p className="text-sm text-muted-foreground">{t('shopDescription')}</p>
@@ -379,7 +379,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
             {/* Expense Defaults Settings */}
             {activeTab === 'expenses' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('expenses')}</h2>
                   <p className="text-sm text-muted-foreground">{t('expensesDescription')}</p>
@@ -449,7 +449,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
             {/* Currency Settings */}
             {activeTab === 'currency' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('currency')}</h2>
                   <p className="text-sm text-muted-foreground">{t('currencyDescription')}</p>
@@ -512,7 +512,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
             {/* Language Settings */}
             {activeTab === 'language' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('language')}</h2>
                   <p className="text-sm text-muted-foreground">{t('languageDescription')}</p>
@@ -524,7 +524,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
             {/* Appearance Settings */}
             {activeTab === 'appearance' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('appearance')}</h2>
                   <p className="text-sm text-muted-foreground">{t('appearanceDescription')}</p>
@@ -542,7 +542,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
             {/* Notifications Settings */}
             {activeTab === 'notifications' && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
                 <div>
                   <h2 className="text-lg font-semibold">{t('notifications')}</h2>
                   <p className="text-sm text-muted-foreground">{t('notificationsDescription')}</p>

@@ -71,7 +71,7 @@ export function MobileNav({ role }: { role: UserRole }) {
               href={item.href}
               prefetch={true}
               className={cn(
-                'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all min-w-[64px]',
+                'flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-lg transition-all min-w-[64px]',
                 isActive
                   ? 'text-sidebar-primary bg-sidebar-primary/10'
                   : 'text-sidebar-muted active:bg-sidebar-accent'

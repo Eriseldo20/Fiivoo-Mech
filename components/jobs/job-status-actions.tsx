@@ -81,11 +81,11 @@ export function JobStatusActions({ jobId, currentStatus }: JobStatusActionsProps
   if (!flow) return null
 
   return (
-    <div className="relative bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+    <div className="relative bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
       {/* Job completed celebration popup */}
       {showSuccess && (
         <div
-          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 rounded-xl bg-card/80 backdrop-blur-sm"
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center gap-3 rounded-lg bg-card/80 backdrop-blur-sm"
           role="status"
           aria-live="polite"
         >

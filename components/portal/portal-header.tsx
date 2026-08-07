@@ -27,7 +27,7 @@ export function PortalHeader({
     <header className="sticky top-0 z-30 border-b border-sidebar-border bg-sidebar text-sidebar-foreground">
       <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
         <div className="flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-xl bg-sidebar-primary/15 ring-1 ring-sidebar-primary/30">
+          <span className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-lg bg-sidebar-primary/15 ring-1 ring-sidebar-primary/30">
             <Image
               src="/brand/fiivoo-icon.png"
               alt=""

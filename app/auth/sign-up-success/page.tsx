@@ -11,7 +11,7 @@ export default async function SignUpSuccessPage() {
         <div className="flex flex-col gap-8">
           {/* Logo */}
           <div className="flex flex-col items-center gap-3">
-            <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-primary glow-primary">
+            <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-primary glow-primary">
               <Wrench className="h-7 w-7 text-primary-foreground" />
             </div>
             <div className="text-center">
@@ -25,7 +25,7 @@ export default async function SignUpSuccessPage() {
           </div>
 
           {/* Success Card */}
-          <div className="glass rounded-2xl p-8 text-center">
+          <div className="glass rounded-lg p-8 text-center">
             <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-success/10">
               <Mail className="h-8 w-8 text-success" />
             </div>

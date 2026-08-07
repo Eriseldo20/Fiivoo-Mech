@@ -87,7 +87,7 @@ export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, appro
       {stats.map((stat) => (
         <div
           key={stat.title}
-          className={`bg-gradient-to-br ${stat.gradient} rounded-xl p-3 md:p-5 shadow-md`}
+          className={`bg-gradient-to-br ${stat.gradient} rounded-lg p-3 md:p-5 shadow-md`}
         >
           <div className="flex items-start justify-between mb-2 md:mb-4">
             <div className={`p-1.5 md:p-2.5 rounded-lg ${stat.iconBg}`}>

@@ -33,14 +33,14 @@ export function LandingHero() {
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/auth/sign-up"
-              className="group inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[oklch(0.55_0.20_264)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_oklch(0.55_0.20_264/0.3)] transition-all hover:bg-[oklch(0.50_0.21_264)] sm:w-auto"
+              className="group inline-flex w-full items-center justify-center gap-2 rounded-lg bg-[oklch(0.55_0.20_264)] px-6 py-3.5 text-sm font-semibold text-white shadow-[0_12px_30px_oklch(0.55_0.20_264/0.3)] transition-all hover:bg-[oklch(0.50_0.21_264)] sm:w-auto"
             >
               Fillo falas sot
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
             </Link>
             <Link
               href="/auth/login"
-              className="inline-flex w-full items-center justify-center rounded-xl px-6 py-3.5 text-sm font-semibold text-[oklch(0.28_0.02_260)] ring-1 ring-[oklch(0.88_0.008_260)] transition-colors hover:bg-[oklch(0.97_0.005_260)] sm:w-auto"
+              className="inline-flex w-full items-center justify-center rounded-lg px-6 py-3.5 text-sm font-semibold text-[oklch(0.28_0.02_260)] ring-1 ring-[oklch(0.88_0.008_260)] transition-colors hover:bg-[oklch(0.97_0.005_260)] sm:w-auto"
             >
               Hyr
             </Link>

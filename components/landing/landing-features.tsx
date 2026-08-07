@@ -63,13 +63,13 @@ export function LandingFeatures() {
           </p>
         </div>
 
-        <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-[oklch(0.92_0.006_260)] bg-[oklch(0.92_0.006_260)] sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-[oklch(0.92_0.006_260)] bg-[oklch(0.92_0.006_260)] sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
               className="group bg-white p-7 transition-colors hover:bg-[oklch(0.98_0.003_260)]"
             >
-              <div className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-[oklch(0.55_0.20_264)/0.10] text-[oklch(0.55_0.20_264)] ring-1 ring-inset ring-[oklch(0.55_0.20_264)/0.18] transition-colors group-hover:bg-[oklch(0.55_0.20_264)/0.16]">
+              <div className="inline-flex h-11 w-11 items-center justify-center rounded-lg bg-[oklch(0.55_0.20_264)/0.10] text-[oklch(0.55_0.20_264)] ring-1 ring-inset ring-[oklch(0.55_0.20_264)/0.18] transition-colors group-hover:bg-[oklch(0.55_0.20_264)/0.16]">
                 <feature.icon className="h-5 w-5" />
               </div>
               <h3 className="mt-5 text-lg font-semibold text-[oklch(0.24_0.03_262)]">{feature.title}</h3>

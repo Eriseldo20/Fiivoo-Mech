@@ -256,7 +256,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
       <div className="p-6 max-w-3xl">
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Vehicle Selection - VIN Lookup First */}
-          <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+          <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t('vehicle')}</h2>
               <Button
@@ -389,7 +389,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
           </div>
 
           {/* Customer Selection */}
-          <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+          <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold">{t('customer')}</h2>
               <Button
@@ -438,7 +438,7 @@ export function JobForm({ shopId, customers: initialCustomers, vehicles: initial
           </div>
 
           {/* Job Details */}
-          <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+          <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
             <h2 className="text-lg font-semibold mb-4">{t('jobDetails')}</h2>
             <div className="space-y-4">
               <div className="space-y-2">

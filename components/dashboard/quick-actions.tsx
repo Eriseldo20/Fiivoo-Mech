@@ -47,7 +47,7 @@ export function QuickActions() {
   ]
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6">
+    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6">
       <h2 className="text-base md:text-lg font-semibold mb-3 md:mb-4">{t('quickActions')}</h2>
       
       <div className="grid grid-cols-2 lg:grid-cols-1 gap-2 md:gap-3">

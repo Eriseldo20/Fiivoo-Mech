@@ -83,7 +83,7 @@ export default function OnboardingPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-2xl p-8 shadow-2xl">
+        <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-8 shadow-2xl">
           <div className="text-center mb-8">
             <h1 className="text-2xl font-semibold mb-2">{t('title')}</h1>
             <p className="text-muted-foreground">

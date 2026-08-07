@@ -42,7 +42,7 @@ export function LandingFaq() {
           </h2>
         </div>
 
-        <div className="mt-12 divide-y divide-[oklch(0.92_0.006_260)] overflow-hidden rounded-2xl border border-[oklch(0.92_0.006_260)] bg-white">
+        <div className="mt-12 divide-y divide-[oklch(0.92_0.006_260)] overflow-hidden rounded-lg border border-[oklch(0.92_0.006_260)] bg-white">
           {faqs.map((faq, i) => {
             const isOpen = open === i
             return (

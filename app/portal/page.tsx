@@ -46,7 +46,7 @@ export default async function PortalHomePage() {
   return (
     <div className="space-y-6">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-sky-500 p-6 text-primary-foreground shadow-lg shadow-primary/25">
+      <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-primary to-sky-500 p-6 text-primary-foreground shadow-lg shadow-primary/25">
         <div className="relative z-10">
           <p className="text-sm font-medium text-primary-foreground/80">
             {firstName ? t('greeting', { name: firstName }) : t('workerPortal')}
@@ -55,14 +55,14 @@ export default async function PortalHomePage() {
           <p className="mt-1 text-sm text-primary-foreground/80">{t('myJobsSubtitle')}</p>
 
           <div className="mt-5 flex gap-3">
-            <div className="flex-1 rounded-2xl bg-white/15 px-4 py-3 ring-1 ring-inset ring-white/20">
+            <div className="flex-1 rounded-lg bg-white/15 px-4 py-3 ring-1 ring-inset ring-white/20">
               <div className="flex items-center gap-1.5 text-primary-foreground/80">
                 <Wrench className="h-3.5 w-3.5" />
                 <span className="text-xs font-semibold uppercase tracking-wide">{t('activeJobs')}</span>
               </div>
               <p className="mt-1 text-2xl font-bold tabular-nums">{activeJobs.length}</p>
             </div>
-            <div className="flex-1 rounded-2xl bg-white/15 px-4 py-3 ring-1 ring-inset ring-white/20">
+            <div className="flex-1 rounded-lg bg-white/15 px-4 py-3 ring-1 ring-inset ring-white/20">
               <div className="flex items-center gap-1.5 text-primary-foreground/80">
                 <CheckCircle2 className="h-3.5 w-3.5" />
                 <span className="text-xs font-semibold uppercase tracking-wide">{t('completedJobs')}</span>
@@ -79,8 +79,8 @@ export default async function PortalHomePage() {
       </section>
 
       {allJobs.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-3xl border-2 border-dashed border-border py-16 text-center">
-          <span className="mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10">
+        <div className="flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border py-16 text-center">
+          <span className="mb-3 flex h-14 w-14 items-center justify-center rounded-lg bg-primary/10">
             <ClipboardList className="h-7 w-7 text-primary" />
           </span>
           <p className="font-semibold text-foreground">{t('noJobsTitle')}</p>
@@ -137,13 +137,13 @@ function JobRow({ job, statusLabel }: { job: JobRowData; statusLabel: string }) 
     <Link
       href={`/portal/jobs/${job.id}`}
       className={cn(
-        'flex items-center gap-4 rounded-2xl border border-border border-l-4 bg-card p-4 shadow-sm transition-all',
+        'flex items-center gap-4 rounded-lg border border-border border-l-4 bg-card p-4 shadow-sm transition-all',
         'hover:-translate-y-0.5 hover:shadow-md hover:border-primary/40',
         'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         style.accent,
       )}
     >
-      <span className={cn('flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl', style.soft)}>
+      <span className={cn('flex h-12 w-12 shrink-0 items-center justify-center rounded-lg', style.soft)}>
         <Car className="h-6 w-6" />
       </span>
       <div className="min-w-0 flex-1">

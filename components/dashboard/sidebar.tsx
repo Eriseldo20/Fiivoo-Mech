@@ -156,7 +156,7 @@ export function Sidebar({ shopName, role }: SidebarProps) {
               alt="Fiivoo"
               width={36}
               height={36}
-              className="flex-shrink-0 h-9 w-9 rounded-xl object-cover"
+              className="flex-shrink-0 h-9 w-9 rounded-lg object-cover"
               priority
             />
           ) : (

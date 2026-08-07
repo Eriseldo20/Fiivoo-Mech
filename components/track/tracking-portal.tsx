@@ -139,7 +139,7 @@ export function TrackingPortal({ initialToken = '', locale = 'en' }: { initialTo
 
     return (
       <div className="w-full max-w-2xl">
-        <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-xl shadow-primary/5">
+        <div className="overflow-hidden rounded-lg border border-border bg-card shadow-xl shadow-primary/5">
           {/* Colored header panel */}
           <div
             className={cn(
@@ -213,9 +213,9 @@ export function TrackingPortal({ initialToken = '', locale = 'en' }: { initialTo
 
   return (
     <div className="w-full max-w-md">
-      <form onSubmit={handleSubmit} className="rounded-2xl border border-border bg-card p-6 shadow-sm sm:p-8">
+      <form onSubmit={handleSubmit} className="rounded-lg border border-border bg-card p-6 shadow-sm sm:p-8">
         <div className="mb-6 text-center">
-          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary/10 text-primary">
+          <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Search className="h-6 w-6" />
           </span>
           <h1 className="text-xl font-semibold text-foreground">{t('title')}</h1>

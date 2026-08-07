@@ -209,7 +209,7 @@ export default async function EstimateDetailPage({
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-4 sm:space-y-6">
             {/* Line Items */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg overflow-hidden">
               <div className="px-6 py-4 border-b border-border/50">
                 <h2 className="text-lg font-semibold">{t('lineItems')}</h2>
               </div>
@@ -323,7 +323,7 @@ export default async function EstimateDetailPage({
 
             {/* Notes */}
             {estimate.notes && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <h2 className="text-lg font-semibold mb-4">{t('notes')}</h2>
                 <p className="text-muted-foreground whitespace-pre-wrap">{estimate.notes}</p>
               </div>
@@ -333,7 +333,7 @@ export default async function EstimateDetailPage({
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Total */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                   <Euro className="h-4 w-4 text-primary" />
@@ -364,7 +364,7 @@ export default async function EstimateDetailPage({
 
             {/* Linked Job */}
             {jobCard && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                     <ClipboardList className="h-4 w-4 text-primary" />
@@ -382,7 +382,7 @@ export default async function EstimateDetailPage({
             )}
 
             {/* Customer */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                   <User className="h-4 w-4 text-emerald-500" />
@@ -411,7 +411,7 @@ export default async function EstimateDetailPage({
             </div>
 
             {/* Vehicle */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
                   <Car className="h-4 w-4 text-amber-500" />
@@ -442,7 +442,7 @@ export default async function EstimateDetailPage({
 
             {/* Valid Until */}
             {estimate.valid_until && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <div className="flex items-center gap-2 mb-4">
                   <div className="p-2 rounded-lg bg-accent/10 border border-accent/20">
                     <Calendar className="h-4 w-4 text-accent" />

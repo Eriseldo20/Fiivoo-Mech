@@ -29,7 +29,9 @@
   --chart-3: oklch(0.55 0.18 145);
   --chart-4: oklch(0.50 0.20 300);
   --chart-5: oklch(0.60 0.15 30);
-  --radius: 0.625rem;
+  /* Tighter radius for a squarer, more professional shop-software look.
+     Derived tokens resolve to: sm 0px, md 2px, lg 4px, xl 8px. */
+  --radius: 0.25rem;
   /* Sidebar stays dark in light mode for contrast */
   --sidebar: oklch(0.09 0.025 258);
   --sidebar-foreground: oklch(0.92 0 0);

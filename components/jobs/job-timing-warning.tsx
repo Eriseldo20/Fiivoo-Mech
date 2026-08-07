@@ -35,7 +35,7 @@ export function JobTimingWarning({ job }: JobTimingWarningProps) {
   return (
     <div
       role="alert"
-      className={`rounded-xl border p-5 ${
+      className={`rounded-lg border p-5 ${
         isCritical ? 'border-red-500/30 bg-red-500/10' : 'border-amber-500/30 bg-amber-500/10'
       }`}
     >

@@ -180,7 +180,7 @@ export default async function JobDetailPage({
             />
 
             {/* Description */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <h2 className="text-lg font-semibold mb-4">{t('description')}</h2>
               {job.description ? (
                 <p className="text-muted-foreground whitespace-pre-wrap">{job.description}</p>
@@ -208,7 +208,7 @@ export default async function JobDetailPage({
 
             {/* Related Estimates */}
             {canSeePrices && estimates && estimates.length > 0 && (
-              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
                 <h2 className="text-lg font-semibold mb-4">{t('relatedEstimates')}</h2>
                 <div className="space-y-3">
                   {estimates.map((estimate) => (
@@ -245,7 +245,7 @@ export default async function JobDetailPage({
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Vehicle Info */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-amber-500/10 border border-amber-500/20">
                   <Car className="h-4 w-4 text-amber-500" />
@@ -329,7 +329,7 @@ export default async function JobDetailPage({
             </div>
 
             {/* Customer Info */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                   <User className="h-4 w-4 text-emerald-500" />
@@ -358,7 +358,7 @@ export default async function JobDetailPage({
             </div>
 
             {/* Assigned Employee */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
                   <Users className="h-4 w-4 text-blue-500" />
@@ -381,7 +381,7 @@ export default async function JobDetailPage({
             </div>
 
             {/* Timeline */}
-            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+            <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
               <div className="flex items-center gap-2 mb-4">
                 <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">
                   <Clock className="h-4 w-4 text-primary" />

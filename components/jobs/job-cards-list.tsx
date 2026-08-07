@@ -47,7 +47,7 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
 
   if (jobs.length === 0) {
     return (
-      <div className="relative overflow-hidden bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-8 md:p-12">
+      <div className="relative overflow-hidden bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-8 md:p-12">
         <div className="flex flex-col items-center gap-8 md:flex-row md:items-center md:justify-center md:gap-12">
           {/* Illustration (hidden automatically once jobs exist, since this whole block only renders when empty) */}
           <div className="relative w-48 h-48 md:w-64 md:h-64 flex-shrink-0">
@@ -117,9 +117,9 @@ export function JobCardsList({ jobs }: JobCardsListProps) {
               key={job.id}
               href={`/dashboard/jobs/${job.id}`}
               className={cn(
-                'group relative flex flex-col rounded-xl border border-border/50 bg-card/60 p-4 pl-5 transition-all',
+                'group relative flex flex-col rounded-lg border border-border/50 bg-card/60 p-4 pl-5 transition-all',
                 'hover:border-primary/40 hover:bg-card hover:shadow-md active:scale-[0.99]',
-                'before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-l-xl',
+                'before:absolute before:left-0 before:top-0 before:bottom-0 before:w-1 before:rounded-l-lg',
                 accent,
               )}
             >

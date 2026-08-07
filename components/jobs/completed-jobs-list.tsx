@@ -41,7 +41,7 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         aria-expanded={isOpen}
-        className="w-full flex items-center justify-between gap-3 rounded-xl border border-border/50 bg-card/40 px-4 py-3 text-left transition-colors hover:bg-card/70"
+        className="w-full flex items-center justify-between gap-3 rounded-lg border border-border/50 bg-card/40 px-4 py-3 text-left transition-colors hover:bg-card/70"
       >
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
@@ -58,7 +58,7 @@ export function CompletedJobsList({ jobs }: CompletedJobsListProps) {
 
       {/* Compact List — only rendered when the owner expands the section */}
       {isOpen && (
-      <div className="bg-card/30 backdrop-blur-sm border border-border/30 rounded-xl overflow-hidden">
+      <div className="bg-card/30 backdrop-blur-sm border border-border/30 rounded-lg overflow-hidden">
         <div className="divide-y divide-border/30">
           {jobs.map((job) => {
             const status = statusStyles[job.status as keyof typeof statusStyles] || statusStyles.completed

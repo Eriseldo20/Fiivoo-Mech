@@ -80,7 +80,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
 
   if (estimates.length === 0) {
     return (
-      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-12">
+      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-12">
         <div className="flex flex-col items-center justify-center text-center">
           <div className="p-4 rounded-full bg-accent/10 border border-accent/20 mb-4">
             <FileText className="h-8 w-8 text-accent" />
@@ -101,7 +101,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl overflow-hidden">
+    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg overflow-hidden">
       {/* Header (desktop only) */}
       <div className="hidden lg:grid grid-cols-12 gap-4 px-6 py-3 border-b border-border/50 bg-muted/30 text-sm font-medium text-muted-foreground">
         <div className="col-span-3">{t('estimate')}</div>

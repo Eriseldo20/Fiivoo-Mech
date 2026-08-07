@@ -92,7 +92,7 @@ export function PrivacySettings() {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6 space-y-6">
       <div>
         <h2 className="text-lg font-semibold">{t('privacy')}</h2>
         <p className="text-sm text-muted-foreground">{t('privacyDescription')}</p>

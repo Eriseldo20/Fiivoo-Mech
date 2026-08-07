@@ -92,7 +92,7 @@ export default function SignUpPage() {
           </div>
 
           {/* Sign Up Card */}
-          <div className="glass rounded-2xl p-8">
+          <div className="glass rounded-lg p-8">
             <div className="mb-6">
               <h2 className="text-xl font-semibold">{t("createYourAccount")}</h2>
               <p className="text-sm text-muted-foreground">

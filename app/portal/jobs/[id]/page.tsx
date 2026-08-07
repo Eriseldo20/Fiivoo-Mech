@@ -79,7 +79,7 @@ export default async function PortalJobDetailPage({
       </Link>
 
       {/* Job header */}
-      <div className={cn('overflow-hidden rounded-3xl border border-border border-l-4 bg-card shadow-sm', style.accent)}>
+      <div className={cn('overflow-hidden rounded-lg border border-border border-l-4 bg-card shadow-sm', style.accent)}>
         <div className="p-5">
           <div className="flex items-start justify-between gap-3">
             <div className="min-w-0">
@@ -104,7 +104,7 @@ export default async function PortalJobDetailPage({
           </div>
 
           {vehiclePhotoUrl && (
-            <div className="mt-4 aspect-video w-full overflow-hidden rounded-2xl border border-border bg-muted">
+            <div className="mt-4 aspect-video w-full overflow-hidden rounded-lg border border-border bg-muted">
               <ImageLightbox
                 src={vehiclePhotoUrl}
                 alt={vehicleName ? t('vehiclePhotoOf', { vehicle: vehicleName }) : t('vehiclePhoto')}
@@ -115,8 +115,8 @@ export default async function PortalJobDetailPage({
           )}
 
           {vehicleName && (
-            <div className="mt-4 flex items-center gap-3 rounded-2xl bg-muted/60 px-4 py-3">
-              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/15 text-primary">
+            <div className="mt-4 flex items-center gap-3 rounded-lg bg-muted/60 px-4 py-3">
+              <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
                 <Car className="h-5 w-5" />
               </span>
               <div className="min-w-0">
@@ -132,9 +132,9 @@ export default async function PortalJobDetailPage({
 
       {/* Description */}
       {job.description && (
-        <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+        <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
           <h2 className="mb-3 flex items-center gap-2.5 font-bold text-foreground">
-            <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/15 text-primary">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
               <FileText className="h-4 w-4" />
             </span>
             {t('jobDescription')}
@@ -149,7 +149,7 @@ export default async function PortalJobDetailPage({
       {tasks.length > 0 ? (
         <TaskChecklist tasks={tasks} />
       ) : (
-        <section className="flex items-center gap-3 rounded-3xl border-2 border-dashed border-border bg-card/50 px-5 py-4 text-sm font-medium text-muted-foreground">
+        <section className="flex items-center gap-3 rounded-lg border-2 border-dashed border-border bg-card/50 px-5 py-4 text-sm font-medium text-muted-foreground">
           <ClipboardList className="h-5 w-5" />
           {t('noTasks')}
         </section>
@@ -159,7 +159,7 @@ export default async function PortalJobDetailPage({
       <JobStatusActions jobId={job.id as string} currentStatus={job.status as string} />
 
       {/* Photos */}
-      <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+      <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
         <JobPhotos jobId={job.id as string} shopId={job.shop_id as string} photos={photos} />
       </section>
     </div>

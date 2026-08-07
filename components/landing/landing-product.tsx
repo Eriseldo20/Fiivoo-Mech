@@ -38,7 +38,7 @@ export function LandingProduct() {
 
         <div className="relative">
           {/* Browser-window frame with real product screenshot */}
-          <div className="overflow-hidden rounded-2xl border border-[oklch(0.90_0.008_260)] bg-white shadow-[0_30px_60px_-25px_oklch(0.22_0.03_262/0.30)]">
+          <div className="overflow-hidden rounded-lg border border-[oklch(0.90_0.008_260)] bg-white shadow-[0_30px_60px_-25px_oklch(0.22_0.03_262/0.30)]">
             <div className="flex items-center gap-1.5 border-b border-[oklch(0.93_0.006_260)] bg-[oklch(0.98_0.003_260)] px-4 py-3">
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.78_0.01_30)]" />
               <span className="h-2.5 w-2.5 rounded-full bg-[oklch(0.85_0.04_90)]" />

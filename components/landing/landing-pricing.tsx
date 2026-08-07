@@ -27,7 +27,7 @@ export function LandingPricing() {
         </div>
 
         <div
-          className="mx-auto mt-14 max-w-3xl overflow-hidden rounded-3xl border bg-white shadow-[0_30px_60px_-25px_oklch(0.55_0.20_264/0.30)]"
+          className="mx-auto mt-14 max-w-3xl overflow-hidden rounded-lg border bg-white shadow-[0_30px_60px_-25px_oklch(0.55_0.20_264/0.30)]"
           style={{ borderColor: "oklch(0.55 0.20 264 / 0.25)" }}
         >
           <div className="grid gap-0 md:grid-cols-5">
@@ -66,13 +66,13 @@ export function LandingPricing() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/auth/sign-up"
-                  className="inline-flex flex-1 items-center justify-center rounded-xl bg-[oklch(0.55_0.20_264)] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_28px_oklch(0.55_0.20_264/0.3)] transition-all hover:bg-[oklch(0.50_0.21_264)]"
+                  className="inline-flex flex-1 items-center justify-center rounded-lg bg-[oklch(0.55_0.20_264)] px-5 py-3 text-sm font-semibold text-white shadow-[0_12px_28px_oklch(0.55_0.20_264/0.3)] transition-all hover:bg-[oklch(0.50_0.21_264)]"
                 >
                   Fillo provën falas
                 </Link>
                 <Link
                   href="mailto:shitje@fiivoo.com"
-                  className="inline-flex flex-1 items-center justify-center rounded-xl px-5 py-3 text-sm font-semibold text-[oklch(0.28_0.02_260)] ring-1 ring-[oklch(0.88_0.008_260)] transition-all hover:bg-[oklch(0.97_0.005_260)]"
+                  className="inline-flex flex-1 items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold text-[oklch(0.28_0.02_260)] ring-1 ring-[oklch(0.88_0.008_260)] transition-all hover:bg-[oklch(0.97_0.005_260)]"
                 >
                   Na kontakto
                 </Link>

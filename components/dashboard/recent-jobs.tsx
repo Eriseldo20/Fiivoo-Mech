@@ -31,7 +31,7 @@ export function RecentJobs({ jobs }: RecentJobsProps) {
 
   if (jobs.length === 0) {
     return (
-      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6">
+      <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6">
         <div className="flex items-center justify-between mb-4 md:mb-6">
           <h2 className="text-base md:text-lg font-semibold">{t('dashboard.recentJobs')}</h2>
         </div>
@@ -55,7 +55,7 @@ export function RecentJobs({ jobs }: RecentJobsProps) {
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6">
+    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-4 md:p-6">
       <div className="flex items-center justify-between mb-4 md:mb-6">
         <h2 className="text-base md:text-lg font-semibold">{t('dashboard.recentJobs')}</h2>
         <Link

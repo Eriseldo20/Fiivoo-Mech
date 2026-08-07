@@ -71,7 +71,7 @@ export function JobTrackingPanel({ jobId, enabled, token, stage }: JobTrackingPa
   }
 
   return (
-    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+    <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-lg p-6">
       <div className="mb-4 flex items-center justify-between gap-3">
         <div className="flex items-center gap-2">
           <div className="p-2 rounded-lg bg-primary/10 border border-primary/20">

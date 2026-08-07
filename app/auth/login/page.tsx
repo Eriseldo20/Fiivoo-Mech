@@ -103,7 +103,7 @@ export default function LoginPage() {
             {features.map(({ icon: Icon, label }) => (
               <li
                 key={label}
-                className="flex items-center gap-2 rounded-full border border-sidebar-border/60 bg-sidebar-accent/40 px-4 py-2 text-sm font-medium text-sidebar-foreground/90"
+                className="flex items-center gap-2 rounded-sm border border-sidebar-border/60 bg-sidebar-accent/40 px-4 py-2 text-sm font-medium text-sidebar-foreground/90"
               >
                 <Icon className="h-4 w-4 text-sidebar-primary" />
                 {label}

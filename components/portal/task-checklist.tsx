@@ -38,10 +38,10 @@ export function TaskChecklist({ tasks: initialTasks }: { tasks: JobTask[] }) {
   const allDone = doneCount === tasks.length
 
   return (
-    <section className="rounded-3xl border border-border bg-card p-5 shadow-sm">
+    <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
       <div className="mb-4 flex items-center justify-between gap-3">
         <h2 className="flex items-center gap-2.5 font-bold text-foreground">
-          <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary/15 text-primary">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary/15 text-primary">
             <ListChecks className="h-4 w-4" />
           </span>
           {t('tasks')}
@@ -71,7 +71,7 @@ export function TaskChecklist({ tasks: initialTasks }: { tasks: JobTask[] }) {
           <li key={task.id}>
             <label
               className={cn(
-                'flex cursor-pointer items-center gap-3 rounded-2xl border px-3.5 py-3 transition-all',
+                'flex cursor-pointer items-center gap-3 rounded-lg border px-3.5 py-3 transition-all',
                 task.is_done
                   ? 'border-emerald-500/30 bg-emerald-500/10'
                   : 'border-border bg-background hover:border-primary/40 hover:bg-muted/50',

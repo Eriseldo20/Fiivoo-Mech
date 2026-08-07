@@ -45,7 +45,7 @@ export function JobOverrunAlert({ jobs }: JobOverrunAlertProps) {
   return (
     <div
       role="alert"
-      className={`rounded-xl border p-4 md:p-5 ${
+      className={`rounded-lg border p-4 md:p-5 ${
         hasCritical
           ? 'border-red-500/30 bg-red-500/10'
           : 'border-amber-500/30 bg-amber-500/10'
