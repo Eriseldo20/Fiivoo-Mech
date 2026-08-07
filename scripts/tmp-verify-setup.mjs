@@ -58,7 +58,7 @@ console.log('[v0] shop', shop.id)
 
 const { error: profErr } = await admin
   .from('profiles')
-  .upsert({ id: user.id, role: 'owner', shop_id: shop.id, full_name: 'Verify Owner' })
+  .upsert({ id: user.id, role: 'owner', shop_id: shop.id, first_name: 'Verify', last_name: 'Owner' })
 if (profErr) throw profErr
 
 // A couple of inventory parts so line items can link to stock.

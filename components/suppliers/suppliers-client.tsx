@@ -492,7 +492,7 @@ export function SuppliersClient({
 
       {/* ── Supplier dialog (large, square corners) ── */}
       <Dialog open={supplierDialog} onOpenChange={setSupplierDialog}>
-        <DialogContent className="max-w-2xl rounded-none">
+        <DialogContent className="w-[95vw] sm:max-w-3xl rounded-none max-h-[92vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               {editingSupplier ? t('editSupplier') : t('addSupplier')}
@@ -578,7 +578,7 @@ export function SuppliersClient({
 
       {/* ── Purchase dialog (large, square corners) ── */}
       <Dialog open={purchaseDialog} onOpenChange={setPurchaseDialog}>
-        <DialogContent className="max-w-3xl rounded-none max-h-[90vh] overflow-y-auto">
+        <DialogContent className="w-[95vw] sm:max-w-5xl rounded-none max-h-[92vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>{t('addPurchase')}</DialogTitle>
           </DialogHeader>
