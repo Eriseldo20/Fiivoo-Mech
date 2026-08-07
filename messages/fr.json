@@ -603,7 +603,8 @@
     "cancel": "Annuler",
     "convertFailed": "Échec de la création de la fiche de travail. Veuillez réessayer.",
     "deleteFailed": "Échec de la suppression du devis. Veuillez réessayer.",
-    "baseEquivalent": "Équivalent en EUR (taux {rate})"
+    "baseEquivalent": "Équivalent en EUR (taux {rate})",
+    "downloadPdfInLanguage": "Télécharger le PDF en langue"
   },
   "estimateForm": {
     "backToEstimates": "Retour aux devis",

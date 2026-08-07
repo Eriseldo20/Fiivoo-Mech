@@ -603,7 +603,8 @@
     "cancel": "Annulla",
     "convertFailed": "Impossibile creare la scheda di lavoro. Riprova.",
     "deleteFailed": "Impossibile eliminare il preventivo. Riprova.",
-    "baseEquivalent": "Equivalente in EUR (tasso {rate})"
+    "baseEquivalent": "Equivalente in EUR (tasso {rate})",
+    "downloadPdfInLanguage": "Scarica PDF in lingua"
   },
   "estimateForm": {
     "backToEstimates": "Torna ai preventivi",

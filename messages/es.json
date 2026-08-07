@@ -704,7 +704,8 @@
     "cancel": "Cancelar",
     "convertFailed": "No se pudo crear la orden de trabajo. Inténtelo de nuevo.",
     "deleteFailed": "No se pudo eliminar el presupuesto. Inténtelo de nuevo.",
-    "baseEquivalent": "Equivalente en EUR (tipo {rate})"
+    "baseEquivalent": "Equivalente en EUR (tipo {rate})",
+    "downloadPdfInLanguage": "Descargar PDF en idioma"
   },
   "estimateForm": {
     "backToEstimates": "Volver a presupuestos",

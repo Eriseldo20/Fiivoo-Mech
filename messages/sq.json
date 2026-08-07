@@ -704,7 +704,8 @@
     "cancel": "Anulo",
     "convertFailed": "Krijimi i kartelës së punës dështoi. Ju lutemi provoni përsëri.",
     "deleteFailed": "Fshirja e ofertës dështoi. Ju lutemi provoni përsëri.",
-    "baseEquivalent": "Ekuivalenti në EUR (kursi {rate})"
+    "baseEquivalent": "Ekuivalenti në EUR (kursi {rate})",
+    "downloadPdfInLanguage": "Shkarko PDF në gjuhën"
   },
   "estimateForm": {
     "backToEstimates": "Kthehu te ofertat",
