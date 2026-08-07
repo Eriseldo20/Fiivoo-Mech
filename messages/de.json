@@ -463,7 +463,12 @@
     "privacyExportTitle": "Meine Daten exportieren",
     "privacyExportBody": "Laden Sie eine vollständige Kopie der Daten Ihrer Werkstatt (Profil, Kunden, Fahrzeuge, Aufträge, Kostenvoranschläge und mehr) als JSON-Datei herunter.",
     "privacyExportButton": "Meine Daten exportieren",
-    "privacyExportToast": "Der Download Ihres Datenexports wurde gestartet."
+    "privacyExportToast": "Der Download Ihres Datenexports wurde gestartet.",
+    "currencyDescription": "Wählen Sie die Anzeigewährung und den Euro-Lek-Kurs.",
+    "displayCurrency": "Anzeigewährung",
+    "eurToAllRate": "Euro-zu-Lek-Kurs",
+    "eurToAllRateHint": "Wird für neue Rechnungen und den Vergleich von Beträgen verwendet. Bestehende Rechnungen behalten ihren ursprünglichen Kurs.",
+    "currencySaved": "Währungseinstellungen gespeichert"
   },
   "analytics": {
     "pageTitle": "Analysen & Umsatz",
@@ -693,7 +698,8 @@
     "deleting": "Wird gelöscht...",
     "cancel": "Abbrechen",
     "convertFailed": "Auftragskarte konnte nicht erstellt werden. Bitte versuchen Sie es erneut.",
-    "deleteFailed": "Kostenvoranschlag konnte nicht gelöscht werden. Bitte versuchen Sie es erneut."
+    "deleteFailed": "Kostenvoranschlag konnte nicht gelöscht werden. Bitte versuchen Sie es erneut.",
+    "baseEquivalent": "Gegenwert in EUR (Kurs {rate})"
   },
   "estimateForm": {
     "backToEstimates": "Zurück zu Kostenvoranschlägen",
@@ -735,7 +741,13 @@
     "updateEstimate": "Kostenvoranschlag aktualisieren",
     "createEstimate": "Kostenvoranschlag erstellen",
     "cancel": "Abbrechen",
-    "failedToSave": "Kostenvoranschlag konnte nicht gespeichert werden"
+    "failedToSave": "Kostenvoranschlag konnte nicht gespeichert werden",
+    "currency": "Währung",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Albanischer Lek (L)",
+    "exchangeRate": "Wechselkurs",
+    "rateHint": "{base} = {rate}",
+    "baseEquivalent": "Gegenwert in EUR"
   },
   "onboarding": {
     "title": "Richten Sie Ihre Werkstatt ein",

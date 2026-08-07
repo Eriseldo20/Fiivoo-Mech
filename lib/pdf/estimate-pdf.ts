@@ -2,7 +2,13 @@
 
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
-import { formatCurrency, CURRENCY } from '@/lib/currency'
+import {
+  BASE_CURRENCY,
+  formatMoney,
+  toBase,
+  toCurrencyCode,
+  type CurrencyCode,
+} from '@/lib/currency'
 import { format } from 'date-fns'
 
 interface EstimateItem {
@@ -23,6 +29,10 @@ interface EstimatePDFData {
   tax_rate: number
   tax_amount: number
   total: number
+  /** Currency the amounts were recorded in. Defaults to the base currency. */
+  currency?: CurrencyCode | string
+  /** Rate in force when the invoice was written, as units per 1 EUR. */
+  exchange_rate?: number
   items: EstimateItem[]
   customer?: {
     name: string
@@ -48,6 +58,13 @@ interface EstimatePDFData {
 export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string): jsPDF {
   const doc = new jsPDF()
   const pageWidth = doc.internal.pageSize.getWidth()
+
+  // The PDF is the customer-facing document, so it must print the currency the
+  // invoice was actually written in rather than the shop's current setting.
+  const currency = toCurrencyCode(data.currency)
+  const rawRate = Number(data.exchange_rate)
+  const rate = Number.isFinite(rawRate) && rawRate > 0 ? rawRate : 1
+  const money = (amount: number | null | undefined) => formatMoney(amount, currency)
   
   // Colors
   const primaryColor: [number, number, number] = [59, 130, 246] // Blue
@@ -196,8 +213,8 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
     item.description,
     item.type === 'parts' ? 'Parts' : 'Labor',
     item.quantity.toString(),
-    formatCurrency(item.unit_price),
-    formatCurrency(item.total),
+    money(item.unit_price),
+    money(item.total),
   ])
 
   autoTable(doc, {
@@ -247,13 +264,13 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setTextColor(...grayColor)
   doc.text('Subtotal:', totalsX, totalsY)
   doc.setTextColor(...darkColor)
-  doc.text(formatCurrency(data.subtotal), pageWidth - 20, totalsY, { align: 'right' })
+  doc.text(money(data.subtotal), pageWidth - 20, totalsY, { align: 'right' })
   
   totalsY += 7
   doc.setTextColor(...grayColor)
   doc.text(`Tax (${data.tax_rate}%):`, totalsX, totalsY)
   doc.setTextColor(...darkColor)
-  doc.text(formatCurrency(data.tax_amount), pageWidth - 20, totalsY, { align: 'right' })
+  doc.text(money(data.tax_amount), pageWidth - 20, totalsY, { align: 'right' })
   
   totalsY += 10
   doc.setDrawColor(...grayColor)
@@ -264,7 +281,22 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setTextColor(...primaryColor)
   doc.setFont('helvetica', 'bold')
   doc.text('TOTAL:', totalsX, totalsY + 5)
-  doc.text(formatCurrency(data.total), pageWidth - 20, totalsY + 5, { align: 'right' })
+  doc.text(money(data.total), pageWidth - 20, totalsY + 5, { align: 'right' })
+
+  // For a non-base currency, print the euro equivalent and the rate used, so
+  // the customer can audit the conversion on the document itself.
+  if (currency !== BASE_CURRENCY) {
+    totalsY += 11
+    doc.setFontSize(8)
+    doc.setTextColor(...grayColor)
+    doc.setFont('helvetica', 'normal')
+    doc.text(
+      `${formatMoney(toBase(data.total, currency, rate), BASE_CURRENCY)}  (1 ${BASE_CURRENCY} = ${rate} ${currency})`,
+      pageWidth - 20,
+      totalsY + 5,
+      { align: 'right' },
+    )
+  }
 
   // Notes section
   if (data.notes) {

@@ -463,7 +463,12 @@
     "privacyExportTitle": "Eksporto të dhënat e mia",
     "privacyExportBody": "Shkarkoni një kopje të plotë të të dhënave të punishtes suaj (profili, klientët, automjetet, punët, vlerësimet dhe më shumë) si skedar JSON.",
     "privacyExportButton": "Eksporto të dhënat e mia",
-    "privacyExportToast": "Shkarkimi i eksportit të të dhënave tuaja filloi."
+    "privacyExportToast": "Shkarkimi i eksportit të të dhënave tuaja filloi.",
+    "currencyDescription": "Zgjidhni monedhën në të cilën shfaqen vlerat dhe kursin euro-lek.",
+    "displayCurrency": "Monedha e shfaqjes",
+    "eurToAllRate": "Kursi euro në lek",
+    "eurToAllRateHint": "Përdoret për fatura të reja dhe për të krahasuar vlerat midis monedhave. Faturat ekzistuese ruajnë kursin me të cilin u krijuan.",
+    "currencySaved": "Cilësimet e monedhës u ruajtën"
   },
   "analytics": {
     "pageTitle": "Analitika & Të Ardhurat",
@@ -693,7 +698,8 @@
     "deleting": "Duke fshirë...",
     "cancel": "Anulo",
     "convertFailed": "Krijimi i kartelës së punës dështoi. Ju lutemi provoni përsëri.",
-    "deleteFailed": "Fshirja e ofertës dështoi. Ju lutemi provoni përsëri."
+    "deleteFailed": "Fshirja e ofertës dështoi. Ju lutemi provoni përsëri.",
+    "baseEquivalent": "Ekuivalenti në EUR (kursi {rate})"
   },
   "estimateForm": {
     "backToEstimates": "Kthehu te ofertat",
@@ -735,7 +741,13 @@
     "updateEstimate": "Përditëso ofertën",
     "createEstimate": "Krijo ofertë",
     "cancel": "Anulo",
-    "failedToSave": "Ruajtja e ofertës dështoi"
+    "failedToSave": "Ruajtja e ofertës dështoi",
+    "currency": "Monedha",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek shqiptar (L)",
+    "exchangeRate": "Kursi i këmbimit",
+    "rateHint": "{base} = {rate}",
+    "baseEquivalent": "Ekuivalenti në EUR"
   },
   "onboarding": {
     "title": "Konfiguroni punëtorinë tuaj",

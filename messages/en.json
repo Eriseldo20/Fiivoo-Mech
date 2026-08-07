@@ -452,7 +452,12 @@
     "privacyExportTitle": "Export my data",
     "privacyExportBody": "Download a complete copy of your shop's data (profile, customers, vehicles, jobs, estimates and more) as a JSON file.",
     "privacyExportButton": "Export my data",
-    "privacyExportToast": "Your data export has started downloading."
+    "privacyExportToast": "Your data export has started downloading.",
+    "currencyDescription": "Choose the currency your figures are shown in and the euro to lek rate.",
+    "displayCurrency": "Display currency",
+    "eurToAllRate": "Euro to lek rate",
+    "eurToAllRateHint": "Used for new invoices and to compare amounts across currencies. Existing invoices keep the rate they were created with.",
+    "currencySaved": "Currency settings saved"
   },
   "analytics": {
     "pageTitle": "Analytics & Revenue",
@@ -682,7 +687,8 @@
     "deleting": "Deleting...",
     "cancel": "Cancel",
     "convertFailed": "Failed to create job card. Please try again.",
-    "deleteFailed": "Failed to delete estimate. Please try again."
+    "deleteFailed": "Failed to delete estimate. Please try again.",
+    "baseEquivalent": "Equivalent in EUR (rate {rate})"
   },
   "estimateForm": {
     "backToEstimates": "Back to Estimates",
@@ -724,7 +730,13 @@
     "updateEstimate": "Update Estimate",
     "createEstimate": "Create Estimate",
     "cancel": "Cancel",
-    "failedToSave": "Failed to save estimate"
+    "failedToSave": "Failed to save estimate",
+    "currency": "Currency",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Albanian Lek (L)",
+    "exchangeRate": "Exchange rate",
+    "rateHint": "{base} = {rate}",
+    "baseEquivalent": "Equivalent in EUR"
   },
   "onboarding": {
     "title": "Set up your shop",

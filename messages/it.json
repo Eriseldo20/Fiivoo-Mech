@@ -405,7 +405,13 @@
     "privacyExportTitle": "Esporta i miei dati",
     "privacyExportBody": "Scarica una copia completa dei dati della tua officina (profilo, clienti, veicoli, lavori, preventivi e altro) come file JSON.",
     "privacyExportButton": "Esporta i miei dati",
-    "privacyExportToast": "Il download dell'esportazione dei dati è iniziato."
+    "privacyExportToast": "Il download dell'esportazione dei dati è iniziato.",
+    "currency": "Valuta",
+    "currencyDescription": "Scegli la valuta in cui vedere gli importi e il tasso euro-lek.",
+    "displayCurrency": "Valuta di visualizzazione",
+    "eurToAllRate": "Tasso euro-lek",
+    "eurToAllRateHint": "Usato per le nuove fatture e per confrontare importi tra valute. Le fatture esistenti mantengono il tasso originale.",
+    "currencySaved": "Impostazioni valuta salvate"
   },
   "analytics": {
     "pageTitle": "Analisi e Ricavi",
@@ -591,7 +597,8 @@
     "deleting": "Eliminazione...",
     "cancel": "Annulla",
     "convertFailed": "Impossibile creare la scheda di lavoro. Riprova.",
-    "deleteFailed": "Impossibile eliminare il preventivo. Riprova."
+    "deleteFailed": "Impossibile eliminare il preventivo. Riprova.",
+    "baseEquivalent": "Equivalente in EUR (tasso {rate})"
   },
   "estimateForm": {
     "backToEstimates": "Torna ai preventivi",
@@ -633,7 +640,13 @@
     "updateEstimate": "Aggiorna preventivo",
     "createEstimate": "Crea preventivo",
     "cancel": "Annulla",
-    "failedToSave": "Impossibile salvare il preventivo"
+    "failedToSave": "Impossibile salvare il preventivo",
+    "currency": "Valuta",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek albanese (L)",
+    "exchangeRate": "Tasso di cambio",
+    "rateHint": "{base} = {rate}",
+    "baseEquivalent": "Equivalente in EUR"
   },
   "auth": {
     "tagline": "Gestione premium per officine",

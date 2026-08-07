@@ -463,7 +463,12 @@
     "privacyExportTitle": "Exportar mis datos",
     "privacyExportBody": "Descargue una copia completa de los datos de su taller (perfil, clientes, vehículos, trabajos, presupuestos y más) en un archivo JSON.",
     "privacyExportButton": "Exportar mis datos",
-    "privacyExportToast": "La descarga de su exportación de datos ha comenzado."
+    "privacyExportToast": "La descarga de su exportación de datos ha comenzado.",
+    "currencyDescription": "Elija la moneda en la que se muestran los importes y el tipo euro-lek.",
+    "displayCurrency": "Moneda de visualización",
+    "eurToAllRate": "Tipo euro a lek",
+    "eurToAllRateHint": "Se usa para facturas nuevas y para comparar importes entre monedas. Las facturas existentes conservan su tipo original.",
+    "currencySaved": "Ajustes de moneda guardados"
   },
   "analytics": {
     "pageTitle": "Analíticas e Ingresos",
@@ -693,7 +698,8 @@
     "deleting": "Eliminando...",
     "cancel": "Cancelar",
     "convertFailed": "No se pudo crear la orden de trabajo. Inténtelo de nuevo.",
-    "deleteFailed": "No se pudo eliminar el presupuesto. Inténtelo de nuevo."
+    "deleteFailed": "No se pudo eliminar el presupuesto. Inténtelo de nuevo.",
+    "baseEquivalent": "Equivalente en EUR (tipo {rate})"
   },
   "estimateForm": {
     "backToEstimates": "Volver a presupuestos",
@@ -735,7 +741,13 @@
     "updateEstimate": "Actualizar presupuesto",
     "createEstimate": "Crear presupuesto",
     "cancel": "Cancelar",
-    "failedToSave": "No se pudo guardar el presupuesto"
+    "failedToSave": "No se pudo guardar el presupuesto",
+    "currency": "Moneda",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek albanés (L)",
+    "exchangeRate": "Tipo de cambio",
+    "rateHint": "{base} = {rate}",
+    "baseEquivalent": "Equivalente en EUR"
   },
   "onboarding": {
     "title": "Configure su taller",

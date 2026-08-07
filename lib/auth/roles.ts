@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { DEFAULT_EUR_TO_ALL, toCurrencyCode, type CurrencyCode } from '@/lib/currency'
 
 export type UserRole = 'owner' | 'manager' | 'mechanic'
 
@@ -10,6 +11,10 @@ export type CurrentUser = {
   shopId: string
   shopName: string
   fullName: string | null
+  /** Currency the shop reads its figures in. */
+  currency: CurrencyCode
+  /** Shop default EUR -> ALL rate, used for new documents and conversions. */
+  eurToAllRate: number
 }
 
 /**
@@ -26,13 +31,21 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('id, role, shop_id, first_name, last_name, shops(name)')
+    .select('id, role, shop_id, first_name, last_name, shops(name, currency, eur_to_all_rate)')
     .eq('id', user.id)
     .single()
 
   if (!profile) return null
 
-  const shop = profile.shops as unknown as { name: string } | null
+  const shop = profile.shops as unknown as {
+    name: string
+    currency: string | null
+    eur_to_all_rate: number | string | null
+  } | null
+
+  // A missing/zero rate would break conversion, so fall back to the default.
+  const parsedRate = Number(shop?.eur_to_all_rate)
+  const eurToAllRate = Number.isFinite(parsedRate) && parsedRate > 0 ? parsedRate : DEFAULT_EUR_TO_ALL
   const fullName =
     [profile.first_name, profile.last_name].filter(Boolean).join(' ').trim() || null
 
@@ -43,6 +56,8 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
     shopId: profile.shop_id as string,
     shopName: shop?.name ?? 'My Shop',
     fullName,
+    currency: toCurrencyCode(shop?.currency),
+    eurToAllRate,
   }
 }
 

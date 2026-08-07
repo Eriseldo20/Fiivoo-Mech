@@ -26,9 +26,18 @@ import {
   Trash2,
   ClipboardList,
   Package,
+  Coins,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CURRENCY } from '@/lib/currency'
+import {
+  BASE_CURRENCY,
+  formatMoney,
+  getCurrency,
+  toBase,
+  toCurrencyCode,
+  type CurrencyCode,
+} from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
 import type { Estimate, EstimateItem } from '@/lib/types'
 
 interface InventoryItem {
@@ -61,8 +70,27 @@ interface LineItem {
 export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob, initialData }: EstimateFormProps) {
   const t = useTranslations('estimateForm')
   const router = useRouter()
+  const shopCurrency = useCurrency()
   const isEditing = !!initialData
-  
+
+  // An existing invoice keeps the currency and rate it was written in; a new
+  // one starts from the shop default. Never re-stamp a saved document, or its
+  // stored figures would silently change meaning.
+  const [currency, setCurrency] = useState<CurrencyCode>(() =>
+    isEditing ? toCurrencyCode((initialData as { currency?: string }).currency) : shopCurrency.currency,
+  )
+  const [rateInput, setRateInput] = useState(() => {
+    const saved = Number((initialData as { exchange_rate?: number | string } | undefined)?.exchange_rate)
+    if (isEditing && Number.isFinite(saved) && saved > 0) return String(saved)
+    return String(shopCurrency.eurToAllRate)
+  })
+
+  const currencyConfig = getCurrency(currency)
+  const parsedRate = parseFloat(rateInput)
+  const effectiveRate =
+    currency === BASE_CURRENCY ? 1 : Number.isFinite(parsedRate) && parsedRate > 0 ? parsedRate : shopCurrency.eurToAllRate
+  const money = (amount: number) => formatMoney(amount, currency)
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [inventory, setInventory] = useState<InventoryItem[]>([])
@@ -192,6 +220,10 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
         tax_rate: taxRate,
         tax_amount: taxAmount,
         total,
+        // Amounts are stored exactly as typed, so the currency and the rate in
+        // force must travel with them or a 400 lek total reads as 400 euro.
+        currency,
+        exchange_rate: effectiveRate,
         ...(isEditing ? {} : { estimate_number: generateEstimateNumber() }),
       }
 
@@ -361,11 +393,14 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                         </div>
                         <div className="col-span-2">
                           <div className="relative">
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                              {currencyConfig.symbol}
+                            </span>
                             <Input
                               type="number"
                               min="0"
-                              step="0.01"
+                              // Lek has no subunit, so step in whole numbers.
+                              step={currencyConfig.decimals === 0 ? '1' : '0.01'}
                               value={item.unit_price}
                               onChange={(e) => updateLineItem(item.id, 'unit_price', parseFloat(e.target.value) || 0)}
                               className="h-10 pl-7 bg-background/50 border-border/50"
@@ -374,7 +409,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                         </div>
                         <div className="col-span-1">
                           <p className="font-medium text-right">
-                            {CURRENCY.symbol}{(item.quantity * item.unit_price).toFixed(2)}
+                            {money(item.quantity * item.unit_price)}
                           </p>
                         </div>
                         <div className="col-span-1 flex justify-end">
@@ -407,7 +442,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                                   <div className="flex items-center justify-between gap-4 w-full">
                                     <span>{inv.name}</span>
                                     <span className="text-muted-foreground text-xs">
-                                      {t('inStock', { count: inv.quantity })} • {CURRENCY.symbol}{inv.sell_price?.toFixed(2) || '0.00'}
+                                      {t('inStock', { count: inv.quantity })} • {money(inv.sell_price || 0)}
                                     </span>
                                   </div>
                                 </SelectItem>
@@ -431,7 +466,7 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                     <div className="w-64 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">{t('subtotal')}</span>
-                        <span className="font-medium">{CURRENCY.symbol}{subtotal.toFixed(2)}</span>
+                        <span className="font-medium">{money(subtotal)}</span>
                       </div>
                       <div className="flex justify-between text-sm items-center gap-4">
                         <span className="text-muted-foreground">{t('taxRate')}</span>
@@ -447,12 +482,20 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">{t('taxAmount')}</span>
-                        <span className="font-medium">{CURRENCY.symbol}{taxAmount.toFixed(2)}</span>
+                        <span className="font-medium">{money(taxAmount)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-semibold pt-2 border-t border-border/50">
                         <span>{t('total')}</span>
-                        <span className="text-primary">{CURRENCY.symbol}{total.toFixed(2)}</span>
+                        <span className="text-primary">{money(total)}</span>
                       </div>
+                      {/* Euro equivalent, so a lek invoice is still readable
+                          against the shop's base-currency reporting. */}
+                      {currency !== BASE_CURRENCY && (
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>{t('baseEquivalent')}</span>
+                          <span>{formatMoney(toBase(total, currency, effectiveRate), BASE_CURRENCY)}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -472,6 +515,51 @@ export function EstimateForm({ shopId, customers, vehicles, jobCards, linkedJob,
 
             {/* Sidebar */}
             <div className="space-y-6">
+              {/* Currency */}
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Coins className="h-4 w-4 text-primary" />
+                  <h2 className="font-semibold">{t('currency')}</h2>
+                </div>
+                <Select
+                  value={currency}
+                  onValueChange={(value) => setCurrency(value as CurrencyCode)}
+                >
+                  <SelectTrigger className="h-11 bg-background/50 border-border/50">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="EUR">{t('currencyEur')}</SelectItem>
+                    <SelectItem value="ALL">{t('currencyAll')}</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                {/* Rate only matters for non-base currencies. Editable per
+                    invoice so a one-off agreed rate can be honoured. */}
+                {currency !== BASE_CURRENCY && (
+                  <div className="mt-4 space-y-2">
+                    <Label htmlFor="exchange-rate" className="text-sm text-muted-foreground">
+                      {t('exchangeRate')}
+                    </Label>
+                    <Input
+                      id="exchange-rate"
+                      type="number"
+                      min="0.0001"
+                      step="0.0001"
+                      value={rateInput}
+                      onChange={(e) => setRateInput(e.target.value)}
+                      className="h-10 bg-background/50 border-border/50"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      {t('rateHint', {
+                        rate: formatMoney(effectiveRate, currency),
+                        base: formatMoney(1, BASE_CURRENCY),
+                      })}
+                    </p>
+                  </div>
+                )}
+              </div>
+
               {/* Job Card Link */}
               <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-6">
                 <div className="flex items-center gap-2 mb-4">

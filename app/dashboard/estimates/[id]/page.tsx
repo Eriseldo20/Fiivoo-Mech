@@ -16,7 +16,13 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { formatCurrency, CURRENCY } from '@/lib/currency'
+import {
+  BASE_CURRENCY,
+  formatMoney,
+  getCurrency,
+  toBase,
+  toCurrencyCode,
+} from '@/lib/currency'
 import { EstimateStatusActions } from '@/components/estimates/estimate-status-actions'
 import { EstimatePDFButton } from '@/components/estimates/estimate-pdf-button'
 import { PaymentStatusControl } from '@/components/estimates/payment-status-control'
@@ -99,6 +105,13 @@ export default async function EstimateDetailPage({
 
   const status = statusStyles[estimate.status as keyof typeof statusStyles]
 
+  // Format against the currency this invoice was written in, not the shop's
+  // current setting: the stored figures mean nothing without their own rate.
+  const invoiceCurrency = toCurrencyCode(estimate.currency)
+  const storedRate = Number(estimate.exchange_rate)
+  const invoiceRate = Number.isFinite(storedRate) && storedRate > 0 ? storedRate : 1
+  const money = (amount: number | null | undefined) => formatMoney(amount, invoiceCurrency)
+
   const t = await getTranslations('estimateDetail')
   const tp = await getTranslations('payment')
 
@@ -149,6 +162,8 @@ export default async function EstimateDetailPage({
                   tax_rate: estimate.tax_rate,
                   tax_amount: estimate.tax_amount,
                   total: estimate.total,
+                  currency: invoiceCurrency,
+                  exchange_rate: invoiceRate,
                   items: items?.map(item => ({
                     description: item.description,
                     type: item.type,
@@ -221,8 +236,8 @@ export default async function EstimateDetailPage({
                             </p>
                           </div>
                           <div className="col-span-2 text-center tabular-nums">{item.quantity}</div>
-                          <div className="col-span-2 text-right tabular-nums">{formatCurrency(item.unit_price)}</div>
-                          <div className="col-span-2 text-right font-medium tabular-nums">{formatCurrency(item.total)}</div>
+                          <div className="col-span-2 text-right tabular-nums">{money(item.unit_price)}</div>
+                          <div className="col-span-2 text-right font-medium tabular-nums">{money(item.total)}</div>
                         </div>
 
                         {/* Mobile stacked row */}
@@ -234,10 +249,10 @@ export default async function EstimateDetailPage({
                                 {t(typeKeys[item.type as keyof typeof typeKeys])}
                               </p>
                             </div>
-                            <p className="font-semibold tabular-nums shrink-0">{formatCurrency(item.total)}</p>
+                            <p className="font-semibold tabular-nums shrink-0">{money(item.total)}</p>
                           </div>
                           <p className="text-xs text-muted-foreground mt-1 tabular-nums">
-                            {item.quantity} × {formatCurrency(item.unit_price)}
+                            {item.quantity} × {money(item.unit_price)}
                           </p>
                         </div>
                       </div>
@@ -249,16 +264,26 @@ export default async function EstimateDetailPage({
                     <div className="ml-auto w-full sm:w-64 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">{t('subtotal')}</span>
-                        <span className="font-medium tabular-nums">{formatCurrency(estimate.subtotal)}</span>
+                        <span className="font-medium tabular-nums">{money(estimate.subtotal)}</span>
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-muted-foreground">{t('tax', { rate: estimate.tax_rate })}</span>
-                        <span className="font-medium tabular-nums">{formatCurrency(estimate.tax_amount)}</span>
+                        <span className="font-medium tabular-nums">{money(estimate.tax_amount)}</span>
                       </div>
                       <div className="flex justify-between text-lg font-semibold pt-2 border-t border-border/50">
                         <span>{t('total')}</span>
-                        <span className="text-primary tabular-nums">{formatCurrency(estimate.total)}</span>
+                        <span className="text-primary tabular-nums">{money(estimate.total)}</span>
                       </div>
+                      {/* Euro equivalent at the rate stored on this invoice,
+                          so the figure never shifts if the shop rate changes. */}
+                      {invoiceCurrency !== BASE_CURRENCY && (
+                        <div className="flex justify-between text-xs text-muted-foreground">
+                          <span>{t('baseEquivalent', { rate: invoiceRate })}</span>
+                          <span className="tabular-nums">
+                            {formatMoney(toBase(estimate.total, invoiceCurrency, invoiceRate), BASE_CURRENCY)}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </>
@@ -281,6 +306,8 @@ export default async function EstimateDetailPage({
                 estimate_number: estimate.estimate_number,
                 notes: estimate.notes,
                 total: estimate.total,
+                currency: invoiceCurrency,
+                exchange_rate: invoiceRate,
                 job_card_id: jobCard?.id,
                 items: items?.map(item => ({
                   id: item.id,
@@ -313,7 +340,7 @@ export default async function EstimateDetailPage({
                 </div>
                 <h2 className="font-semibold">{t('totalAmount')}</h2>
               </div>
-              <p className="text-3xl font-bold text-primary">{formatCurrency(estimate.total)}</p>
+              <p className="text-3xl font-bold text-primary">{money(estimate.total)}</p>
 
               {/* Payment status — only relevant once the client has approved */}
               {estimate.status === 'approved' && (

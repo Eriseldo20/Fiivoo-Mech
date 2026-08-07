@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { Download, Loader2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import type { CurrencyCode } from '@/lib/currency'
 
 interface EstimateItem {
   description: string
@@ -24,6 +25,10 @@ interface EstimatePDFButtonProps {
     tax_rate: number
     tax_amount: number
     total: number
+    /** Currency the amounts were recorded in. */
+    currency?: CurrencyCode | string
+    /** Rate in force when the invoice was written. */
+    exchange_rate?: number
     items: EstimateItem[]
     customer?: {
       name: string
