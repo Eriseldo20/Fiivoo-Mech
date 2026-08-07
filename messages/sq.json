@@ -1053,7 +1053,7 @@
     "markPaid": "Shëno paguar",
     "grandTotal": "Totali i papaguar",
     "filteredTotal": "Totali i filtruar",
-    "invoiceCount": "{count} fatura",
+    "invoiceCount": "{count, plural, one {# faturë} other {# fatura}}",
     "ageDays": "{count} ditë",
     "ageMonths": "{count} muaj",
     "ageYears": "{count}v+",

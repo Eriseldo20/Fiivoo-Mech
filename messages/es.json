@@ -1053,7 +1053,7 @@
     "markPaid": "Marcar pagada",
     "grandTotal": "Total pendiente",
     "filteredTotal": "Total filtrado",
-    "invoiceCount": "{count} facturas",
+    "invoiceCount": "{count, plural, one {# factura} other {# facturas}}",
     "ageDays": "{count} días",
     "ageMonths": "{count} meses",
     "ageYears": "{count}a+",

@@ -981,7 +981,7 @@
     "markPaid": "Marquer payée",
     "grandTotal": "Total impayé",
     "filteredTotal": "Total filtré",
-    "invoiceCount": "{count} factures",
+    "invoiceCount": "{count, plural, one {# facture} other {# factures}}",
     "ageDays": "{count} jours",
     "ageMonths": "{count} mois",
     "ageYears": "{count}a+",

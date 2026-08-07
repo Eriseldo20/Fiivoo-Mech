@@ -49,11 +49,13 @@ const BUCKET_ORDER: AgingBucket[] = ['current', 'thirty', 'sixty', 'ninety', 'ye
  * debt stands out instead of competing with everything else on the page.
  */
 const BUCKET_STYLES: Record<AgingBucket, string> = {
-  current: 'bg-muted text-foreground border-border',
+  current: 'bg-muted text-muted-foreground border-border',
   thirty: 'bg-muted text-foreground border-border',
-  sixty: 'bg-amber-100 text-amber-900 border-amber-300',
-  ninety: 'bg-orange-100 text-orange-900 border-orange-300',
-  year: 'bg-red-600 text-white border-red-600',
+  // Theme tokens rather than fixed palette values, so these stay readable
+  // in dark mode instead of dark text on a pale chip.
+  sixty: 'bg-warning/15 text-warning border-warning/40',
+  ninety: 'bg-warning/25 text-warning border-warning/60',
+  year: 'bg-destructive text-destructive-foreground border-destructive',
 }
 
 export function ReceivablesCard({ data }: ReceivablesCardProps) {
@@ -159,9 +161,11 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
           type="button"
           aria-label={t('openReport')}
           className={cn(
-            'w-full text-left rounded-none border p-5 transition-colors',
+            'w-full text-left rounded-none border p-5 transition-colors bg-card',
             'hover:bg-muted/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-            seriouslyOverdue > 0 ? 'border-red-300 bg-red-50/60' : 'border-border',
+            // Only a left rule turns red, so the card keeps the normal
+            // surface colour and the text stays legible in both themes.
+            seriouslyOverdue > 0 ? 'border-border border-l-2 border-l-destructive' : 'border-border',
           )}
         >
           <div className="flex items-start justify-between gap-4">
@@ -170,7 +174,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                 <AlertTriangle
                   className={cn(
                     'h-4 w-4 shrink-0',
-                    seriouslyOverdue > 0 ? 'text-red-600' : 'text-muted-foreground',
+                    seriouslyOverdue > 0 ? 'text-destructive' : 'text-muted-foreground',
                   )}
                 />
                 <span className="text-sm font-semibold uppercase tracking-wide">
@@ -209,7 +213,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
         </button>
       </DialogTrigger>
 
-      <DialogContent className="w-[95vw] sm:max-w-5xl rounded-none max-h-[92vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-5xl rounded-none max-h-[92vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <AlertTriangle className="h-5 w-5" />
@@ -223,7 +227,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
             <p className="text-sm text-muted-foreground">{t('emptyAll')}</p>
           </div>
         ) : (
-          <div className="space-y-4">
+          <div className="min-w-0 space-y-4">
             {/* Aging strip: total owed per bucket, doubles as a filter. */}
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
               {BUCKET_ORDER.map((b) => {
@@ -263,15 +267,21 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
               />
             </div>
 
-            <div className="border border-border">
+            {/* min-w-0 lets the table shrink inside the dialog's grid track
+                instead of forcing the whole dialog wider than the viewport. */}
+            <div className="min-w-0 overflow-x-auto border border-border">
               <Table>
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-8" />
                     <TableHead>{t('customer')}</TableHead>
-                    <TableHead>{t('contact')}</TableHead>
-                    <TableHead className="text-center">{t('invoices')}</TableHead>
-                    <TableHead>{t('oldestDebt')}</TableHead>
+                    {/* Contact folds into the customer cell on mobile so the
+                        amount owed never gets pushed off screen. */}
+                    <TableHead className="hidden md:table-cell">{t('contact')}</TableHead>
+                    <TableHead className="hidden sm:table-cell text-center">
+                      {t('invoices')}
+                    </TableHead>
+                    <TableHead className="hidden sm:table-cell">{t('oldestDebt')}</TableHead>
                     <TableHead className="text-right">{t('owed')}</TableHead>
                   </TableRow>
                 </TableHeader>
@@ -298,8 +308,28 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                                 <ChevronRight className="h-4 w-4 text-muted-foreground" />
                               )}
                             </TableCell>
-                            <TableCell className="font-medium">{c.name}</TableCell>
-                            <TableCell>
+                            <TableCell className="font-medium">
+                              <span className="block">{c.name}</span>
+                              {/* Mobile-only echo of the hidden columns. */}
+                              {/* Age badge rides with the name on mobile, where
+                                  the dedicated column is hidden. */}
+                              <span
+                                className={cn(
+                                  'mt-1 mr-2 inline-flex items-center border px-1.5 py-0.5 text-[11px] font-medium sm:hidden',
+                                  BUCKET_STYLES[c.worstBucket],
+                                )}
+                              >
+                                {ageLabel(c.oldestDays)}
+                              </span>
+                              <span className="mt-1 flex flex-col gap-0.5 text-xs font-normal text-muted-foreground md:hidden">
+                                {c.phone && <span>{c.phone}</span>}
+                                {c.email && <span className="truncate">{c.email}</span>}
+                                <span className="sm:hidden">
+                                  {t('invoiceCount', { count: c.invoiceCount })}
+                                </span>
+                              </span>
+                            </TableCell>
+                            <TableCell className="hidden md:table-cell">
                               <div className="flex flex-col gap-0.5 text-xs text-muted-foreground">
                                 {c.phone && (
                                   <a
@@ -324,10 +354,10 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                                 {!c.phone && !c.email && <span>{t('noContact')}</span>}
                               </div>
                             </TableCell>
-                            <TableCell className="text-center tabular-nums">
+                            <TableCell className="hidden sm:table-cell text-center tabular-nums">
                               {c.invoiceCount}
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="hidden sm:table-cell">
                               <span
                                 className={cn(
                                   'inline-flex items-center border px-2 py-0.5 text-xs font-medium',

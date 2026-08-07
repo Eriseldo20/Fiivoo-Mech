@@ -1053,7 +1053,7 @@
     "markPaid": "Als bezahlt",
     "grandTotal": "Gesamt offen",
     "filteredTotal": "Gefilterte Summe",
-    "invoiceCount": "{count} Rechnungen",
+    "invoiceCount": "{count, plural, one {# Rechnung} other {# Rechnungen}}",
     "ageDays": "{count} Tage",
     "ageMonths": "{count} Monate",
     "ageYears": "{count}J+",

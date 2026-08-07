@@ -981,7 +981,7 @@
     "markPaid": "Segna pagata",
     "grandTotal": "Totale da incassare",
     "filteredTotal": "Totale filtrato",
-    "invoiceCount": "{count} fatture",
+    "invoiceCount": "{count, plural, one {# fattura} other {# fatture}}",
     "ageDays": "{count} giorni",
     "ageMonths": "{count} mesi",
     "ageYears": "{count}a+",
