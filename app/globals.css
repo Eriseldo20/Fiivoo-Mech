@@ -1,0 +1,324 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* Premium Light Theme for Fiivoo Mech */
+:root {
+  --background: oklch(0.96 0.005 250);
+  --foreground: oklch(0.15 0.01 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.01 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 250);
+  --primary: oklch(0.45 0.18 240);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.94 0.01 250);
+  --secondary-foreground: oklch(0.15 0.01 250);
+  --muted: oklch(0.94 0.01 250);
+  --muted-foreground: oklch(0.45 0.01 250);
+  --accent: oklch(0.92 0.02 240);
+  --accent-foreground: oklch(0.15 0.01 250);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.88 0.01 250);
+  --input: oklch(0.92 0.01 250);
+  --ring: oklch(0.45 0.18 240);
+  --chart-1: oklch(0.45 0.18 240);
+  --chart-2: oklch(0.60 0.12 200);
+  --chart-3: oklch(0.55 0.18 145);
+  --chart-4: oklch(0.50 0.20 300);
+  --chart-5: oklch(0.60 0.15 30);
+  /* Tighter radius for a squarer, more professional shop-software look.
+     Derived tokens resolve to: sm 0px, md 2px, lg 4px, xl 8px. */
+  --radius: 0.25rem;
+  /* Sidebar stays dark in light mode for contrast */
+  --sidebar: oklch(0.09 0.025 258);
+  --sidebar-foreground: oklch(0.92 0 0);
+  --sidebar-primary: oklch(0.62 0.20 264);
+  --sidebar-primary-foreground: oklch(0.10 0.02 258);
+  --sidebar-accent: oklch(0.20 0.03 260);
+  --sidebar-accent-foreground: oklch(0.92 0 0);
+  --sidebar-border: oklch(0.24 0.025 260);
+  --sidebar-ring: oklch(0.62 0.20 264);
+  --sidebar-muted: oklch(0.58 0.02 260);
+  --success: oklch(0.55 0.18 145);
+  --warning: oklch(0.75 0.15 75);
+}
+
+.dark {
+  --background: oklch(0.13 0.01 250);
+  --foreground: oklch(0.95 0 0);
+  --card: oklch(0.16 0.01 250);
+  --card-foreground: oklch(0.95 0 0);
+  --popover: oklch(0.16 0.01 250);
+  --popover-foreground: oklch(0.95 0 0);
+  --primary: oklch(0.65 0.15 195);
+  --primary-foreground: oklch(0.13 0.01 250);
+  --secondary: oklch(0.22 0.01 250);
+  --secondary-foreground: oklch(0.95 0 0);
+  --muted: oklch(0.22 0.01 250);
+  --muted-foreground: oklch(0.65 0 0);
+  --accent: oklch(0.28 0.02 240);
+  --accent-foreground: oklch(0.95 0 0);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.95 0 0);
+  --border: oklch(0.25 0.01 250);
+  --input: oklch(0.20 0.01 250);
+  --ring: oklch(0.65 0.15 195);
+  --chart-1: oklch(0.65 0.15 195);
+  --chart-2: oklch(0.65 0.10 200);
+  --chart-3: oklch(0.65 0.18 145);
+  --chart-4: oklch(0.60 0.20 300);
+  --chart-5: oklch(0.70 0.15 30);
+  --sidebar: oklch(0.07 0.02 256);
+  --sidebar-foreground: oklch(0.95 0 0);
+  --sidebar-primary: oklch(0.62 0.20 264);
+  --sidebar-primary-foreground: oklch(0.10 0.02 258);
+  --sidebar-accent: oklch(0.17 0.03 260);
+  --sidebar-accent-foreground: oklch(0.95 0 0);
+  --sidebar-border: oklch(0.21 0.025 260);
+  --sidebar-ring: oklch(0.62 0.20 264);
+  --sidebar-muted: oklch(0.65 0.02 260);
+  --success: oklch(0.65 0.18 145);
+  --warning: oklch(0.80 0.12 75);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Performance: neutralize expensive backdrop-filter blur app-wide.
+   backdrop-blur forces the GPU to re-blur the region behind an element on every
+   paint and on every scroll frame, which made the app feel heavy and janky
+   (the sticky header alone re-blurred continuously while scrolling). Because
+   these surfaces sit over a solid background, blurring a uniform color yields an
+   identical result, so removing it is visually lossless while restoring smooth
+   scrolling. Translucent surfaces with moving content behind them (header,
+   overlays) are made more opaque in their components to compensate. */
+[class*="backdrop-blur"] {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Safe area padding for mobile devices */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* Hide scrollbar for mobile navigation */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Touch-friendly tap highlight */
+@media (pointer: coarse) {
+  button, a, [role="button"] {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Premium glass effect
+   Note: backdrop-filter blur is intentionally avoided here. It is extremely
+   expensive to composite (the GPU must re-blur the backdrop on every paint and
+   scroll), and these classes are used on dozens of cards across the app, which
+   caused noticeable scroll jank. Opaque backgrounds give the same look without
+   the cost. */
+.glass {
+  background: oklch(0.99 0.003 250);
+  border: 1px solid oklch(0.85 0.01 250 / 0.5);
+  box-shadow: 0 4px 24px oklch(0.2 0.01 250 / 0.08);
+}
+
+.dark .glass {
+  background: oklch(0.17 0.01 250);
+  border: 1px solid oklch(0.30 0.01 250 / 0.3);
+  box-shadow: 0 4px 24px oklch(0 0 0 / 0.2);
+}
+
+/* Glass card with colored accents */
+.glass-card {
+  background: var(--card);
+  border: 1px solid oklch(0.88 0.01 250);
+  box-shadow: 0 2px 12px oklch(0.2 0.01 250 / 0.06);
+}
+
+.dark .glass-card {
+  background: oklch(0.17 0.01 250);
+  border: 1px solid oklch(0.28 0.01 250 / 0.5);
+  box-shadow: 0 2px 12px oklch(0 0 0 / 0.15);
+}
+
+/* Subtle glow effect */
+.glow-primary {
+  box-shadow: 0 0 20px oklch(0.55 0.18 195 / 0.15);
+}
+
+.dark .glow-primary {
+  box-shadow: 0 0 20px oklch(0.72 0.15 195 / 0.15);
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px oklch(0.65 0.15 85 / 0.15);
+}
+
+.dark .glow-accent {
+  box-shadow: 0 0 20px oklch(0.78 0.12 85 / 0.15);
+}
+
+/* Job completion celebration */
+@keyframes job-complete-pop {
+  0% {
+    transform: scale(0.4);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.96);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes job-complete-check {
+  0% {
+    transform: scale(0.5) rotate(-12deg);
+    opacity: 0;
+  }
+  60% {
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.job-complete-pop {
+  animation: job-complete-pop 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.job-complete-check {
+  animation: job-complete-check 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+/* Thumbs-up shown on success toasts: a quick pop with a cheerful wiggle. */
+@keyframes thumbs-up-burst {
+  0% {
+    transform: scale(0.3) rotate(-18deg);
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1.25) rotate(8deg);
+    opacity: 1;
+  }
+  65% {
+    transform: scale(0.92) rotate(-4deg);
+  }
+  82% {
+    transform: scale(1.06) rotate(2deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.thumbs-up-burst {
+  animation: thumbs-up-burst 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+  transform-origin: bottom center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-complete-pop,
+  .job-complete-check,
+  .thumbs-up-burst {
+    animation: none;
+  }
+}
+
+/* Force the light theme tokens for the public client tracking portal,
+   regardless of the shop user's selected app theme. */
+.track-light {
+  --background: oklch(0.96 0.005 250);
+  --foreground: oklch(0.15 0.01 250);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.15 0.01 250);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.15 0.01 250);
+  --primary: oklch(0.45 0.18 240);
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary: oklch(0.94 0.01 250);
+  --secondary-foreground: oklch(0.15 0.01 250);
+  --muted: oklch(0.94 0.01 250);
+  --muted-foreground: oklch(0.45 0.01 250);
+  --accent: oklch(0.92 0.02 240);
+  --accent-foreground: oklch(0.15 0.01 250);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(0.88 0.01 250);
+  --input: oklch(0.92 0.01 250);
+  --ring: oklch(0.45 0.18 240);
+}
