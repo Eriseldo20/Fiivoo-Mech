@@ -178,7 +178,7 @@ export async function getReceivablesAging(shopId: string): Promise<ReceivablesAg
     .select(
       `
       id, estimate_number, total, created_at, customer_id,
-      customer:customers(id, first_name, last_name, phone, email),
+      customer:customers(id, name, phone, email),
       vehicle:vehicles(make, model, license_plate)
     `,
     )
@@ -223,8 +223,7 @@ export async function getReceivablesAging(shopId: string): Promise<ReceivablesAg
 
     const customer = row.customer as unknown as {
       id: string
-      first_name: string | null
-      last_name: string | null
+      name: string | null
       phone: string | null
       email: string | null
     } | null
@@ -253,8 +252,7 @@ export async function getReceivablesAging(shopId: string): Promise<ReceivablesAg
     // Invoices with no customer attached still owe money, so group them under
     // a synthetic key rather than dropping them from the report.
     const key = customer?.id ?? `unassigned:${row.id}`
-    const name =
-      [customer?.first_name, customer?.last_name].filter(Boolean).join(' ').trim() || 'Unknown customer'
+    const name = customer?.name?.trim() || 'Unknown customer'
 
     const existing = byCustomer.get(key)
     if (existing) {
