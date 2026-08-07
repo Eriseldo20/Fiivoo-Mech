@@ -1022,5 +1022,36 @@
     "deleteSupplierDesc": "This also removes all purchase invoices recorded for this supplier.",
     "deletePurchaseTitle": "Delete this purchase?",
     "deletePurchaseDesc": "This invoice and its line items will be permanently removed."
+  },
+  "receivables": {
+    "title": "Unpaid Customers",
+    "openReport": "Open unpaid customers report",
+    "dialogDescription": "Every approved invoice still unpaid, oldest debt first. Covers all time, so it does not change with the selected month.",
+    "summaryLine": "{customers} customers · {invoices} invoices outstanding",
+    "emptyAll": "Every approved invoice has been paid.",
+    "emptyFiltered": "No customers match this filter.",
+    "searchPlaceholder": "Search customer, phone, email or invoice number",
+    "customer": "Customer",
+    "contact": "Contact",
+    "invoices": "Invoices",
+    "oldestDebt": "Oldest debt",
+    "owed": "Owed",
+    "noContact": "No contact details",
+    "noNumber": "No number",
+    "view": "View",
+    "markPaid": "Mark paid",
+    "grandTotal": "Total outstanding",
+    "filteredTotal": "Filtered total",
+    "invoiceCount": "{count} invoices",
+    "ageDays": "{count} days",
+    "ageMonths": "{count} months",
+    "ageYears": "{count}y+",
+    "bucket": {
+      "current": "Under 30 days",
+      "thirty": "30-59 days",
+      "sixty": "60-89 days",
+      "ninety": "90+ days",
+      "year": "Over a year"
+    }
   }
 }

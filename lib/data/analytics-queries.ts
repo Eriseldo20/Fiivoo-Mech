@@ -111,6 +111,196 @@ export async function getExpensesForMonth(
   }
 }
 
+/** How long a debt has been outstanding. Buckets follow standard AR aging. */
+export type AgingBucket = 'current' | 'thirty' | 'sixty' | 'ninety' | 'year'
+
+export interface OverdueInvoice {
+  id: string
+  estimateNumber: string
+  total: number
+  createdAt: string
+  /** Whole days since the invoice was raised. */
+  daysOverdue: number
+  bucket: AgingBucket
+  vehicle: string | null
+}
+
+export interface OverdueCustomer {
+  customerId: string
+  name: string
+  phone: string | null
+  email: string | null
+  /** Everything this customer still owes, across all invoices. */
+  totalOwed: number
+  invoiceCount: number
+  /** Age of their single oldest unpaid invoice - drives the customer's badge. */
+  oldestDays: number
+  worstBucket: AgingBucket
+  oldestDate: string
+  newestDate: string
+  invoices: OverdueInvoice[]
+}
+
+export interface ReceivablesAging {
+  totalOwed: number
+  customerCount: number
+  invoiceCount: number
+  /** Total owed per aging bucket, for the summary strip. */
+  buckets: Record<AgingBucket, { total: number; count: number }>
+  /** Owed the longest first, so the most urgent debt is at the top. */
+  customers: OverdueCustomer[]
+}
+
+function bucketFor(days: number): AgingBucket {
+  if (days >= 365) return 'year'
+  if (days >= 90) return 'ninety'
+  if (days >= 60) return 'sixty'
+  if (days >= 30) return 'thirty'
+  return 'current'
+}
+
+/**
+ * Every unpaid approved invoice, grouped by customer, oldest debt first.
+ *
+ * Deliberately ALL-TIME and independent of the analytics month selector: a
+ * debt from last year must stay visible no matter which month is on screen,
+ * which is the entire point of an aging report.
+ *
+ * An estimate only becomes a receivable once it is `approved` - drafts,
+ * rejected and expired estimates were never owed. This matches how
+ * `getMonthlyAnalytics` recognises revenue, so the two always agree.
+ */
+export async function getReceivablesAging(shopId: string): Promise<ReceivablesAging> {
+  const supabase = await createClient()
+
+  const { data } = await supabase
+    .from('estimates')
+    .select(
+      `
+      id, estimate_number, total, created_at, customer_id,
+      customer:customers(id, first_name, last_name, phone, email),
+      vehicle:vehicles(make, model, license_plate)
+    `,
+    )
+    .eq('shop_id', shopId)
+    .eq('status', 'approved')
+    .eq('payment_status', 'unpaid')
+    .order('created_at', { ascending: true })
+
+  const rows = data ?? []
+  const startOfToday = new Date()
+  startOfToday.setHours(0, 0, 0, 0)
+
+  const emptyBuckets = (): ReceivablesAging['buckets'] => ({
+    current: { total: 0, count: 0 },
+    thirty: { total: 0, count: 0 },
+    sixty: { total: 0, count: 0 },
+    ninety: { total: 0, count: 0 },
+    year: { total: 0, count: 0 },
+  })
+
+  const buckets = emptyBuckets()
+  const byCustomer = new Map<string, OverdueCustomer>()
+  let totalOwed = 0
+
+  for (const row of rows) {
+    const amount = Number(row.total) || 0
+    const createdAt = String(row.created_at)
+
+    // Compare calendar days so an invoice raised yesterday evening is 1 day
+    // old, not 0 - avoids off-by-one flicker around midnight.
+    const raised = new Date(createdAt)
+    raised.setHours(0, 0, 0, 0)
+    const daysOverdue = Math.max(
+      0,
+      Math.round((startOfToday.getTime() - raised.getTime()) / 86_400_000),
+    )
+    const bucket = bucketFor(daysOverdue)
+
+    totalOwed += amount
+    buckets[bucket].total += amount
+    buckets[bucket].count += 1
+
+    const customer = row.customer as unknown as {
+      id: string
+      first_name: string | null
+      last_name: string | null
+      phone: string | null
+      email: string | null
+    } | null
+    const vehicleRow = row.vehicle as unknown as {
+      make: string | null
+      model: string | null
+      license_plate: string | null
+    } | null
+
+    const vehicle = vehicleRow
+      ? [ [vehicleRow.make, vehicleRow.model].filter(Boolean).join(' '), vehicleRow.license_plate ]
+          .filter(Boolean)
+          .join(' • ') || null
+      : null
+
+    const invoice: OverdueInvoice = {
+      id: String(row.id),
+      estimateNumber: String(row.estimate_number ?? ''),
+      total: amount,
+      createdAt,
+      daysOverdue,
+      bucket,
+      vehicle,
+    }
+
+    // Invoices with no customer attached still owe money, so group them under
+    // a synthetic key rather than dropping them from the report.
+    const key = customer?.id ?? `unassigned:${row.id}`
+    const name =
+      [customer?.first_name, customer?.last_name].filter(Boolean).join(' ').trim() || 'Unknown customer'
+
+    const existing = byCustomer.get(key)
+    if (existing) {
+      existing.totalOwed += amount
+      existing.invoiceCount += 1
+      existing.invoices.push(invoice)
+      if (daysOverdue > existing.oldestDays) {
+        existing.oldestDays = daysOverdue
+        existing.worstBucket = bucket
+        existing.oldestDate = createdAt
+      }
+      if (createdAt > existing.newestDate) existing.newestDate = createdAt
+    } else {
+      byCustomer.set(key, {
+        customerId: customer?.id ?? key,
+        name,
+        phone: customer?.phone ?? null,
+        email: customer?.email ?? null,
+        totalOwed: amount,
+        invoiceCount: 1,
+        oldestDays: daysOverdue,
+        worstBucket: bucket,
+        oldestDate: createdAt,
+        newestDate: createdAt,
+        invoices: [invoice],
+      })
+    }
+  }
+
+  const customers = [...byCustomer.values()]
+    // Oldest debt first; ties broken by who owes more.
+    .sort((a, b) => b.oldestDays - a.oldestDays || b.totalOwed - a.totalOwed)
+    .map((c) => ({
+      ...c,
+      invoices: [...c.invoices].sort((a, b) => b.daysOverdue - a.daysOverdue),
+    }))
+
+  return {
+    totalOwed,
+    customerCount: customers.length,
+    invoiceCount: rows.length,
+    buckets,
+    customers,
+  }
+}
+
 export interface PartsPurchaseSummary {
   /** Cash actually invoiced by suppliers in this month. */
   total: number

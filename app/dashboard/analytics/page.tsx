@@ -36,7 +36,9 @@ import {
   getMonthlyAnalytics,
   getMonthlyTrend,
   getPartsPurchasesForMonth,
+  getReceivablesAging,
 } from '@/lib/data/analytics-queries'
+import { ReceivablesCard } from '@/components/analytics/receivables-card'
 import { MonthSelector } from '@/components/analytics/month-selector'
 import { RevenueTrendChart } from '@/components/analytics/revenue-trend-chart'
 import { ExpensesEditor } from '@/components/analytics/expenses-editor'
@@ -67,10 +69,12 @@ export default async function AnalyticsPage({
   const t = await getTranslations('analytics')
   const tPay = await getTranslations('payment')
 
-  const [analytics, trend, partsPurchases] = await Promise.all([
+  const [analytics, trend, partsPurchases, receivables] = await Promise.all([
     getMonthlyAnalytics(shopId, year, month),
     getMonthlyTrend(shopId, year, month, 12),
     getPartsPurchasesForMonth(shopId, year, month),
+    // All-time on purpose: old debt must not vanish when the month changes.
+    getReceivablesAging(shopId),
   ])
 
   // Simple projection: trailing 3-month average of net profit (excluding current month)
@@ -135,6 +139,10 @@ export default async function AnalyticsPage({
             tone={profitPositive ? 'success' : 'danger'}
           />
         </div>
+
+        {/* Unpaid customers. All-time, so it is intentionally unaffected by
+            the month selector above. */}
+        <ReceivablesCard data={receivables} />
 
         {/* Trend chart */}
         <RevenueTrendChart data={trend} />

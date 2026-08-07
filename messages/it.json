@@ -961,5 +961,36 @@
     "deleteSupplierDesc": "Verranno rimosse anche tutte le fatture registrate.",
     "deletePurchaseTitle": "Eliminare questo acquisto?",
     "deletePurchaseDesc": "Questa fattura e le sue righe saranno rimosse definitivamente."
+  },
+  "receivables": {
+    "title": "Clienti Non Paganti",
+    "openReport": "Apri il report dei clienti non paganti",
+    "dialogDescription": "Tutte le fatture approvate ancora da pagare, dal debito più vecchio. Copre tutto il periodo e non cambia con il mese selezionato.",
+    "summaryLine": "{customers} clienti · {invoices} fatture da incassare",
+    "emptyAll": "Tutte le fatture approvate sono state pagate.",
+    "emptyFiltered": "Nessun cliente corrisponde al filtro.",
+    "searchPlaceholder": "Cerca cliente, telefono, email o numero fattura",
+    "customer": "Cliente",
+    "contact": "Contatto",
+    "invoices": "Fatture",
+    "oldestDebt": "Debito più vecchio",
+    "owed": "Dovuto",
+    "noContact": "Nessun contatto",
+    "noNumber": "Senza numero",
+    "view": "Vedi",
+    "markPaid": "Segna pagata",
+    "grandTotal": "Totale da incassare",
+    "filteredTotal": "Totale filtrato",
+    "invoiceCount": "{count} fatture",
+    "ageDays": "{count} giorni",
+    "ageMonths": "{count} mesi",
+    "ageYears": "{count}a+",
+    "bucket": {
+      "current": "Meno di 30 giorni",
+      "thirty": "30-59 giorni",
+      "sixty": "60-89 giorni",
+      "ninety": "90+ giorni",
+      "year": "Oltre un anno"
+    }
   }
 }

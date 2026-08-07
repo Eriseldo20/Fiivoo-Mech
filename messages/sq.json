@@ -1033,5 +1033,36 @@
     "deleteSupplierDesc": "Do fshihen edhe të gjitha faturat e regjistruara.",
     "deletePurchaseTitle": "Të fshihet kjo blerje?",
     "deletePurchaseDesc": "Kjo faturë dhe zërat e saj do fshihen përgjithmonë."
+  },
+  "receivables": {
+    "title": "Klientë të Papaguar",
+    "openReport": "Hap raportin e klientëve të papaguar",
+    "dialogDescription": "Të gjitha faturat e aprovuara që nuk janë paguar, borxhi më i vjetër i pari. Përfshin të gjithë kohën, pa u ndikuar nga muaji i zgjedhur.",
+    "summaryLine": "{customers} klientë · {invoices} fatura të papaguara",
+    "emptyAll": "Të gjitha faturat e aprovuara janë paguar.",
+    "emptyFiltered": "Asnjë klient nuk përputhet me filtrin.",
+    "searchPlaceholder": "Kërko klient, telefon, email ose numër fature",
+    "customer": "Klienti",
+    "contact": "Kontakti",
+    "invoices": "Fatura",
+    "oldestDebt": "Borxhi më i vjetër",
+    "owed": "Detyrim",
+    "noContact": "Pa të dhëna kontakti",
+    "noNumber": "Pa numër",
+    "view": "Shiko",
+    "markPaid": "Shëno paguar",
+    "grandTotal": "Totali i papaguar",
+    "filteredTotal": "Totali i filtruar",
+    "invoiceCount": "{count} fatura",
+    "ageDays": "{count} ditë",
+    "ageMonths": "{count} muaj",
+    "ageYears": "{count}v+",
+    "bucket": {
+      "current": "Nën 30 ditë",
+      "thirty": "30-59 ditë",
+      "sixty": "60-89 ditë",
+      "ninety": "90+ ditë",
+      "year": "Mbi një vit"
+    }
   }
 }

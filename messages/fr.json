@@ -961,5 +961,36 @@
     "deleteSupplierDesc": "Toutes les factures enregistrées seront aussi supprimées.",
     "deletePurchaseTitle": "Supprimer cet achat ?",
     "deletePurchaseDesc": "Cette facture et ses lignes seront définitivement supprimées."
+  },
+  "receivables": {
+    "title": "Clients Impayés",
+    "openReport": "Ouvrir le rapport des clients impayés",
+    "dialogDescription": "Toutes les factures approuvées encore impayées, la dette la plus ancienne en premier. Couvre toute la période et ne change pas avec le mois sélectionné.",
+    "summaryLine": "{customers} clients · {invoices} factures impayées",
+    "emptyAll": "Toutes les factures approuvées ont été payées.",
+    "emptyFiltered": "Aucun client ne correspond à ce filtre.",
+    "searchPlaceholder": "Rechercher client, téléphone, email ou numéro de facture",
+    "customer": "Client",
+    "contact": "Contact",
+    "invoices": "Factures",
+    "oldestDebt": "Dette la plus ancienne",
+    "owed": "Dû",
+    "noContact": "Aucun contact",
+    "noNumber": "Sans numéro",
+    "view": "Voir",
+    "markPaid": "Marquer payée",
+    "grandTotal": "Total impayé",
+    "filteredTotal": "Total filtré",
+    "invoiceCount": "{count} factures",
+    "ageDays": "{count} jours",
+    "ageMonths": "{count} mois",
+    "ageYears": "{count}a+",
+    "bucket": {
+      "current": "Moins de 30 jours",
+      "thirty": "30-59 jours",
+      "sixty": "60-89 jours",
+      "ninety": "90+ jours",
+      "year": "Plus d’un an"
+    }
   }
 }

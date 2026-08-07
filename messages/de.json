@@ -1033,5 +1033,36 @@
     "deleteSupplierDesc": "Damit werden auch alle erfassten Rechnungen entfernt.",
     "deletePurchaseTitle": "Diesen Einkauf löschen?",
     "deletePurchaseDesc": "Diese Rechnung und ihre Positionen werden endgültig entfernt."
+  },
+  "receivables": {
+    "title": "Offene Kunden",
+    "openReport": "Bericht offener Kunden öffnen",
+    "dialogDescription": "Alle genehmigten, noch unbezahlten Rechnungen, älteste Schuld zuerst. Umfasst den gesamten Zeitraum und ändert sich nicht mit dem gewählten Monat.",
+    "summaryLine": "{customers} Kunden · {invoices} offene Rechnungen",
+    "emptyAll": "Alle genehmigten Rechnungen sind bezahlt.",
+    "emptyFiltered": "Kein Kunde entspricht diesem Filter.",
+    "searchPlaceholder": "Kunde, Telefon, E-Mail oder Rechnungsnummer suchen",
+    "customer": "Kunde",
+    "contact": "Kontakt",
+    "invoices": "Rechnungen",
+    "oldestDebt": "Älteste Schuld",
+    "owed": "Offen",
+    "noContact": "Keine Kontaktdaten",
+    "noNumber": "Ohne Nummer",
+    "view": "Ansehen",
+    "markPaid": "Als bezahlt",
+    "grandTotal": "Gesamt offen",
+    "filteredTotal": "Gefilterte Summe",
+    "invoiceCount": "{count} Rechnungen",
+    "ageDays": "{count} Tage",
+    "ageMonths": "{count} Monate",
+    "ageYears": "{count}J+",
+    "bucket": {
+      "current": "Unter 30 Tage",
+      "thirty": "30-59 Tage",
+      "sixty": "60-89 Tage",
+      "ninety": "90+ Tage",
+      "year": "Über ein Jahr"
+    }
   }
 }

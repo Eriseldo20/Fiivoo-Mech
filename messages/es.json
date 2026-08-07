@@ -1033,5 +1033,36 @@
     "deleteSupplierDesc": "También se eliminarán todas sus facturas registradas.",
     "deletePurchaseTitle": "¿Eliminar esta compra?",
     "deletePurchaseDesc": "Esta factura y sus líneas se eliminarán permanentemente."
+  },
+  "receivables": {
+    "title": "Clientes Impagados",
+    "openReport": "Abrir informe de clientes impagados",
+    "dialogDescription": "Todas las facturas aprobadas aún sin pagar, la deuda más antigua primero. Cubre todo el periodo y no cambia con el mes seleccionado.",
+    "summaryLine": "{customers} clientes · {invoices} facturas pendientes",
+    "emptyAll": "Todas las facturas aprobadas están pagadas.",
+    "emptyFiltered": "Ningún cliente coincide con este filtro.",
+    "searchPlaceholder": "Buscar cliente, teléfono, email o número de factura",
+    "customer": "Cliente",
+    "contact": "Contacto",
+    "invoices": "Facturas",
+    "oldestDebt": "Deuda más antigua",
+    "owed": "Debe",
+    "noContact": "Sin datos de contacto",
+    "noNumber": "Sin número",
+    "view": "Ver",
+    "markPaid": "Marcar pagada",
+    "grandTotal": "Total pendiente",
+    "filteredTotal": "Total filtrado",
+    "invoiceCount": "{count} facturas",
+    "ageDays": "{count} días",
+    "ageMonths": "{count} meses",
+    "ageYears": "{count}a+",
+    "bucket": {
+      "current": "Menos de 30 días",
+      "thirty": "30-59 días",
+      "sixty": "60-89 días",
+      "ninety": "90+ días",
+      "year": "Más de un año"
+    }
   }
 }
