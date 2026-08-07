@@ -55,7 +55,8 @@ import {
   X,
   ChevronDown,
 } from 'lucide-react'
-import { formatCurrency } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
+import { toCurrencyCode } from '@/lib/currency'
 import {
   saveSupplier,
   deleteSupplier,
@@ -101,6 +102,7 @@ export function SuppliersClient({
 }: SuppliersClientProps) {
   const t = useTranslations('suppliers')
   const router = useRouter()
+  const money = useCurrency()
 
   // Supplier dialog
   const [supplierDialog, setSupplierDialog] = useState(false)
@@ -254,7 +256,7 @@ export function SuppliersClient({
                   <Euro className="h-5 w-5 text-emerald-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{formatCurrency(summary.allTime)}</p>
+                  <p className="text-2xl font-semibold">{money.base(summary.allTime)}</p>
                   <p className="text-sm text-muted-foreground">{t('totalSpent')}</p>
                 </div>
               </div>
@@ -267,7 +269,7 @@ export function SuppliersClient({
                   <Receipt className="h-5 w-5 text-blue-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{formatCurrency(summary.thisMonth)}</p>
+                  <p className="text-2xl font-semibold">{money.base(summary.thisMonth)}</p>
                   <p className="text-sm text-muted-foreground">{t('spentThisMonth')}</p>
                 </div>
               </div>
@@ -354,7 +356,7 @@ export function SuppliersClient({
                             {t('invoiceCount', { count: spend?.count ?? 0 })}
                           </span>
                           <span className="font-semibold text-emerald-500">
-                            {formatCurrency(spend?.total ?? 0)}
+                            {money.base(spend?.total ?? 0)}
                           </span>
                         </div>
                       </CardContent>
@@ -430,7 +432,7 @@ export function SuppliersClient({
                               </TableCell>
                               <TableCell>{p.purchase_date}</TableCell>
                               <TableCell className="text-right font-semibold">
-                                {formatCurrency(Number(p.total) || 0)}
+                                {money.formatIn(Number(p.total) || 0, toCurrencyCode(p.currency))}
                               </TableCell>
                               <TableCell>
                                 <Button
@@ -462,9 +464,17 @@ export function SuppliersClient({
                                           <span className="truncate">{it.description}</span>
                                         </span>
                                         <span className="text-muted-foreground whitespace-nowrap">
-                                          {it.quantity} &times; {formatCurrency(Number(it.unit_cost) || 0)} ={' '}
+                                          {it.quantity} &times;{' '}
+                                          {money.formatIn(
+                                            Number(it.unit_cost) || 0,
+                                            toCurrencyCode(p.currency),
+                                          )}{' '}
+                                          ={' '}
                                           <span className="text-foreground font-medium">
-                                            {formatCurrency(Number(it.line_total) || 0)}
+                                            {money.formatIn(
+                                              Number(it.line_total) || 0,
+                                              toCurrencyCode(p.currency),
+                                            )}
                                           </span>
                                         </span>
                                       </div>
@@ -723,7 +733,7 @@ export function SuppliersClient({
           <div className="flex items-center justify-between border-t border-border pt-4">
             <span className="text-sm text-muted-foreground">{t('invoiceTotal')}</span>
             <span className="text-2xl font-bold text-emerald-500">
-              {formatCurrency(purchaseTotal)}
+              {money.format(purchaseTotal)}
             </span>
           </div>
 

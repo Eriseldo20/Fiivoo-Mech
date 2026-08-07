@@ -2,7 +2,7 @@
 
 import { ClipboardList, FileText, Users, Euro, TrendingUp, TrendingDown, Minus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-import { formatCurrency } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
 
 interface StatsCardsProps {
   activeJobs: number
@@ -40,6 +40,7 @@ function ChangeIndicator({ value }: { value?: number }) {
 }
 
 export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, approvedRevenue, showRevenue = true, changes }: StatsCardsProps) {
+  const money = useCurrency()
   const t = useTranslations('dashboard')
 
   const stats = [
@@ -71,7 +72,7 @@ export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, appro
       ? [
           {
             title: t('approvedRevenue'),
-            value: formatCurrency(approvedRevenue),
+            value: money.base(approvedRevenue),
             change: undefined,
             icon: Euro,
             gradient: 'from-slate-600 to-slate-700',

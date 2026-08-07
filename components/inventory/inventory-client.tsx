@@ -63,7 +63,7 @@ import {
   Truck,
   Hash
 } from 'lucide-react'
-import { formatCurrency } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
 import { PhotoUpload } from '@/components/vehicles/photo-upload'
 import { getBlobUrl } from '@/lib/blob'
 
@@ -113,6 +113,7 @@ interface InventoryClientProps {
 }
 
 export function InventoryClient({ initialInventory }: InventoryClientProps) {
+  const money = useCurrency()
   const t = useTranslations('inventory')
   const router = useRouter()
   // Data is server-rendered from the cached read; router.refresh() after a
@@ -281,7 +282,7 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                   <Euro className="h-5 w-5 text-emerald-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{formatCurrency(totalValue)}</p>
+                  <p className="text-2xl font-semibold">{money.base(totalValue)}</p>
                   <p className="text-sm text-muted-foreground">{t('inventoryValue')}</p>
                 </div>
               </div>
@@ -442,11 +443,11 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                           </div>
                           <div>
                             <p className="text-muted-foreground text-xs">{t('cost')}</p>
-                            <p className="font-medium">{item.unit_cost ? formatCurrency(item.unit_cost) : '-'}</p>
+                            <p className="font-medium">{item.unit_cost ? money.base(item.unit_cost) : '-'}</p>
                           </div>
                           <div>
                             <p className="text-muted-foreground text-xs">{t('price')}</p>
-                            <p className="font-medium">{item.sell_price ? formatCurrency(item.sell_price) : '-'}</p>
+                            <p className="font-medium">{item.sell_price ? money.base(item.sell_price) : '-'}</p>
                           </div>
                         </div>
                       </div>
@@ -558,10 +559,10 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                       </div>
                     </TableCell>
                     <TableCell className="text-right">
-                      {item.unit_cost ? formatCurrency(item.unit_cost) : '-'}
+                      {item.unit_cost ? money.base(item.unit_cost) : '-'}
                     </TableCell>
                     <TableCell className="text-right">
-                      {item.sell_price ? formatCurrency(item.sell_price) : '-'}
+                      {item.sell_price ? money.base(item.sell_price) : '-'}
                     </TableCell>
                     <TableCell>
                       {item.location && (
@@ -887,11 +888,11 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                   </div>
                   <div className="rounded-lg border bg-card/50 p-3">
                     <p className="text-xs text-muted-foreground">{t('unitCost')}</p>
-                    <p className="text-lg font-semibold">{detailItem.unit_cost ? formatCurrency(detailItem.unit_cost) : '-'}</p>
+                    <p className="text-lg font-semibold">{detailItem.unit_cost ? money.base(detailItem.unit_cost) : '-'}</p>
                   </div>
                   <div className="rounded-lg border bg-card/50 p-3">
                     <p className="text-xs text-muted-foreground">{t('sellPrice')}</p>
-                    <p className="text-lg font-semibold">{detailItem.sell_price ? formatCurrency(detailItem.sell_price) : '-'}</p>
+                    <p className="text-lg font-semibold">{detailItem.sell_price ? money.base(detailItem.sell_price) : '-'}</p>
                   </div>
                 </div>
 

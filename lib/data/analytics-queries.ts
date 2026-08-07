@@ -1,26 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { toBase, toCurrencyCode } from '@/lib/currency'
-
-/**
- * Normalise a stored money row to the base currency (EUR).
- *
- * Amounts are saved exactly as they were typed, so a 400 lek invoice holds
- * `400`. Summing that raw alongside euro rows would overstate it 100x, so every
- * aggregate must pass through here first, using the rate stored on that row
- * rather than the shop's current rate.
- */
-function baseAmount(row: {
-  total?: number | string | null
-  currency?: string | null
-  exchange_rate?: number | string | null
-}): number {
-  const amount = Number(row.total) || 0
-  const rate = Number(row.exchange_rate)
-  return toBase(amount, toCurrencyCode(row.currency), Number.isFinite(rate) && rate > 0 ? rate : 1)
-}
-
-/** Columns every money query needs so `baseAmount` can convert correctly. */
-const MONEY_COLUMNS = 'total, currency, exchange_rate'
+import { baseAmountOf as baseAmount, MONEY_COLUMNS } from '@/lib/currency'
 
 export interface ExpenseBreakdown {
   rent: number
@@ -351,7 +330,7 @@ export async function getPartsPurchasesForMonth(
 
   const { data } = await supabase
     .from('supplier_purchases')
-    .select('total, supplier:suppliers(name)')
+    .select(`${MONEY_COLUMNS}, supplier:suppliers(name)`)
     .eq('shop_id', shopId)
     .gte('purchase_date', monthStart)
     .lt('purchase_date', monthEnd)
@@ -361,7 +340,7 @@ export async function getPartsPurchasesForMonth(
   let total = 0
 
   for (const row of rows) {
-    const amount = Number(row.total) || 0
+    const amount = baseAmount(row)
     total += amount
     const name = (row.supplier as unknown as { name: string } | null)?.name ?? 'Unknown'
     bySupplier.set(name, (bySupplier.get(name) ?? 0) + amount)
@@ -392,7 +371,7 @@ export async function getMonthlyAnalytics(
     // Approved estimates count as earned revenue, bucketed by created_at
     supabase
       .from('estimates')
-      .select('id, total, job_card_id, created_at, payment_status')
+      .select(`id, ${MONEY_COLUMNS}, job_card_id, created_at, payment_status`)
       .eq('shop_id', shopId)
       .eq('status', 'approved')
       .gte('created_at', start)
@@ -408,13 +387,15 @@ export async function getMonthlyAnalytics(
   ])
 
   const estimates = estimatesResult.data || []
-  const revenue = estimates.reduce((sum, e) => sum + Number(e.total || 0), 0)
+  // Every total is normalised to base EUR first, so a lek invoice contributes
+  // its true value rather than its face number.
+  const revenue = estimates.reduce((sum, e) => sum + baseAmount(e), 0)
   const approvedCount = estimates.length
 
   // Split approved revenue into what the client has paid vs. still owes
   const paidRevenue = estimates
     .filter((e) => e.payment_status === 'paid')
-    .reduce((sum, e) => sum + Number(e.total || 0), 0)
+    .reduce((sum, e) => sum + baseAmount(e), 0)
   const outstandingRevenue = revenue - paidRevenue
   const unpaidCount = estimates.filter((e) => e.payment_status !== 'paid').length
 
@@ -510,13 +491,13 @@ async function getEmployeePerformance(
   if (jobIds.length > 0) {
     const { data: linkedEstimates } = await supabase
       .from('estimates')
-      .select('job_card_id, total, status')
+      .select(`job_card_id, ${MONEY_COLUMNS}, status`)
       .eq('shop_id', shopId)
       .eq('status', 'approved')
       .in('job_card_id', jobIds)
     for (const est of linkedEstimates || []) {
       if (!est.job_card_id) continue
-      revenueByJob.set(est.job_card_id, (revenueByJob.get(est.job_card_id) || 0) + Number(est.total || 0))
+      revenueByJob.set(est.job_card_id, (revenueByJob.get(est.job_card_id) || 0) + baseAmount(est))
     }
   }
 
@@ -566,7 +547,7 @@ export async function getMonthlyTrend(
   const [estimatesResult, txResult, defaultsResult, overridesResult] = await Promise.all([
     supabase
       .from('estimates')
-      .select('total, created_at')
+      .select(`${MONEY_COLUMNS}, created_at`)
       .eq('shop_id', shopId)
       .eq('status', 'approved')
       .gte('created_at', windowStart.toISOString())
@@ -627,7 +608,7 @@ export async function getMonthlyTrend(
     const key = `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}`
     const idx = indexByKey.get(key)
     if (idx === undefined) continue
-    points[idx].revenue += Number(est.total || 0)
+    points[idx].revenue += baseAmount(est)
   }
 
   // Inventory COGS per bucket (cost of consumed parts)

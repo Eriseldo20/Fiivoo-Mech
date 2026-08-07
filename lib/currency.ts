@@ -52,6 +52,30 @@ export function getCurrency(code: CurrencyCode): CurrencyConfig {
   return CURRENCIES[code] ?? CURRENCIES[BASE_CURRENCY]
 }
 
+/** A stored money row: the amount plus the currency and rate it was saved with. */
+export interface MoneyRow {
+  total?: number | string | null
+  currency?: string | null
+  exchange_rate?: number | string | null
+}
+
+/** Columns a query must select for `baseAmountOf` to convert correctly. */
+export const MONEY_COLUMNS = 'total, currency, exchange_rate'
+
+/**
+ * Normalise a stored money row to the base currency.
+ *
+ * Amounts are saved exactly as typed, so a 400 lek invoice holds `400`. Summing
+ * that raw next to euro rows would overstate it 100x, so every aggregate must
+ * pass through here, using the rate stored on that row rather than the shop's
+ * current rate (which may since have moved).
+ */
+export function baseAmountOf(row: MoneyRow): number {
+  const amount = Number(row.total) || 0
+  const rate = Number(row.exchange_rate)
+  return toBase(amount, toCurrencyCode(row.currency), Number.isFinite(rate) && rate > 0 ? rate : 1)
+}
+
 /**
  * The rate to store on a new document, as units-per-1-EUR.
  * EUR is always 1 so base-currency documents are unaffected by rate changes.
@@ -157,6 +181,29 @@ export function formatMoneyWithBase(
   const primary = formatMoney(amount, currency)
   if (currency === BASE_CURRENCY) return primary
   return `${primary} (${formatMoney(toBase(amount ?? 0, currency, rate), BASE_CURRENCY)})`
+}
+
+/**
+ * Formatters bound to a shop's currency, for server components that cannot use
+ * the React context. Report figures arrive in the base currency, so `base()` is
+ * the one to reach for; `raw()` is for amounts already in the shop currency.
+ */
+export function shopFormatter(currency: CurrencyCode, eurToAllRate = DEFAULT_EUR_TO_ALL) {
+  const displayRate = rateFor(currency, eurToAllRate)
+  return {
+    currency,
+    displayRate,
+    /** Format a base-currency (EUR) figure into the shop currency. */
+    base: (amount: number | null | undefined) =>
+      formatMoney(fromBase(amount ?? 0, currency, displayRate), currency),
+    /** Compact form of `base`, for chart axes. */
+    baseCompact: (amount: number | null | undefined) =>
+      formatMoneyCompact(fromBase(amount ?? 0, currency, displayRate), currency),
+    /** Format an amount already expressed in the shop currency. */
+    raw: (amount: number | null | undefined) => formatMoney(amount, currency),
+    /** Convert a base figure into the shop currency without formatting. */
+    fromBase: (amount: number) => fromBase(amount, currency, displayRate),
+  }
 }
 
 // --- Backwards-compatible euro helpers -------------------------------------

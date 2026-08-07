@@ -1,3 +1,5 @@
+import type { CurrencyCode } from '@/lib/currency'
+
 export interface Shop {
   id: string
   name: string
@@ -5,6 +7,10 @@ export interface Shop {
   phone: string | null
   email: string | null
   logo_url: string | null
+  /** Currency the shop reads its reports and new documents in. */
+  currency: CurrencyCode
+  /** Shop's own EUR -> ALL rate, stamped onto new documents. */
+  eur_to_all_rate: number
   created_at: string
   owner_id: string
 }
@@ -89,6 +95,14 @@ export interface Estimate {
   tax_rate: number
   tax_amount: number
   total: number
+  /**
+   * Currency this estimate was written in. The amounts above are stored exactly
+   * as typed in this currency, so they must always be displayed with it and
+   * never assumed to be euro.
+   */
+  currency: CurrencyCode
+  /** Units-per-1-EUR when the estimate was raised, for report conversion. */
+  exchange_rate: number
   created_at: string
   updated_at: string
   vehicle?: Vehicle

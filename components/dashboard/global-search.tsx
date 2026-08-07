@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation'
 import { useTranslations } from 'next-intl'
 import { Search, Briefcase, FileText, Loader2, CornerDownLeft } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { formatCurrency } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
+import { toCurrencyCode } from '@/lib/currency'
 import { createClient } from '@/lib/supabase/client'
 import { Dialog, DialogContent, DialogTitle, DialogDescription } from '@/components/ui/dialog'
 import {
@@ -29,6 +30,8 @@ interface EstimateResult {
   estimate_number: string | null
   status: string | null
   total: number | null
+  /** The currency this estimate was written in; it displays verbatim. */
+  currency: string | null
   customer: { name: string | null } | null
 }
 
@@ -78,6 +81,7 @@ export function GlobalSearchTrigger({ variant }: { variant: 'desktop' | 'mobile'
 export function GlobalSearch() {
   const t = useTranslations('globalSearch')
   const router = useRouter()
+  const money = useCurrency()
 
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
@@ -150,7 +154,7 @@ export function GlobalSearch() {
           .limit(6),
         supabase
           .from('estimates')
-          .select('id, estimate_number, status, total, customer:customers(name)')
+          .select('id, estimate_number, status, total, currency, customer:customers(name)')
           .eq('shop_id', shopId)
           .or(`estimate_number.ilike.${like},notes.ilike.${like}`)
           .order('created_at', { ascending: false })
@@ -263,7 +267,7 @@ export function GlobalSearch() {
                       </div>
                       {typeof est.total === 'number' && (
                         <span className="text-xs font-medium shrink-0">
-                          {formatCurrency(est.total)}
+                          {money.formatIn(est.total, toCurrencyCode(est.currency))}
                         </span>
                       )}
                     </CommandItem>

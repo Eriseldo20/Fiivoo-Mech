@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 import { formatDistanceToNow, format } from 'date-fns'
 import { Car, Clock, User, MoreHorizontal, Plus, FileText, Euro, Trash2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { formatCurrency } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -46,6 +46,7 @@ const statusStyles = {
 }
 
 export function EstimatesList({ estimates }: EstimatesListProps) {
+  const money = useCurrency()
   const t = useTranslations('estimates')
   const router = useRouter()
   const [deleteId, setDeleteId] = useState<string | null>(null)
@@ -197,7 +198,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                 <div className="flex items-center justify-between gap-2 pt-2 border-t border-border/50">
                   <div className="flex items-center gap-1.5">
                     <Euro className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-lg font-semibold">{formatCurrency(estimate.total)}</span>
+                    <span className="text-lg font-semibold">{money.formatIn(estimate.total, estimate.currency)}</span>
                   </div>
                   {estimate.status === 'approved' ? (
                     <PaymentStatusControl
@@ -270,7 +271,7 @@ export function EstimatesList({ estimates }: EstimatesListProps) {
                 <div className="col-span-2">
                   <div className="flex items-center gap-1.5">
                     <Euro className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-lg font-semibold">{formatCurrency(estimate.total)}</span>
+                    <span className="text-lg font-semibold">{money.formatIn(estimate.total, estimate.currency)}</span>
                   </div>
                   {/* Payment status only matters once the client has approved the estimate */}
                   {estimate.status === 'approved' && (

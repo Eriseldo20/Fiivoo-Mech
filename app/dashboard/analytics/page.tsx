@@ -31,7 +31,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { formatCurrency } from '@/lib/currency'
+import { shopFormatter, toCurrencyCode } from '@/lib/currency'
 import {
   getMonthlyAnalytics,
   getMonthlyTrend,
@@ -54,12 +54,24 @@ export default async function AnalyticsPage({
 
   const { data: profile } = await supabase
     .from('profiles')
-    .select('shop_id')
+    .select('shop_id, shops(currency, eur_to_all_rate)')
     .eq('id', user.id)
     .single()
 
   const shopId = profile?.shop_id
   if (!shopId) redirect('/onboarding')
+
+  // Report figures come back in the base currency, so bind a formatter that
+  // converts them out into whatever the shop reads its books in.
+  const shop = profile?.shops as unknown as {
+    currency: string | null
+    eur_to_all_rate: number | string | null
+  } | null
+  const shopRate = Number(shop?.eur_to_all_rate)
+  const money = shopFormatter(
+    toCurrencyCode(shop?.currency),
+    Number.isFinite(shopRate) && shopRate > 0 ? shopRate : undefined,
+  )
 
   const params = await searchParams
   const now = new Date()
@@ -106,34 +118,34 @@ export default async function AnalyticsPage({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <KpiCard
             title={t('revenue')}
-            value={formatCurrency(analytics.revenue)}
+            value={money.base(analytics.revenue)}
             icon={<TrendingUp className="h-5 w-5" />}
             hint={
               analytics.outstandingRevenue > 0
                 ? tPay('outstandingHint', { count: analytics.unpaidCount }) +
                   ' · ' +
-                  formatCurrency(analytics.outstandingRevenue)
+                  money.base(analytics.outstandingRevenue)
                 : t('approvedEstimates', { count: analytics.approvedCount })
             }
             tone="primary"
           />
           <KpiCard
             title={t('inventoryProfit')}
-            value={formatCurrency(analytics.inventoryProfit)}
+            value={money.base(analytics.inventoryProfit)}
             icon={<Package className="h-5 w-5" />}
-            hint={t('partsCost', { amount: formatCurrency(analytics.inventoryCost) })}
+            hint={t('partsCost', { amount: money.base(analytics.inventoryCost) })}
             tone="neutral"
           />
           <KpiCard
             title={t('operatingExpenses')}
-            value={formatCurrency(analytics.expenses.total)}
+            value={money.base(analytics.expenses.total)}
             icon={<Receipt className="h-5 w-5" />}
             hint={analytics.expenses.isOverride ? t('customForMonth') : t('recurringDefaults')}
             tone="neutral"
           />
           <KpiCard
             title={t('netProfit')}
-            value={formatCurrency(analytics.netProfit)}
+            value={money.base(analytics.netProfit)}
             icon={profitPositive ? <Wallet className="h-5 w-5" /> : <TrendingDown className="h-5 w-5" />}
             hint={t('netProfitHint')}
             tone={profitPositive ? 'success' : 'danger'}
@@ -155,20 +167,20 @@ export default async function AnalyticsPage({
               <CardDescription>{t('pnlDescription')}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-2">
-              <PnlRow label={t('approvedRevenue')} value={analytics.revenue} positive />
-              <PnlSubRow label={tPay('paidRevenue')} value={analytics.paidRevenue} tone="success" />
-              <PnlSubRow label={tPay('outstandingRevenue')} value={analytics.outstandingRevenue} tone="warning" />
-              <PnlRow label={t('partsCostCogs')} value={-analytics.inventoryCost} />
+              <PnlRow label={t('approvedRevenue')} value={analytics.revenue} positive format={money.base} />
+              <PnlSubRow label={tPay('paidRevenue')} value={analytics.paidRevenue} tone="success" format={money.base} />
+              <PnlSubRow label={tPay('outstandingRevenue')} value={analytics.outstandingRevenue} tone="warning" format={money.base} />
+              <PnlRow label={t('partsCostCogs')} value={-analytics.inventoryCost} format={money.base} />
               <Divider />
-              <PnlRow label={t('rent')} value={-analytics.expenses.rent} muted />
-              <PnlRow label={t('utilities')} value={-analytics.expenses.utilities} muted />
-              <PnlRow label={t('payroll')} value={-analytics.expenses.payroll} muted />
-              <PnlRow label={t('miscellaneous')} value={-analytics.expenses.misc} muted />
+              <PnlRow label={t('rent')} value={-analytics.expenses.rent} muted format={money.base} />
+              <PnlRow label={t('utilities')} value={-analytics.expenses.utilities} muted format={money.base} />
+              <PnlRow label={t('payroll')} value={-analytics.expenses.payroll} muted format={money.base} />
+              <PnlRow label={t('miscellaneous')} value={-analytics.expenses.misc} muted format={money.base} />
               <Divider />
               <div className="flex items-center justify-between pt-1">
                 <span className="font-semibold">{t('netProfit')}</span>
                 <span className={`font-bold ${profitPositive ? 'text-[var(--chart-3)]' : 'text-destructive'}`}>
-                  {formatCurrency(analytics.netProfit)}
+                  {money.base(analytics.netProfit)}
                 </span>
               </div>
               {/* Cash paid to suppliers this month. Shown for reference only:
@@ -178,7 +190,7 @@ export default async function AnalyticsPage({
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">{t('partsPurchases')}</span>
                     <span className="text-sm font-semibold">
-                      {formatCurrency(partsPurchases.total)}
+                      {money.base(partsPurchases.total)}
                     </span>
                   </div>
                   {partsPurchases.bySupplier.slice(0, 4).map((s) => (
@@ -187,7 +199,7 @@ export default async function AnalyticsPage({
                       className="flex items-center justify-between text-sm text-muted-foreground"
                     >
                       <span className="truncate pr-2">{s.name}</span>
-                      <span>{formatCurrency(s.total)}</span>
+                      <span>{money.base(s.total)}</span>
                     </div>
                   ))}
                   <p className="text-xs text-muted-foreground pt-1 border-t border-border/60">
@@ -199,7 +211,7 @@ export default async function AnalyticsPage({
                 <Sparkles className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                 <span className="text-muted-foreground">
                   {t('projectedNetProfit')}{' '}
-                  <span className="font-medium text-foreground">{formatCurrency(projectedNet)}</span>
+                  <span className="font-medium text-foreground">{money.base(projectedNet)}</span>
                 </span>
               </div>
             </CardContent>
@@ -232,7 +244,7 @@ export default async function AnalyticsPage({
                           </p>
                         </div>
                       </div>
-                      <span className="font-semibold">{formatCurrency(bestEmployee.revenue)}</span>
+                      <span className="font-semibold">{money.base(bestEmployee.revenue)}</span>
                     </div>
                   )}
                   {analytics.employees.slice(1).map((emp, i) => (
@@ -245,7 +257,7 @@ export default async function AnalyticsPage({
                       </div>
                       <div className="flex items-center gap-3">
                         <Badge variant="secondary">{t('jobsCount', { count: emp.completedJobs })}</Badge>
-                        <span className="text-sm text-muted-foreground">{formatCurrency(emp.revenue)}</span>
+                        <span className="text-sm text-muted-foreground">{money.base(emp.revenue)}</span>
                       </div>
                     </div>
                   ))}
@@ -285,13 +297,13 @@ export default async function AnalyticsPage({
                         </TableCell>
                         <TableCell className="text-right">{row.quantityUsed}</TableCell>
                         <TableCell className="text-right text-muted-foreground">
-                          {formatCurrency(row.unitCost)}
+                          {money.base(row.unitCost)}
                         </TableCell>
                         <TableCell className="text-right text-muted-foreground">
-                          {formatCurrency(row.sellPrice)}
+                          {money.base(row.sellPrice)}
                         </TableCell>
                         <TableCell className="text-right font-medium text-[var(--chart-3)]">
-                          {formatCurrency(row.profit)}
+                          {money.base(row.profit)}
                         </TableCell>
                       </TableRow>
                     ))}
@@ -348,17 +360,20 @@ function PnlRow({
   value,
   positive,
   muted,
+  format,
 }: {
   label: string
+  /** Base-currency figure; `format` converts it to the shop currency. */
   value: number
   positive?: boolean
   muted?: boolean
+  format: (amount: number) => string
 }) {
   return (
     <div className="flex items-center justify-between text-sm">
       <span className={muted ? 'text-muted-foreground' : ''}>{label}</span>
       <span className={positive ? 'font-medium text-[var(--chart-3)]' : value < 0 ? 'text-destructive' : ''}>
-        {formatCurrency(value)}
+        {format(value)}
       </span>
     </div>
   )
@@ -368,10 +383,13 @@ function PnlSubRow({
   label,
   value,
   tone,
+  format,
 }: {
   label: string
+  /** Base-currency figure; `format` converts it to the shop currency. */
   value: number
   tone: 'success' | 'warning'
+  format: (amount: number) => string
 }) {
   const toneClass = tone === 'success' ? 'text-[var(--chart-3)]' : 'text-amber-500'
   return (
@@ -380,7 +398,7 @@ function PnlSubRow({
         <span className={`h-1.5 w-1.5 rounded-full ${tone === 'success' ? 'bg-[var(--chart-3)]' : 'bg-amber-500'}`} />
         {label}
       </span>
-      <span className={toneClass}>{formatCurrency(value)}</span>
+      <span className={toneClass}>{format(value)}</span>
     </div>
   )
 }

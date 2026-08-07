@@ -2,6 +2,7 @@ import { unstable_cache } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { sanitizeSearchTerm } from '@/lib/search'
+import { baseAmountOf, MONEY_COLUMNS } from '@/lib/currency'
 
 // Cache tags for invalidation (used with revalidateTag)
 export const CACHE_TAGS = {
@@ -54,7 +55,10 @@ export function getDashboardStats(shopId: string) {
       const [jobsResult, estimatesResult, customersResult, lastMonthJobsResult, lastMonthCustomersResult] =
         await Promise.all([
           supabase.from('job_cards').select('id, status', { count: 'exact' }).eq('shop_id', shopId),
-          supabase.from('estimates').select('id, status, total', { count: 'exact' }).eq('shop_id', shopId),
+          supabase
+        .from('estimates')
+        .select(`id, status, ${MONEY_COLUMNS}`, { count: 'exact' })
+        .eq('shop_id', shopId),
           supabase.from('customers').select('id', { count: 'exact' }).eq('shop_id', shopId),
           supabase
             .from('job_cards')
@@ -78,9 +82,10 @@ export function getDashboardStats(shopId: string) {
         (e) => e.status === 'draft' || e.status === 'sent' || e.status === 'pending',
       ).length
       const totalCustomers = customersResult.count || 0
-      const approvedRevenue = estimates
-        .filter((e) => e.status === 'approved')
-        .reduce((sum, e) => sum + (e.total || 0), 0)
+  // Normalised to base EUR so lek and euro invoices sum to a true figure.
+  const approvedRevenue = estimates
+    .filter((e) => e.status === 'approved')
+    .reduce((sum, e) => sum + baseAmountOf(e), 0)
 
       const lastMonthActiveJobs = lastMonthJobs.filter(
         (j) => j.status === 'in_progress' || j.status === 'pending',
@@ -426,7 +431,8 @@ export async function getSupplierSpendSummary(shopId: string) {
   let thisMonth = 0
 
   for (const p of purchases) {
-    const total = Number(p.total) || 0
+    // Purchases carry their own currency and rate, so normalise before summing.
+    const total = baseAmountOf(p)
     allTime += total
     if (String(p.purchase_date ?? '').startsWith(monthKey)) thisMonth += total
 

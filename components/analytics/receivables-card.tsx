@@ -15,7 +15,7 @@ import {
   Search,
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
-import { formatCurrency } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -59,6 +59,7 @@ const BUCKET_STYLES: Record<AgingBucket, string> = {
 }
 
 export function ReceivablesCard({ data }: ReceivablesCardProps) {
+  const money = useCurrency()
   const t = useTranslations('receivables')
   const router = useRouter()
 
@@ -182,7 +183,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                 </span>
               </div>
               <p className="mt-3 text-3xl font-bold tabular-nums">
-                {formatCurrency(data.totalOwed)}
+                {money.base(data.totalOwed)}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {t('summaryLine', {
@@ -205,7 +206,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                   )}
                 >
                   {bucketLabel(b)}
-                  <span className="tabular-nums">{formatCurrency(data.buckets[b].total)}</span>
+                  <span className="tabular-nums">{money.base(data.buckets[b].total)}</span>
                 </span>
               ))}
             </div>
@@ -246,7 +247,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                   >
                     <p className="text-xs font-medium text-muted-foreground">{bucketLabel(b)}</p>
                     <p className="mt-1 text-lg font-bold tabular-nums">
-                      {formatCurrency(data.buckets[b].total)}
+                      {money.base(data.buckets[b].total)}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {t('invoiceCount', { count: data.buckets[b].count })}
@@ -368,7 +369,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                               </span>
                             </TableCell>
                             <TableCell className="text-right font-semibold tabular-nums">
-                              {formatCurrency(c.totalOwed)}
+                              {money.base(c.totalOwed)}
                             </TableCell>
                           </TableRow>
 
@@ -403,7 +404,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                                       </div>
                                       <div className="flex items-center gap-2">
                                         <span className="font-semibold tabular-nums text-sm">
-                                          {formatCurrency(inv.total)}
+                                          {money.base(inv.total)}
                                         </span>
                                         <Button
                                           asChild
@@ -449,7 +450,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                 {isFiltered ? t('filteredTotal') : t('grandTotal')}
               </span>
               <span className="text-lg font-bold tabular-nums">
-                {formatCurrency(visibleTotal)}
+                {money.base(visibleTotal)}
               </span>
             </div>
           </div>
