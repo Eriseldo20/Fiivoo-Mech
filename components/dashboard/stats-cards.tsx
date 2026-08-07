@@ -72,7 +72,7 @@ export function StatsCards({ activeJobs, pendingEstimates, totalCustomers, appro
       ? [
           {
             title: t('approvedRevenue'),
-            value: money.base(approvedRevenue),
+            value: money.formatBase(approvedRevenue),
             change: undefined,
             icon: Euro,
             gradient: 'from-slate-600 to-slate-700',

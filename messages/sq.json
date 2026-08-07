@@ -468,7 +468,12 @@
     "displayCurrency": "Monedha e shfaqjes",
     "eurToAllRate": "Kursi euro në lek",
     "eurToAllRateHint": "Përdoret për fatura të reja dhe për të krahasuar vlerat midis monedhave. Faturat ekzistuese ruajnë kursin me të cilin u krijuan.",
-    "currencySaved": "Cilësimet e monedhës u ruajtën"
+    "currencySaved": "Cilësimet e monedhës u ruajtën",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek shqiptar (L)",
+    "exchangeRate": "Kursi i këmbimit (1 € = ? L)",
+    "exchangeRateHint": "Përdoret për fatura të reja dhe për të krahasuar shifrat midis monedhave.",
+    "rateHistoryNote": "Ndryshimi i kursit ndikon vetëm në dokumentet e re. Faturat ekzistuese ruajnë kursin me të cilin u lëshuan."
   },
   "analytics": {
     "pageTitle": "Analitika & Të Ardhurat",

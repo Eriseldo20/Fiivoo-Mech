@@ -21,7 +21,22 @@ import {
   Phone,
   MapPin,
   Receipt,
+  Coins,
+  ArrowLeftRight,
 } from 'lucide-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  DEFAULT_EUR_TO_ALL,
+  getCurrency,
+  toCurrencyCode,
+  type CurrencyCode,
+} from '@/lib/currency'
 import { cn } from '@/lib/utils'
 import { LanguageSwitcher } from './language-switcher'
 import { ThemeToggle } from '@/components/theme-toggle'
@@ -41,6 +56,8 @@ interface SettingsContentProps {
       address: string | null
       phone: string | null
       email: string | null
+      currency: string | null
+      eur_to_all_rate: number | string | null
     } | null
   } | null
   expenseDefaults?: {
@@ -55,6 +72,7 @@ const tabs = [
   { id: 'profile', icon: User, labelKey: 'profile' },
   { id: 'shop', icon: Building2, labelKey: 'shop' },
   { id: 'expenses', icon: Receipt, labelKey: 'expenses' },
+  { id: 'currency', icon: Coins, labelKey: 'currency' },
   { id: 'language', icon: Globe, labelKey: 'language' },
   { id: 'appearance', icon: Palette, labelKey: 'appearance' },
   { id: 'notifications', icon: Bell, labelKey: 'notifications' },
@@ -79,6 +97,20 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
     phone: profile?.shop?.phone || '',
     email: profile?.shop?.email || '',
   })
+
+  // Display currency plus the default rate stamped onto new documents. Changing
+  // these never rewrites existing invoices, which keep their own saved rate.
+  const [currencyData, setCurrencyData] = useState({
+    currency: toCurrencyCode(profile?.shop?.currency),
+    rate: (() => {
+      const saved = Number(profile?.shop?.eur_to_all_rate)
+      return String(Number.isFinite(saved) && saved > 0 ? saved : DEFAULT_EUR_TO_ALL)
+    })(),
+  })
+
+  // Expenses are entered in the shop currency, so label them with its symbol
+  // rather than a hardcoded euro sign.
+  const expenseSymbol = getCurrency(currencyData.currency).symbol
 
   const [expenseData, setExpenseData] = useState({
     rent: String(expenseDefaults?.rent ?? 0),
@@ -116,6 +148,29 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
         address: shopData.address,
         phone: shopData.phone,
         email: shopData.email,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', profile.shop_id)
+
+    setIsSaving(false)
+    router.refresh()
+  }
+
+  const handleSaveCurrency = async () => {
+    if (!profile?.shop_id) return
+    const parsedRate = parseFloat(currencyData.rate)
+    // A zero or negative rate would make every conversion nonsense, so refuse
+    // to save it and fall back to the last good value.
+    if (!Number.isFinite(parsedRate) || parsedRate <= 0) return
+
+    setIsSaving(true)
+    const supabase = createClient()
+
+    await supabase
+      .from('shops')
+      .update({
+        currency: currencyData.currency,
+        eur_to_all_rate: parsedRate,
         updated_at: new Date().toISOString(),
       })
       .eq('id', profile.shop_id)
@@ -308,7 +363,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label>{t('rent')} (€)</Label>
+                    <Label>{t('rent')} ({expenseSymbol})</Label>
                     <Input
                       type="number"
                       min="0"
@@ -320,7 +375,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>{t('utilities')} (€)</Label>
+                    <Label>{t('utilities')} ({expenseSymbol})</Label>
                     <Input
                       type="number"
                       min="0"
@@ -332,7 +387,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>{t('payroll')} (€)</Label>
+                    <Label>{t('payroll')} ({expenseSymbol})</Label>
                     <Input
                       type="number"
                       min="0"
@@ -344,7 +399,7 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label>{t('misc')} (€)</Label>
+                    <Label>{t('misc')} ({expenseSymbol})</Label>
                     <Input
                       type="number"
                       min="0"
@@ -358,6 +413,69 @@ export function SettingsContent({ profile, expenseDefaults }: SettingsContentPro
                 </div>
 
                 <Button onClick={handleSaveExpenses} disabled={isSaving} className="w-full sm:w-auto">
+                  {isSaving ? (
+                    <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  ) : (
+                    <Save className="h-4 w-4 mr-2" />
+                  )}
+                  {t('saveChanges')}
+                </Button>
+              </div>
+            )}
+
+            {/* Currency Settings */}
+            {activeTab === 'currency' && (
+              <div className="bg-card/50 backdrop-blur-xl border border-border/50 rounded-xl p-4 md:p-6 space-y-6">
+                <div>
+                  <h2 className="text-lg font-semibold">{t('currency')}</h2>
+                  <p className="text-sm text-muted-foreground">{t('currencyDescription')}</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">
+                    <Coins className="h-4 w-4 text-muted-foreground" />
+                    {t('displayCurrency')}
+                  </Label>
+                  <Select
+                    value={currencyData.currency}
+                    onValueChange={(value) =>
+                      setCurrencyData({ ...currencyData, currency: value as CurrencyCode })
+                    }
+                  >
+                    <SelectTrigger className="h-11">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="EUR">{t('currencyEur')}</SelectItem>
+                      <SelectItem value="ALL">{t('currencyAll')}</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label className="flex items-center gap-2">
+                    <ArrowLeftRight className="h-4 w-4 text-muted-foreground" />
+                    {t('exchangeRate')}
+                  </Label>
+                  <Input
+                    type="number"
+                    min="0.0001"
+                    step="0.0001"
+                    inputMode="decimal"
+                    value={currencyData.rate}
+                    onChange={(e) => setCurrencyData({ ...currencyData, rate: e.target.value })}
+                    className="h-11"
+                  />
+                  <p className="text-sm text-muted-foreground">{t('exchangeRateHint')}</p>
+                </div>
+
+                {/* Existing invoices keep their own stored rate, so the user can
+                    change this safely without altering past documents. */}
+                <p className="text-xs text-muted-foreground border-l-2 border-border pl-3">
+                  {t('rateHistoryNote')}
+                </p>
+
+                <Button onClick={handleSaveCurrency} disabled={isSaving} className="w-full sm:w-auto">
                   {isSaving ? (
                     <Loader2 className="h-4 w-4 animate-spin mr-2" />
                   ) : (

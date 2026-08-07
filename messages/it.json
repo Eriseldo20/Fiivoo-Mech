@@ -411,7 +411,12 @@
     "displayCurrency": "Valuta di visualizzazione",
     "eurToAllRate": "Tasso euro-lek",
     "eurToAllRateHint": "Usato per le nuove fatture e per confrontare importi tra valute. Le fatture esistenti mantengono il tasso originale.",
-    "currencySaved": "Impostazioni valuta salvate"
+    "currencySaved": "Impostazioni valuta salvate",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek albanese (L)",
+    "exchangeRate": "Tasso di cambio (1 € = ? L)",
+    "exchangeRateHint": "Usato per le nuove fatture e per confrontare gli importi tra valute.",
+    "rateHistoryNote": "Modificare il tasso riguarda solo i nuovi documenti. Le fatture esistenti mantengono il loro tasso."
   },
   "analytics": {
     "pageTitle": "Analisi e Ricavi",

@@ -22,18 +22,13 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
-import { CURRENCY } from '@/lib/currency'
+import { useCurrency } from '@/components/providers/currency-provider'
 import type { MonthlyTrendPoint } from '@/lib/data/analytics-queries'
-
-function compact(value: number) {
-  return new Intl.NumberFormat(CURRENCY.locale, {
-    notation: 'compact',
-    maximumFractionDigits: 1,
-  }).format(value)
-}
 
 export function RevenueTrendChart({ data }: { data: MonthlyTrendPoint[] }) {
   const t = useTranslations('analytics')
+  // Trend points arrive in base EUR; the hook converts them for display.
+  const money = useCurrency()
 
   const chartConfig = {
     revenue: { label: t('revenue'), color: 'var(--chart-1)' },
@@ -73,7 +68,7 @@ export function RevenueTrendChart({ data }: { data: MonthlyTrendPoint[] }) {
               axisLine={false}
               width={48}
               fontSize={11}
-              tickFormatter={(v) => `${CURRENCY.symbol}${compact(v)}`}
+                  tickFormatter={(v) => money.formatBaseCompact(v)}
             />
             <ChartTooltip
               content={
@@ -84,8 +79,7 @@ export function RevenueTrendChart({ data }: { data: MonthlyTrendPoint[] }) {
                         {chartConfig[name as keyof typeof chartConfig]?.label ?? name}
                       </span>
                       <span className="font-mono font-medium">
-                        {CURRENCY.symbol}
-                        {Number(value).toLocaleString(CURRENCY.locale, { maximumFractionDigits: 0 })}
+                        {money.formatBase(Number(value))}
                       </span>
                     </div>
                   )}

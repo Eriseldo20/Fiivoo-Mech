@@ -468,7 +468,12 @@
     "displayCurrency": "Moneda de visualización",
     "eurToAllRate": "Tipo euro a lek",
     "eurToAllRateHint": "Se usa para facturas nuevas y para comparar importes entre monedas. Las facturas existentes conservan su tipo original.",
-    "currencySaved": "Ajustes de moneda guardados"
+    "currencySaved": "Ajustes de moneda guardados",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek albanés (L)",
+    "exchangeRate": "Tipo de cambio (1 € = ? L)",
+    "exchangeRateHint": "Se usa para nuevas facturas y para comparar importes entre monedas.",
+    "rateHistoryNote": "Cambiar el tipo solo afecta a los documentos nuevos. Las facturas existentes conservan su tipo."
   },
   "analytics": {
     "pageTitle": "Analíticas e Ingresos",

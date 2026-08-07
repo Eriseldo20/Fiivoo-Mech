@@ -256,7 +256,7 @@ export function SuppliersClient({
                   <Euro className="h-5 w-5 text-emerald-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{money.base(summary.allTime)}</p>
+                  <p className="text-2xl font-semibold">{money.formatBase(summary.allTime)}</p>
                   <p className="text-sm text-muted-foreground">{t('totalSpent')}</p>
                 </div>
               </div>
@@ -269,7 +269,7 @@ export function SuppliersClient({
                   <Receipt className="h-5 w-5 text-blue-500" />
                 </div>
                 <div>
-                  <p className="text-2xl font-semibold">{money.base(summary.thisMonth)}</p>
+                  <p className="text-2xl font-semibold">{money.formatBase(summary.thisMonth)}</p>
                   <p className="text-sm text-muted-foreground">{t('spentThisMonth')}</p>
                 </div>
               </div>
@@ -356,7 +356,7 @@ export function SuppliersClient({
                             {t('invoiceCount', { count: spend?.count ?? 0 })}
                           </span>
                           <span className="font-semibold text-emerald-500">
-                            {money.base(spend?.total ?? 0)}
+                            {money.formatBase(spend?.total ?? 0)}
                           </span>
                         </div>
                       </CardContent>

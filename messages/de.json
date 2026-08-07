@@ -468,7 +468,12 @@
     "displayCurrency": "Anzeigewährung",
     "eurToAllRate": "Euro-zu-Lek-Kurs",
     "eurToAllRateHint": "Wird für neue Rechnungen und den Vergleich von Beträgen verwendet. Bestehende Rechnungen behalten ihren ursprünglichen Kurs.",
-    "currencySaved": "Währungseinstellungen gespeichert"
+    "currencySaved": "Währungseinstellungen gespeichert",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Albanischer Lek (L)",
+    "exchangeRate": "Wechselkurs (1 € = ? L)",
+    "exchangeRateHint": "Wird für neue Rechnungen und zum Vergleich von Beträgen verwendet.",
+    "rateHistoryNote": "Eine Kursänderung betrifft nur neue Dokumente. Bestehende Rechnungen behalten ihren Kurs."
   },
   "analytics": {
     "pageTitle": "Analysen & Umsatz",

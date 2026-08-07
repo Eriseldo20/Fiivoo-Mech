@@ -10,6 +10,7 @@ import {
   type CurrencyCode,
 } from '@/lib/currency'
 import { format } from 'date-fns'
+import { getPdfDateFormat, getPdfDateLocale, getPdfLabels } from './pdf-labels'
 
 interface EstimateItem {
   description: string
@@ -55,9 +56,20 @@ interface EstimatePDFData {
   }
 }
 
-export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string): jsPDF {
+export function generateEstimatePDF(
+  data: EstimatePDFData,
+  logoDataUrl?: string,
+  /** Language the document is printed in; independent of the app UI language. */
+  locale?: string,
+): jsPDF {
   const doc = new jsPDF()
   const pageWidth = doc.internal.pageSize.getWidth()
+
+  const L = getPdfLabels(locale)
+  const dateLocale = getPdfDateLocale(locale)
+  const datePattern = getPdfDateFormat(locale)
+  const printDate = (value: string) =>
+    format(new Date(value), datePattern, { locale: dateLocale })
 
   // The PDF is the customer-facing document, so it must print the currency the
   // invoice was actually written in rather than the shop's current setting.
@@ -106,7 +118,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setFontSize(28)
   doc.setTextColor(...darkColor)
   doc.setFont('helvetica', 'bold')
-  doc.text('ESTIMATE', pageWidth - 20, 25, { align: 'right' })
+  doc.text(L.title, pageWidth - 20, 25, { align: 'right' })
   
   doc.setFontSize(12)
   doc.setTextColor(...grayColor)
@@ -125,7 +137,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setFontSize(10)
   doc.setTextColor(...statusColor)
   doc.setFont('helvetica', 'bold')
-  doc.text(data.status.toUpperCase(), pageWidth - 20, 41, { align: 'right' })
+  doc.text(L.statuses[data.status] ?? data.status.toUpperCase(), pageWidth - 20, 41, { align: 'right' })
 
   // Divider line
   yPos = 55
@@ -142,7 +154,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setFontSize(11)
   doc.setTextColor(...primaryColor)
   doc.setFont('helvetica', 'bold')
-  doc.text('BILL TO', 20, yPos)
+  doc.text(L.billTo, 20, yPos)
   
   yPos += 7
   doc.setFontSize(10)
@@ -166,7 +178,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
       doc.text(data.customer.address, 20, yPos)
     }
   } else {
-    doc.text('No customer assigned', 20, yPos)
+    doc.text(L.noCustomer, 20, yPos)
   }
 
   // Vehicle Info (right column)
@@ -174,7 +186,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setFontSize(11)
   doc.setTextColor(...primaryColor)
   doc.setFont('helvetica', 'bold')
-  doc.text('VEHICLE', 20 + colWidth + 20, rightYPos)
+  doc.text(L.vehicle, 20 + colWidth + 20, rightYPos)
   
   rightYPos += 7
   doc.setFontSize(10)
@@ -187,23 +199,23 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
     doc.setFont('helvetica', 'normal')
     rightYPos += 5
     if (data.vehicle.license_plate) {
-      doc.text(`Plate: ${data.vehicle.license_plate}`, 20 + colWidth + 20, rightYPos)
+      doc.text(`${L.plate}: ${data.vehicle.license_plate}`, 20 + colWidth + 20, rightYPos)
       rightYPos += 5
     }
     if (data.vehicle.vin) {
-      doc.text(`VIN: ${data.vehicle.vin}`, 20 + colWidth + 20, rightYPos)
+      doc.text(`${L.vin}: ${data.vehicle.vin}`, 20 + colWidth + 20, rightYPos)
     }
   } else {
-    doc.text('No vehicle assigned', 20 + colWidth + 20, rightYPos)
+    doc.text(L.noVehicle, 20 + colWidth + 20, rightYPos)
   }
 
   // Dates section
   yPos = Math.max(yPos, rightYPos) + 15
   doc.setFontSize(9)
   doc.setTextColor(...grayColor)
-  doc.text(`Date: ${format(new Date(data.created_at), 'MMMM d, yyyy')}`, 20, yPos)
+  doc.text(`${L.date}: ${printDate(data.created_at)}`, 20, yPos)
   if (data.valid_until) {
-    doc.text(`Valid Until: ${format(new Date(data.valid_until), 'MMMM d, yyyy')}`, 20 + colWidth + 20, yPos)
+    doc.text(`${L.validUntil}: ${printDate(data.valid_until)}`, 20 + colWidth + 20, yPos)
   }
 
   yPos += 15
@@ -211,7 +223,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   // Items table
   const tableData = data.items.map(item => [
     item.description,
-    item.type === 'parts' ? 'Parts' : 'Labor',
+    item.type === 'parts' ? L.parts : L.labor,
     item.quantity.toString(),
     money(item.unit_price),
     money(item.total),
@@ -219,7 +231,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
 
   autoTable(doc, {
     startY: yPos,
-    head: [['Description', 'Type', 'Qty', 'Unit Price', 'Total']],
+    head: [[L.description, L.type, L.qty, L.unitPrice, L.lineTotal]],
     body: tableData,
     theme: 'striped',
     headStyles: {
@@ -245,7 +257,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
       doc.setFontSize(8)
       doc.setTextColor(...grayColor)
       doc.text(
-        'Thank you for your business!',
+        L.thankYou,
         pageWidth / 2,
         doc.internal.pageSize.getHeight() - 10,
         { align: 'center' }
@@ -262,13 +274,13 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
 
   doc.setFontSize(10)
   doc.setTextColor(...grayColor)
-  doc.text('Subtotal:', totalsX, totalsY)
+  doc.text(`${L.subtotal}:`, totalsX, totalsY)
   doc.setTextColor(...darkColor)
   doc.text(money(data.subtotal), pageWidth - 20, totalsY, { align: 'right' })
   
   totalsY += 7
   doc.setTextColor(...grayColor)
-  doc.text(`Tax (${data.tax_rate}%):`, totalsX, totalsY)
+  doc.text(`${L.tax} (${data.tax_rate}%):`, totalsX, totalsY)
   doc.setTextColor(...darkColor)
   doc.text(money(data.tax_amount), pageWidth - 20, totalsY, { align: 'right' })
   
@@ -280,7 +292,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
   doc.setFontSize(14)
   doc.setTextColor(...primaryColor)
   doc.setFont('helvetica', 'bold')
-  doc.text('TOTAL:', totalsX, totalsY + 5)
+  doc.text(`${L.total}:`, totalsX, totalsY + 5)
   doc.text(money(data.total), pageWidth - 20, totalsY + 5, { align: 'right' })
 
   // For a non-base currency, print the euro equivalent and the rate used, so
@@ -304,7 +316,7 @@ export function generateEstimatePDF(data: EstimatePDFData, logoDataUrl?: string)
     doc.setFontSize(11)
     doc.setTextColor(...primaryColor)
     doc.setFont('helvetica', 'bold')
-    doc.text('Notes', 20, totalsY)
+    doc.text(L.notes, 20, totalsY)
     
     totalsY += 7
     doc.setFontSize(9)
@@ -334,8 +346,14 @@ async function loadLogoDataUrl(): Promise<string | undefined> {
   }
 }
 
-export async function downloadEstimatePDF(data: EstimatePDFData): Promise<void> {
+export async function downloadEstimatePDF(
+  data: EstimatePDFData,
+  locale?: string,
+): Promise<void> {
   const logoDataUrl = await loadLogoDataUrl()
-  const doc = generateEstimatePDF(data, logoDataUrl)
-  doc.save(`estimate-${data.estimate_number}.pdf`)
+  const doc = generateEstimatePDF(data, logoDataUrl, locale)
+  // Tag the filename with the language so several translations of the same
+  // invoice don't overwrite each other in the downloads folder.
+  const suffix = locale ? `-${locale}` : ''
+  doc.save(`estimate-${data.estimate_number}${suffix}.pdf`)
 }

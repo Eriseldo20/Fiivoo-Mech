@@ -17,7 +17,7 @@ import {
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { formatCurrency } from '@/lib/currency'
+import { formatMoney, toCurrencyCode } from '@/lib/currency'
 import { getBlobUrl } from '@/lib/blob'
 import { JobStatusActions } from '@/components/jobs/job-status-actions'
 import { JobTrackingPanel } from '@/components/jobs/job-tracking-panel'
@@ -79,7 +79,7 @@ export default async function JobDetailPage({
   // Get related estimates (payment status lives on the estimate)
   const { data: estimates } = await supabase
     .from('estimates')
-    .select('id, estimate_number, status, total, payment_status')
+    .select('id, estimate_number, status, total, currency, payment_status')
     .eq('job_card_id', id)
 
   // Get job photos (before/after) and the user's shop for uploads
@@ -231,7 +231,9 @@ export default async function JobDetailPage({
                             variant="toggle"
                           />
                         )}
-                        <p className="font-semibold">{formatCurrency(estimate.total)}</p>
+                        <p className="font-semibold">
+                          {formatMoney(estimate.total, toCurrencyCode(estimate.currency))}
+                        </p>
                       </div>
                     </Link>
                   ))}

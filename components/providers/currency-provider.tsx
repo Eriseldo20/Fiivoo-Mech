@@ -23,6 +23,8 @@ interface CurrencyContextValue {
   formatCompact: (amount: number | null | undefined) => string
   /** Formats a EUR base amount into the shop currency. */
   formatBase: (baseAmount: number | null | undefined) => string
+  /** Compact form of `formatBase`, for chart axes and tooltips. */
+  formatBaseCompact: (baseAmount: number | null | undefined) => string
   /** Formats an amount recorded in its own currency, e.g. a lek invoice. */
   formatIn: (amount: number | null | undefined, currency: CurrencyCode) => string
   /** Re-expresses a document amount into the shop currency for comparison. */
@@ -53,6 +55,8 @@ export function CurrencyProvider({
       formatCompact: (amount) => formatMoneyCompact(amount, currency),
       formatBase: (baseAmount) =>
         formatMoney(fromBase(baseAmount ?? 0, currency, displayRate), currency),
+      formatBaseCompact: (baseAmount) =>
+        formatMoneyCompact(fromBase(baseAmount ?? 0, currency, displayRate), currency),
       formatIn: (amount, c) => formatMoney(amount, c),
       toDisplay: (amount, from, fromRate) =>
         convert(amount, from, fromRate, currency, displayRate),
@@ -77,6 +81,7 @@ export function useCurrency(): CurrencyContextValue {
     format: (amount) => formatMoney(amount, BASE_CURRENCY),
     formatCompact: (amount) => formatMoneyCompact(amount, BASE_CURRENCY),
     formatBase: (baseAmount) => formatMoney(baseAmount ?? 0, BASE_CURRENCY),
+    formatBaseCompact: (baseAmount) => formatMoneyCompact(baseAmount ?? 0, BASE_CURRENCY),
     formatIn: (amount, c) => formatMoney(amount, c),
     toDisplay: (amount, from, fromRate) =>
       convert(amount, from, fromRate, BASE_CURRENCY, 1),

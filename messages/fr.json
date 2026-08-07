@@ -411,7 +411,12 @@
     "displayCurrency": "Devise d’affichage",
     "eurToAllRate": "Taux euro vers lek",
     "eurToAllRateHint": "Utilisé pour les nouvelles factures et pour comparer les montants entre devises. Les factures existantes conservent leur taux d’origine.",
-    "currencySaved": "Paramètres de devise enregistrés"
+    "currencySaved": "Paramètres de devise enregistrés",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Lek albanais (L)",
+    "exchangeRate": "Taux de change (1 € = ? L)",
+    "exchangeRateHint": "Utilisé pour les nouvelles factures et pour comparer les montants.",
+    "rateHistoryNote": "Modifier le taux n’affecte que les nouveaux documents. Les factures existantes conservent leur taux."
   },
   "analytics": {
     "pageTitle": "Analyses et Revenus",

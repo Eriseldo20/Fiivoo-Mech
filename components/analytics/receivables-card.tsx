@@ -183,7 +183,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                 </span>
               </div>
               <p className="mt-3 text-3xl font-bold tabular-nums">
-                {money.base(data.totalOwed)}
+                {money.formatBase(data.totalOwed)}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 {t('summaryLine', {
@@ -206,7 +206,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                   )}
                 >
                   {bucketLabel(b)}
-                  <span className="tabular-nums">{money.base(data.buckets[b].total)}</span>
+                  <span className="tabular-nums">{money.formatBase(data.buckets[b].total)}</span>
                 </span>
               ))}
             </div>
@@ -247,7 +247,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                   >
                     <p className="text-xs font-medium text-muted-foreground">{bucketLabel(b)}</p>
                     <p className="mt-1 text-lg font-bold tabular-nums">
-                      {money.base(data.buckets[b].total)}
+                      {money.formatBase(data.buckets[b].total)}
                     </p>
                     <p className="text-xs text-muted-foreground">
                       {t('invoiceCount', { count: data.buckets[b].count })}
@@ -369,7 +369,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                               </span>
                             </TableCell>
                             <TableCell className="text-right font-semibold tabular-nums">
-                              {money.base(c.totalOwed)}
+                              {money.formatBase(c.totalOwed)}
                             </TableCell>
                           </TableRow>
 
@@ -404,7 +404,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                                       </div>
                                       <div className="flex items-center gap-2">
                                         <span className="font-semibold tabular-nums text-sm">
-                                          {money.base(inv.total)}
+                                          {money.formatBase(inv.total)}
                                         </span>
                                         <Button
                                           asChild
@@ -450,7 +450,7 @@ export function ReceivablesCard({ data }: ReceivablesCardProps) {
                 {isFiltered ? t('filteredTotal') : t('grandTotal')}
               </span>
               <span className="text-lg font-bold tabular-nums">
-                {money.base(visibleTotal)}
+                {money.formatBase(visibleTotal)}
               </span>
             </div>
           </div>

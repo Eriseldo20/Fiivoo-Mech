@@ -457,7 +457,12 @@
     "displayCurrency": "Display currency",
     "eurToAllRate": "Euro to lek rate",
     "eurToAllRateHint": "Used for new invoices and to compare amounts across currencies. Existing invoices keep the rate they were created with.",
-    "currencySaved": "Currency settings saved"
+    "currencySaved": "Currency settings saved",
+    "currencyEur": "Euro (€)",
+    "currencyAll": "Albanian Lek (L)",
+    "exchangeRate": "Exchange rate (1 € = ? L)",
+    "exchangeRateHint": "Used for new invoices and to compare figures across currencies.",
+    "rateHistoryNote": "Changing the rate only affects new documents. Existing invoices keep the rate they were issued with."
   },
   "analytics": {
     "pageTitle": "Analytics & Revenue",
