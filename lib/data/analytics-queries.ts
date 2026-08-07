@@ -111,6 +111,60 @@ export async function getExpensesForMonth(
   }
 }
 
+export interface PartsPurchaseSummary {
+  /** Cash actually invoiced by suppliers in this month. */
+  total: number
+  invoiceCount: number
+  /** Spend grouped by supplier, highest first. */
+  bySupplier: { name: string; total: number }[]
+}
+
+/**
+ * What the shop actually paid suppliers for parts in a given month.
+ *
+ * NOTE: this is reported alongside the P&L but deliberately NOT subtracted
+ * from net profit. Parts already hit profit as COGS when they are consumed on
+ * a job (see `inventoryCost`), so subtracting invoices too would double-count.
+ */
+export async function getPartsPurchasesForMonth(
+  shopId: string,
+  year: number,
+  month: number,
+): Promise<PartsPurchaseSummary> {
+  const supabase = await createClient()
+
+  const monthStart = `${year}-${String(month).padStart(2, '0')}-01`
+  const nextMonth = month === 12 ? 1 : month + 1
+  const nextYear = month === 12 ? year + 1 : year
+  const monthEnd = `${nextYear}-${String(nextMonth).padStart(2, '0')}-01`
+
+  const { data } = await supabase
+    .from('supplier_purchases')
+    .select('total, supplier:suppliers(name)')
+    .eq('shop_id', shopId)
+    .gte('purchase_date', monthStart)
+    .lt('purchase_date', monthEnd)
+
+  const rows = data ?? []
+  const bySupplier = new Map<string, number>()
+  let total = 0
+
+  for (const row of rows) {
+    const amount = Number(row.total) || 0
+    total += amount
+    const name = (row.supplier as unknown as { name: string } | null)?.name ?? 'Unknown'
+    bySupplier.set(name, (bySupplier.get(name) ?? 0) + amount)
+  }
+
+  return {
+    total,
+    invoiceCount: rows.length,
+    bySupplier: [...bySupplier.entries()]
+      .map(([name, amount]) => ({ name, total: amount }))
+      .sort((a, b) => b.total - a.total),
+  }
+}
+
 /**
  * Full analytics for a single month: revenue (approved estimates),
  * inventory profit, operating expenses, best employees, and net profit.

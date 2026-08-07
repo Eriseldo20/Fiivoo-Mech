@@ -56,7 +56,8 @@
     "calendar": "Kalender",
     "analytics": "Analysen",
     "settings": "Einstellungen",
-    "signOut": "Abmelden"
+    "signOut": "Abmelden",
+    "suppliers": "Lieferanten"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -537,7 +538,9 @@
       "10": "Okt",
       "11": "Nov",
       "12": "Dez"
-    }
+    },
+    "partsPurchases": "Teile-Einkäufe (Lieferanten)",
+    "partsPurchasesNote": "Von Lieferanten in diesem Monat berechneter Betrag. Oben nicht abgezogen — Teile mindern den Gewinn bereits als Wareneinsatz bei Verwendung."
   },
   "auth": {
     "signIn": "Anmelden",
@@ -984,5 +987,51 @@
     "addTaskPlaceholder": "Aufgabe hinzufügen…",
     "vehiclePhoto": "Fahrzeugfoto",
     "vehiclePhotoOf": "Foto von {vehicle}"
+  },
+  "suppliers": {
+    "title": "Lieferanten",
+    "description": "Lieferanten und Ausgaben für Teile verfolgen",
+    "totalSpent": "Gesamtausgaben",
+    "spentThisMonth": "Diesen Monat",
+    "invoices": "Rechnungen",
+    "tabSuppliers": "Lieferanten",
+    "tabPurchases": "Einkäufe",
+    "addSupplier": "Lieferant hinzufügen",
+    "editSupplier": "Lieferant bearbeiten",
+    "addPurchase": "Einkauf erfassen",
+    "savePurchase": "Einkauf speichern",
+    "noSuppliers": "Noch keine Lieferanten. Füge den ersten hinzu.",
+    "noPurchases": "Noch keine Einkäufe erfasst.",
+    "addSupplierFirst": "Füge zuerst einen Lieferanten hinzu.",
+    "invoiceCount": "{count} Rechnungen",
+    "name": "Name des Lieferanten",
+    "contactName": "Kontaktperson",
+    "phone": "Telefon",
+    "email": "E-Mail",
+    "address": "Adresse",
+    "notes": "Notizen",
+    "supplier": "Lieferant",
+    "selectSupplier": "Lieferant auswählen",
+    "invoiceNumber": "Rechnungsnummer",
+    "date": "Datum",
+    "lineItems": "Positionen",
+    "addLine": "Position hinzufügen",
+    "linkPart": "Mit Teil verknüpfen",
+    "noPart": "Kein Teil",
+    "descriptionLabel": "Beschreibung",
+    "qty": "Menge",
+    "unitCost": "Stückpreis",
+    "invoiceTotal": "Rechnungssumme",
+    "colSupplier": "Lieferant",
+    "colInvoice": "Rechnung",
+    "colDate": "Datum",
+    "colTotal": "Summe",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "deleteSupplierTitle": "Diesen Lieferanten löschen?",
+    "deleteSupplierDesc": "Damit werden auch alle erfassten Rechnungen entfernt.",
+    "deletePurchaseTitle": "Diesen Einkauf löschen?",
+    "deletePurchaseDesc": "Diese Rechnung und ihre Positionen werden endgültig entfernt."
   }
 }

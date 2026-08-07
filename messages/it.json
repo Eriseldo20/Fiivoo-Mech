@@ -8,7 +8,8 @@
     "inventory": "Inventario",
     "calendar": "Calendario",
     "analytics": "Analisi",
-    "settings": "Impostazioni"
+    "settings": "Impostazioni",
+    "suppliers": "Fornitori"
   },
   "common": {
     "search": "Cerca...",
@@ -479,7 +480,9 @@
       "10": "Ott",
       "11": "Nov",
       "12": "Dic"
-    }
+    },
+    "partsPurchases": "Acquisti Ricambi (Fornitori)",
+    "partsPurchasesNote": "Importo fatturato dai fornitori questo mese. Non sottratto sopra: i ricambi riducono già il profitto come costo quando usati."
   },
   "customers": {
     "addCustomer": "Aggiungi cliente",
@@ -912,5 +915,51 @@
     "addTaskPlaceholder": "Aggiungi un’attività…",
     "vehiclePhoto": "Foto del veicolo",
     "vehiclePhotoOf": "Foto di {vehicle}"
+  },
+  "suppliers": {
+    "title": "Fornitori",
+    "description": "Monitora fornitori e spese per i ricambi",
+    "totalSpent": "Spesa Totale",
+    "spentThisMonth": "Spesa Questo Mese",
+    "invoices": "Fatture",
+    "tabSuppliers": "Fornitori",
+    "tabPurchases": "Acquisti",
+    "addSupplier": "Aggiungi Fornitore",
+    "editSupplier": "Modifica Fornitore",
+    "addPurchase": "Registra Acquisto",
+    "savePurchase": "Salva Acquisto",
+    "noSuppliers": "Nessun fornitore. Aggiungi il primo.",
+    "noPurchases": "Nessun acquisto registrato.",
+    "addSupplierFirst": "Aggiungi prima un fornitore.",
+    "invoiceCount": "{count} fatture",
+    "name": "Nome Fornitore",
+    "contactName": "Referente",
+    "phone": "Telefono",
+    "email": "Email",
+    "address": "Indirizzo",
+    "notes": "Note",
+    "supplier": "Fornitore",
+    "selectSupplier": "Seleziona un fornitore",
+    "invoiceNumber": "Numero Fattura",
+    "date": "Data",
+    "lineItems": "Righe",
+    "addLine": "Aggiungi Riga",
+    "linkPart": "Collega Ricambio",
+    "noPart": "Nessun ricambio",
+    "descriptionLabel": "Descrizione",
+    "qty": "Qtà",
+    "unitCost": "Costo Unitario",
+    "invoiceTotal": "Totale Fattura",
+    "colSupplier": "Fornitore",
+    "colInvoice": "Fattura",
+    "colDate": "Data",
+    "colTotal": "Totale",
+    "save": "Salva",
+    "cancel": "Annulla",
+    "delete": "Elimina",
+    "deleteSupplierTitle": "Eliminare questo fornitore?",
+    "deleteSupplierDesc": "Verranno rimosse anche tutte le fatture registrate.",
+    "deletePurchaseTitle": "Eliminare questo acquisto?",
+    "deletePurchaseDesc": "Questa fattura e le sue righe saranno rimosse definitivamente."
   }
 }

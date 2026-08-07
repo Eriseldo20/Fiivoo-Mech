@@ -56,7 +56,8 @@
     "calendar": "Kalendari",
     "analytics": "Analitika",
     "settings": "Cilësimet",
-    "signOut": "Dilni"
+    "signOut": "Dilni",
+    "suppliers": "Furnitorët"
   },
   "dashboard": {
     "title": "Paneli",
@@ -537,7 +538,9 @@
       "10": "Tet",
       "11": "Nën",
       "12": "Dhj"
-    }
+    },
+    "partsPurchases": "Blerje Pjesësh (Furnitorë)",
+    "partsPurchasesNote": "Shuma e faturuar nga furnitorët këtë muaj. Nuk zbritet më lart — pjesët e ulin fitimin si kosto kur përdoren."
   },
   "auth": {
     "signIn": "Hyni",
@@ -984,5 +987,51 @@
     "addTaskPlaceholder": "Shto një detyrë…",
     "vehiclePhoto": "Foto e automjetit",
     "vehiclePhotoOf": "Foto e {vehicle}"
+  },
+  "suppliers": {
+    "title": "Furnitorët",
+    "description": "Ndiqni furnitorët dhe shpenzimet për pjesë",
+    "totalSpent": "Shpenzime Totale",
+    "spentThisMonth": "Shpenzuar Këtë Muaj",
+    "invoices": "Fatura",
+    "tabSuppliers": "Furnitorët",
+    "tabPurchases": "Blerjet",
+    "addSupplier": "Shto Furnitor",
+    "editSupplier": "Ndrysho Furnitorin",
+    "addPurchase": "Regjistro Blerje",
+    "savePurchase": "Ruaj Blerjen",
+    "noSuppliers": "Nuk ka furnitorë. Shto të parin.",
+    "noPurchases": "Nuk ka blerje të regjistruara.",
+    "addSupplierFirst": "Shto së pari një furnitor.",
+    "invoiceCount": "{count} fatura",
+    "name": "Emri i Furnitorit",
+    "contactName": "Personi i Kontaktit",
+    "phone": "Telefoni",
+    "email": "Email",
+    "address": "Adresa",
+    "notes": "Shënime",
+    "supplier": "Furnitori",
+    "selectSupplier": "Zgjidh një furnitor",
+    "invoiceNumber": "Numri i Faturës",
+    "date": "Data",
+    "lineItems": "Zërat",
+    "addLine": "Shto Zë",
+    "linkPart": "Lidh me Pjesë",
+    "noPart": "Pa pjesë",
+    "descriptionLabel": "Përshkrimi",
+    "qty": "Sasia",
+    "unitCost": "Kosto për Njësi",
+    "invoiceTotal": "Totali i Faturës",
+    "colSupplier": "Furnitori",
+    "colInvoice": "Fatura",
+    "colDate": "Data",
+    "colTotal": "Totali",
+    "save": "Ruaj",
+    "cancel": "Anulo",
+    "delete": "Fshi",
+    "deleteSupplierTitle": "Të fshihet ky furnitor?",
+    "deleteSupplierDesc": "Do fshihen edhe të gjitha faturat e regjistruara.",
+    "deletePurchaseTitle": "Të fshihet kjo blerje?",
+    "deletePurchaseDesc": "Kjo faturë dhe zërat e saj do fshihen përgjithmonë."
   }
 }

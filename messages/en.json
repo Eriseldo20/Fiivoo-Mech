@@ -56,7 +56,8 @@
     "calendar": "Calendar",
     "analytics": "Analytics",
     "settings": "Settings",
-    "signOut": "Sign Out"
+    "signOut": "Sign Out",
+    "suppliers": "Suppliers"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -526,7 +527,9 @@
       "10": "Oct",
       "11": "Nov",
       "12": "Dec"
-    }
+    },
+    "partsPurchases": "Parts Purchases (Suppliers)",
+    "partsPurchasesNote": "Cash invoiced by suppliers this month. Not subtracted above — parts already reduce profit as COGS when used on a job."
   },
   "auth": {
     "signIn": "Sign In",
@@ -973,5 +976,51 @@
     "addTaskPlaceholder": "Add a task…",
     "vehiclePhoto": "Vehicle photo",
     "vehiclePhotoOf": "Photo of {vehicle}"
+  },
+  "suppliers": {
+    "title": "Suppliers",
+    "description": "Track suppliers and what you spend on parts",
+    "totalSpent": "Total Spent",
+    "spentThisMonth": "Spent This Month",
+    "invoices": "Invoices",
+    "tabSuppliers": "Suppliers",
+    "tabPurchases": "Purchases",
+    "addSupplier": "Add Supplier",
+    "editSupplier": "Edit Supplier",
+    "addPurchase": "Record Purchase",
+    "savePurchase": "Save Purchase",
+    "noSuppliers": "No suppliers yet. Add your first one to start tracking spend.",
+    "noPurchases": "No purchases recorded yet.",
+    "addSupplierFirst": "Add a supplier first, then you can record purchases.",
+    "invoiceCount": "{count} invoices",
+    "name": "Supplier Name",
+    "contactName": "Contact Person",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "notes": "Notes",
+    "supplier": "Supplier",
+    "selectSupplier": "Select a supplier",
+    "invoiceNumber": "Invoice Number",
+    "date": "Date",
+    "lineItems": "Line Items",
+    "addLine": "Add Line",
+    "linkPart": "Link to Part",
+    "noPart": "No part",
+    "descriptionLabel": "Description",
+    "qty": "Qty",
+    "unitCost": "Unit Cost",
+    "invoiceTotal": "Invoice Total",
+    "colSupplier": "Supplier",
+    "colInvoice": "Invoice",
+    "colDate": "Date",
+    "colTotal": "Total",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteSupplierTitle": "Delete this supplier?",
+    "deleteSupplierDesc": "This also removes all purchase invoices recorded for this supplier.",
+    "deletePurchaseTitle": "Delete this purchase?",
+    "deletePurchaseDesc": "This invoice and its line items will be permanently removed."
   }
 }

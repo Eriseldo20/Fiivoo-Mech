@@ -19,6 +19,7 @@ import {
   Package,
   Calendar,
   BarChart3,
+  Building2,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useState } from 'react'
@@ -44,6 +45,7 @@ const fleetNavItems: NavItemDef[] = [
   { key: 'vehicles',   href: '/dashboard/vehicles',    icon: Car },
   { key: 'employees',  href: '/dashboard/employees',   icon: Users },
   { key: 'inventory',  href: '/dashboard/inventory',   icon: Package, ownerOnly: true },
+  { key: 'suppliers',  href: '/dashboard/suppliers',   icon: Building2, ownerOnly: true },
 ]
 
 const bottomNavItems: NavItemDef[] = [

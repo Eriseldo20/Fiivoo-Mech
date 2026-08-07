@@ -13,6 +13,8 @@ export const CACHE_TAGS = {
   EMPLOYEES: 'employees',
   REMINDERS: 'reminders',
   DASHBOARD: 'dashboard',
+  SUPPLIERS: 'suppliers',
+  PURCHASES: 'purchases',
 } as const
 
 // Revalidation times (in seconds)
@@ -360,6 +362,88 @@ export async function getServiceReminders(
   }
 
   return reminders
+}
+
+// ---------------------------------------------------------------------------
+// Suppliers - cached
+// ---------------------------------------------------------------------------
+export function getSuppliers(shopId: string) {
+  return unstable_cache(
+    async () => {
+      const supabase = createAdminClient()
+      const { data } = await supabase
+        .from('suppliers')
+        .select('*')
+        .eq('shop_id', shopId)
+        .order('name', { ascending: true })
+
+      return data || []
+    },
+    ['suppliers-all', shopId],
+    { tags: [CACHE_TAGS.SUPPLIERS], revalidate: REVALIDATE_TIMES.MEDIUM },
+  )()
+}
+
+// ---------------------------------------------------------------------------
+// Supplier purchases (invoices) with supplier + line items - cached
+// ---------------------------------------------------------------------------
+export function getSupplierPurchases(shopId: string) {
+  return unstable_cache(
+    async () => {
+      const supabase = createAdminClient()
+      const { data } = await supabase
+        .from('supplier_purchases')
+        .select(
+          `
+          *,
+          supplier:suppliers(id, name),
+          items:supplier_purchase_items(
+            id, description, quantity, unit_cost, line_total, inventory_id,
+            inventory:inventory(id, name, sku)
+          )
+        `,
+        )
+        .eq('shop_id', shopId)
+        .order('purchase_date', { ascending: false })
+
+      return data || []
+    },
+    ['supplier-purchases-all', shopId],
+    { tags: [CACHE_TAGS.PURCHASES], revalidate: REVALIDATE_TIMES.MEDIUM },
+  )()
+}
+
+/**
+ * Total spent per supplier plus overall + current-month totals.
+ * Derived from the cached purchase list so it shares the same cache entry.
+ */
+export async function getSupplierSpendSummary(shopId: string) {
+  const purchases = (await getSupplierPurchases(shopId)) as Array<Record<string, any>>
+
+  const monthKey = new Date().toISOString().slice(0, 7) // YYYY-MM
+  const bySupplier = new Map<string, { name: string; total: number; count: number }>()
+  let allTime = 0
+  let thisMonth = 0
+
+  for (const p of purchases) {
+    const total = Number(p.total) || 0
+    allTime += total
+    if (String(p.purchase_date ?? '').startsWith(monthKey)) thisMonth += total
+
+    const id = String(p.supplier_id)
+    const name = p.supplier?.name ?? 'Unknown'
+    const prev = bySupplier.get(id) ?? { name, total: 0, count: 0 }
+    bySupplier.set(id, { name, total: prev.total + total, count: prev.count + 1 })
+  }
+
+  return {
+    allTime,
+    thisMonth,
+    invoiceCount: purchases.length,
+    bySupplier: [...bySupplier.entries()]
+      .map(([id, v]) => ({ supplierId: id, ...v }))
+      .sort((a, b) => b.total - a.total),
+  }
 }
 
 // ---------------------------------------------------------------------------

@@ -61,6 +61,7 @@ export const OWNER_ONLY_SECTIONS = [
   '/dashboard/analytics',
   '/dashboard/invoices',
   '/dashboard/expenses',
+  '/dashboard/suppliers',
   '/dashboard/settings',
 ] as const
 

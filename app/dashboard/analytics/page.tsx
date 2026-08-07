@@ -35,6 +35,7 @@ import { formatCurrency } from '@/lib/currency'
 import {
   getMonthlyAnalytics,
   getMonthlyTrend,
+  getPartsPurchasesForMonth,
 } from '@/lib/data/analytics-queries'
 import { MonthSelector } from '@/components/analytics/month-selector'
 import { RevenueTrendChart } from '@/components/analytics/revenue-trend-chart'
@@ -66,9 +67,10 @@ export default async function AnalyticsPage({
   const t = await getTranslations('analytics')
   const tPay = await getTranslations('payment')
 
-  const [analytics, trend] = await Promise.all([
+  const [analytics, trend, partsPurchases] = await Promise.all([
     getMonthlyAnalytics(shopId, year, month),
     getMonthlyTrend(shopId, year, month, 12),
+    getPartsPurchasesForMonth(shopId, year, month),
   ])
 
   // Simple projection: trailing 3-month average of net profit (excluding current month)
@@ -161,6 +163,30 @@ export default async function AnalyticsPage({
                   {formatCurrency(analytics.netProfit)}
                 </span>
               </div>
+              {/* Cash paid to suppliers this month. Shown for reference only:
+                  parts already reduce profit as COGS when consumed. */}
+              {partsPurchases.total > 0 && (
+                <div className="mt-3 rounded-lg border border-border/60 p-3 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">{t('partsPurchases')}</span>
+                    <span className="text-sm font-semibold">
+                      {formatCurrency(partsPurchases.total)}
+                    </span>
+                  </div>
+                  {partsPurchases.bySupplier.slice(0, 4).map((s) => (
+                    <div
+                      key={s.name}
+                      className="flex items-center justify-between text-sm text-muted-foreground"
+                    >
+                      <span className="truncate pr-2">{s.name}</span>
+                      <span>{formatCurrency(s.total)}</span>
+                    </div>
+                  ))}
+                  <p className="text-xs text-muted-foreground pt-1 border-t border-border/60">
+                    {t('partsPurchasesNote')}
+                  </p>
+                </div>
+              )}
               <div className="mt-3 flex items-start gap-2 rounded-lg bg-muted/50 p-3 text-sm">
                 <Sparkles className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
                 <span className="text-muted-foreground">

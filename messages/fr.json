@@ -8,7 +8,8 @@
     "inventory": "Inventaire",
     "calendar": "Calendrier",
     "analytics": "Analyses",
-    "settings": "Parametres"
+    "settings": "Parametres",
+    "suppliers": "Fournisseurs"
   },
   "common": {
     "search": "Rechercher...",
@@ -479,7 +480,9 @@
       "10": "Oct",
       "11": "Nov",
       "12": "Dec"
-    }
+    },
+    "partsPurchases": "Achats de Pièces (Fournisseurs)",
+    "partsPurchasesNote": "Montant facturé par les fournisseurs ce mois. Non déduit ci-dessus : les pièces réduisent déjà le bénéfice à la consommation."
   },
   "customers": {
     "addCustomer": "Ajouter un client",
@@ -912,5 +915,51 @@
     "addTaskPlaceholder": "Ajouter une tâche…",
     "vehiclePhoto": "Photo du véhicule",
     "vehiclePhotoOf": "Photo de {vehicle}"
+  },
+  "suppliers": {
+    "title": "Fournisseurs",
+    "description": "Suivez les fournisseurs et vos dépenses en pièces",
+    "totalSpent": "Total Dépensé",
+    "spentThisMonth": "Dépensé Ce Mois",
+    "invoices": "Factures",
+    "tabSuppliers": "Fournisseurs",
+    "tabPurchases": "Achats",
+    "addSupplier": "Ajouter un Fournisseur",
+    "editSupplier": "Modifier le Fournisseur",
+    "addPurchase": "Enregistrer un Achat",
+    "savePurchase": "Enregistrer",
+    "noSuppliers": "Aucun fournisseur. Ajoutez le premier.",
+    "noPurchases": "Aucun achat enregistré.",
+    "addSupplierFirst": "Ajoutez d’abord un fournisseur.",
+    "invoiceCount": "{count} factures",
+    "name": "Nom du Fournisseur",
+    "contactName": "Personne de Contact",
+    "phone": "Téléphone",
+    "email": "E-mail",
+    "address": "Adresse",
+    "notes": "Notes",
+    "supplier": "Fournisseur",
+    "selectSupplier": "Choisir un fournisseur",
+    "invoiceNumber": "Numéro de Facture",
+    "date": "Date",
+    "lineItems": "Lignes",
+    "addLine": "Ajouter une Ligne",
+    "linkPart": "Lier à une Pièce",
+    "noPart": "Aucune pièce",
+    "descriptionLabel": "Description",
+    "qty": "Qté",
+    "unitCost": "Coût Unitaire",
+    "invoiceTotal": "Total Facture",
+    "colSupplier": "Fournisseur",
+    "colInvoice": "Facture",
+    "colDate": "Date",
+    "colTotal": "Total",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "deleteSupplierTitle": "Supprimer ce fournisseur ?",
+    "deleteSupplierDesc": "Toutes les factures enregistrées seront aussi supprimées.",
+    "deletePurchaseTitle": "Supprimer cet achat ?",
+    "deletePurchaseDesc": "Cette facture et ses lignes seront définitivement supprimées."
   }
 }

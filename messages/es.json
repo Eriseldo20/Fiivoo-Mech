@@ -56,7 +56,8 @@
     "calendar": "Calendario",
     "analytics": "Analíticas",
     "settings": "Configuración",
-    "signOut": "Cerrar Sesión"
+    "signOut": "Cerrar Sesión",
+    "suppliers": "Proveedores"
   },
   "dashboard": {
     "title": "Panel",
@@ -537,7 +538,9 @@
       "10": "Oct",
       "11": "Nov",
       "12": "Dic"
-    }
+    },
+    "partsPurchases": "Compras de Piezas (Proveedores)",
+    "partsPurchasesNote": "Importe facturado por proveedores este mes. No se resta arriba: las piezas ya reducen el beneficio como coste al usarse."
   },
   "auth": {
     "signIn": "Iniciar Sesión",
@@ -984,5 +987,51 @@
     "addTaskPlaceholder": "Añadir una tarea…",
     "vehiclePhoto": "Foto del vehículo",
     "vehiclePhotoOf": "Foto de {vehicle}"
+  },
+  "suppliers": {
+    "title": "Proveedores",
+    "description": "Controla proveedores y el gasto en piezas",
+    "totalSpent": "Gasto Total",
+    "spentThisMonth": "Gasto Este Mes",
+    "invoices": "Facturas",
+    "tabSuppliers": "Proveedores",
+    "tabPurchases": "Compras",
+    "addSupplier": "Añadir Proveedor",
+    "editSupplier": "Editar Proveedor",
+    "addPurchase": "Registrar Compra",
+    "savePurchase": "Guardar Compra",
+    "noSuppliers": "Aún no hay proveedores. Añade el primero.",
+    "noPurchases": "Aún no hay compras registradas.",
+    "addSupplierFirst": "Añade primero un proveedor.",
+    "invoiceCount": "{count} facturas",
+    "name": "Nombre del Proveedor",
+    "contactName": "Persona de Contacto",
+    "phone": "Teléfono",
+    "email": "Correo",
+    "address": "Dirección",
+    "notes": "Notas",
+    "supplier": "Proveedor",
+    "selectSupplier": "Selecciona un proveedor",
+    "invoiceNumber": "Número de Factura",
+    "date": "Fecha",
+    "lineItems": "Líneas",
+    "addLine": "Añadir Línea",
+    "linkPart": "Vincular Pieza",
+    "noPart": "Sin pieza",
+    "descriptionLabel": "Descripción",
+    "qty": "Cant.",
+    "unitCost": "Coste Unitario",
+    "invoiceTotal": "Total Factura",
+    "colSupplier": "Proveedor",
+    "colInvoice": "Factura",
+    "colDate": "Fecha",
+    "colTotal": "Total",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "deleteSupplierTitle": "¿Eliminar este proveedor?",
+    "deleteSupplierDesc": "También se eliminarán todas sus facturas registradas.",
+    "deletePurchaseTitle": "¿Eliminar esta compra?",
+    "deletePurchaseDesc": "Esta factura y sus líneas se eliminarán permanentemente."
   }
 }
